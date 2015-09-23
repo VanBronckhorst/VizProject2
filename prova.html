@@ -1,0 +1,45 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
+		<script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+		<script type="text/javascript" src="data/hurricaneAtl.json"></script>
+	</head>
+	<body>
+		 <div id="map" style="height: 500px"></div>
+		 <script type="text/javascript"> 
+		 		var map = L.map('map').setView([28.0, -94.0], 5);
+		 		
+		 		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+			    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+			    maxZoom: 18,
+			    id: 'vanbronckhorst.ncgpejmm',
+			    accessToken: 'pk.eyJ1IjoidmFuYnJvbmNraG9yc3QiLCJhIjoiYjgyYTRhNjY0YzYxNDQ2ZWUzN2U5ZGFjNWFmMDI4OGYifQ.KUupQiTEuAkdC-WJgXZ7kA'
+			}).addTo(map);
+			
+			
+			var popup = L.popup();
+
+			function onMapClick(e) {
+			    popup
+			        .setLatLng(e.latlng)
+			        .setContent("You clicked the map at " + e.latlng.toString())
+			        .openOn(map);
+			}
+			
+			map.on('click', onMapClick);
+			
+			var hu=hurricanes["hurricanes"][3];
+			
+			for (var i = 0;i<hu['points'].length;i++){
+				point = hu['points'][i]
+				var circle = L.circle([point["lat"],point["lon"] ], 500, {
+							    color: 'yellow',
+							    fillColor: 'yellow',
+							    fillOpacity: 0.5
+							}).addTo(map);
+			}
+			
+			
+		</script>
+	</body>
+</html>
