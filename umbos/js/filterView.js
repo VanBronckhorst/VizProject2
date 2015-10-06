@@ -65,7 +65,7 @@ d3.select('#map').append('div')
 
 var toggle = true;
 function resizeFilterView(){
-	var widthVal = (toggle)? 1 : 25;
+	var widthVal = (toggle)? 0 : 25;
 	var heightVal = (toggle)? 100 : 100;
 
 	$('#filterView').animate({'width' : widthVal+'%', 'height': heightVal+'%'}, { 
