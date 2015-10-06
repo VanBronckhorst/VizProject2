@@ -1,0 +1,26 @@
+#map{
+	height: 100%;
+	width: 100%;	
+}
+
+.filterView{	
+	background-color:red;	
+	position: absolute;
+	left: 0;
+	margin-left: 0;
+	margin-top: 0;
+	width: 400;
+	height: 400;
+
+}
+
+.to{	
+	background-color:black;	
+	position: absolute;
+	left: 300;
+	margin-left: 0;
+	margin-top: 0;
+	width: 400;
+	height: 400;
+
+}
