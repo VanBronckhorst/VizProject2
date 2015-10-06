@@ -4,12 +4,38 @@
 }
 
 .filterView{	
-	background-color:red;	
+	background-color:rgba(255,255,255,0.5);	
 	position: absolute;
 	left: 0;
 	margin-left: 0;
 	margin-top: 0;
-	width: 50%;
+	width: 25%;
 	height: 100%;
-	opacity: 0.5;
+	
+}
+
+.title-controls{
+	color: black;	
+	opacity: 1;
+	font-size: 50;
+	x: 25%;
+	y:10%;
+}
+
+#svg-list{
+	width: 90%;
+	height: 100%;
+}
+
+#rect-list{
+	width: 97%;
+	height: 70%;
+	opacity: 0.9;
+	fill:grey;
+}
+
+#svg-arrow-filterView{
+	position: absolute;
+	  transform: translate(295px, 0px);
+	
 }
