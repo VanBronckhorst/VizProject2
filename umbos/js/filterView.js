@@ -30,6 +30,7 @@ var filterView = function (){
 this.filterViewDiv = d3.select('#map').append('div')
 .attr('id','filterView' )
 .attr('class','filterView');
+
 //****CODE TO DISABLE DRAGGING WHEN HOVER FILTER VIEW
 // Disable dragging when user's cursor enters the element
 this.filterViewDiv[0][0].addEventListener('mouseover', function () {
@@ -41,66 +42,92 @@ this.filterViewDiv[0][0].addEventListener('mouseout', function () {
 	filterViewLayout.map.dragging.enable();
 });
 //******///
-/*
-this.filterViewDiv
-.on('click',resizeFilterView);
-*/
-//append button to controle resizing of panel
-d3.select('#map')
-.append('g')
+
+
+//appending arrow to control opening and closing filterView
+d3.select('#map').append('div')
+.attr('id', 'divArrowFilter')
 .append('svg')
-.attr('id', 'svg-arrow-filterView')
-.attr('width', 50)
-.attr('height', 50)
+.attr("viewBox", "0 0 "+ this.viewBoxWidth+" "+this.viewBoxHeight)
+.style('width','100%')
+.style('height', '100%')
 .append('text')
-//.attr('text-anchor', 'middle')
 .attr('dominant-baseline', 'central')
 .attr('font-family', 'FontAwesome')
-.attr('font-size', 10)
-.attr('x', 40 )
-.attr('y', 10)
-	.on('click',resizeFilterView)
-.style('trasform', "translate(30,40)") 
-.text(function(d) { return '\uf139'; });
+.attr('font-size', 600)
+.attr('x', 0 )
+.attr('y', 100)
+.attr('fill', 'black')
+.attr('id', 'arrowResizeFilter')
+.on('click',resizeFilterView)
+.text(function(d) { return '\uf053'; });
+
 
 var toggle = true;
 function resizeFilterView(){
-	var val = (toggle)? 1 : 25;
-	$('#filterView').animate({'width' : val+'%'}, { duration:750,		
+	var widthVal = (toggle)? 1 : 25;
+	var heightVal = (toggle)? 100 : 100;
+
+	$('#filterView').animate({'width' : widthVal+'%', 'height': heightVal+'%'}, { 
+		duration:750,	
+		start: function(){
+			if(toggle){
+				$('#divArrowFilter').animate({
+					left: '0'
+				}, 'slow');
+			}else{
+				$('#divArrowFilter').animate({
+					left: '25%'
+				}, 'slow');
+			}
+		},
 		complete: function() {
-			toggle = !toggle;
+			if(toggle){
+			//arrow change direction to right
+			d3.select('#arrowResizeFilter')
+			.text(function() { return '\uf054'; });
+		}else{
+			//arrow change direction to left
+			d3.select('#arrowResizeFilter')
+			.text(function() { return '\uf053'; });
 		}
-	});}
+		toggle = !toggle;
+	}
+});
+}
 
-	var svg = this.filterViewDiv
-	.append("svg")
-	.attr("viewBox", "0 0 "+ this.viewBoxWidth+" "+this.viewBoxHeight) //VIEWBOX OF THE filtermap
-	//.attr('preserveAspectRatio','none' )
-	.style('width','100%')
-	.style('height', '100%');
+var svg = this.filterViewDiv
+.append("svg")
+.attr("viewBox", "0 0 "+ this.viewBoxWidth+" "+this.viewBoxHeight) //VIEWBOX OF THE filtermap
+//.attr('preserveAspectRatio','none' )
+.style('width','100%')
+.style('height', '100%');
 
 
-	//add title text
-	this.g = svg.append('g');
-	this.g.append('text')
-	.attr('class','title-controls')	
-	.text('CONTROLS')
-	.attr('y', '0')
-	.attr('x', '250');
+//add title text
+this.g = svg.append('g');
 
-	//add container svg for lists
-	this.svgList = this.g.append('svg')
-	.attr('id', 'svg-list')	
-	.append('g');
+this.g.append('text')
+.attr('class','title-controls')	
+.text('CONTROLS')
+.attr('y', '0')
+.attr('x', '250');
 
-	this.svgList
-	.append('rect')
-	.attr('id', 'rect-list')	
-	.attr('y', '10')
-	.attr('x', '10');
 
-	var dati = ['unomila','duemila','tremila'];
-	var datiNuovi=['cioacioa','giaiagai'];
+
+//add container svg for lists
+this.svgList = this.g.append('svg')
+.attr('id', 'svg-list')	
+.append('g');
+
+this.svgList
+.append('rect')
+.attr('id', 'rect-list')	
+.attr('y', '10')
+.attr('x', '10');
+
+var dati = ['unomila','duemila','tremila'];
+var datiNuovi=['cioacioa','giaiagai'];
 
 	//add words
 	this.list = this.svgList
@@ -133,7 +160,6 @@ function resizeFilterView(){
 	.text(function(d) { return '\uf139'; });
 
 	function slideList(){
-console.log('iiooiio');
 		//unbind data
 		filterViewLayout.list = filterViewLayout.list
 		.data([]);

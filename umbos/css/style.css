@@ -34,8 +34,16 @@
 	fill:grey;
 }
 
-#svg-arrow-filterView{
+#svg-arrow-filterView.open{
 	position: absolute;
-	  transform: translate(295px, 0px);
-	
+}
+
+#divArrowFilter{
+	position: absolute;
+	float:left;
+	background-color: red;
+	left: 25%;
+	bottom: 0;
+	width: 1%;
+	height: 5%;
 }
