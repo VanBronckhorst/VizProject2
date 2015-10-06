@@ -44,4 +44,21 @@
 	background: url("../images/play.png");
 	background-size: contain;
 	background-repeat: no-repeat; 
+	float: left;
+}
+.pause-view-button{
+	height:100%;
+	width: 50%;
+	background: url("../images/pause.png");
+	background-size: contain;
+	background-repeat: no-repeat; 
+	float: left;
+}
+.stop-view-button{
+	height:100%;
+	width: 50%;
+	background: url("../images/stop.png");
+	background-size: contain;
+	background-repeat: no-repeat; 
+	float: left;
 }
