@@ -53,6 +53,7 @@ function MapView(){
 	
 	
 	this.displayLines = function(){
+		this.hurricaneLayer.clearLayers();
 		for (var hurricaneI in this.dataDisplayed){
 			var hurricane = this.dataDisplayed[hurricaneI];
 			for (var pointI in hurricane['points']){
@@ -155,6 +156,15 @@ function MapView(){
 		this.playFrom(this.mapTime);
 		
 	} 
+	this.stop = function(){
+		clearInterval(this.timer);
+		this.setMapTime(new Date());
+		this.hurricaneLayer.clearLayers();
+		this.visualizationMode=["LINES"];
+		this.displayLines();
+
+	}
+	
 	//this.playSelected();
 	this.displayLines();
 	

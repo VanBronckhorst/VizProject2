@@ -6,6 +6,10 @@ function PlayView(map,id){
 	
 	this.playButton = this.container.append("div")
 									.attr("class","play-view-button")
-									.on("click",function(){console.log("play"); 
+									.on("click",function(){
 														   that.map.playSelected()});
+	this.playButton = this.container.append("div")
+									.attr("class","stop-view-button")
+									.on("click",function(){
+														   that.map.stop()});
 }
