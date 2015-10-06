@@ -26,66 +26,33 @@ var filterView = function (){
 	.addTo(this.map);
 
 //****END MOCK-UP
-
-// ADD CONTROL TOP MAP TO CREATE FILTER LAYER
-var info = L.control.layers(null, null, {position: 'topleft'});;
-
-
-info.onAdd = function (map) {
- 	//create div
- 	this._div = L.DomUtil.create('div', 'filterView');
-
- 	//assign id to div
- 	this._div.id = 'filterView';
-
- 	return this._div;
- };
-
-//add the control to the map
-info.addTo(this.map);
-
-this.filterViewDiv = d3.select('#filterView');
-
-this.filterViewDiv
-.on('click',function(){
-	console.log(this);
-	var exClass = this.getAttribute('class');
-	exClass = exClass.concat(' filterView');
-	console.log(exClass);
-	this.setAttribute('class',exClass );
-	a();
-});
-
-var toggle = true;
-var a = function (){
-	var val = (toggle)? 20 : 400;
-	$('#filterView').animate({'width' : val}, { duration:1000,
-		start: function() {
-			toggle = !toggle;
-
-		},
-		complete: function() {
-
-		}
-	});}
-
-var myDiv = d3.select('#map').append('div').attr('class','filterView');
-console.log(myDiv[0][0]);
-myDiv[0][0].addEventListener('mouseover', function () {
-	filterViewLayout.map.dragging.disable();
-});
-
+this.filterViewDiv = d3.select('#map').append('div')
+.attr('id','filterView' )
+.attr('class','filterView');
 //****CODE TO DISABLE DRAGGING WHEN HOVER FILTER VIEW
 // Disable dragging when user's cursor enters the element
-info.getContainer().addEventListener('mouseover', function () {
+this.filterViewDiv[0][0].addEventListener('mouseover', function () {
 	filterViewLayout.map.dragging.disable();
 });
 
 // Re-enable dragging when user's cursor leaves the element
-info.getContainer().addEventListener('mouseout', function () {
+this.filterViewDiv[0][0].addEventListener('mouseout', function () {
 	filterViewLayout.map.dragging.enable();
 });
 //******///
+
+this.filterViewDiv
+.on('click',resizeFilterView);
+
+var toggle = true;
+function resizeFilterView(){
+	var val = (toggle)? 1 : 50;
+	$('#filterView').animate({'width' : val+'%'}, { duration:750,		
+		complete: function() {
+			toggle = !toggle;
+		}
+	});}
+
 
 };
 
