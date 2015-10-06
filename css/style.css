@@ -33,14 +33,15 @@
 
 .play-view-container{
 	position:absolute;
-	bottom: 0;
-	left:0;
+	bottom: 40;
+	left:40;
 	height: 5%;
 	width: 10%;
 }
 .play-view-button{
 	height:100%;
 	width: 50%;
-	background: url("/images/play.png");
-	background-size: cover; 
+	background: url("../images/play.png");
+	background-size: contain;
+	background-repeat: no-repeat; 
 }
