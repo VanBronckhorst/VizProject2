@@ -18,7 +18,10 @@ var FilterView = function (){
 
 	var filterViewLayout = this;
 
+	this.lists = []; //has all the list displayed: the name of the hurricanes, the speeds
 
+	//data initially is empty
+	this.data = []; 
 	
 	//GRAB THE MAP	
 	this.map = d3.select('#map'),	
@@ -112,13 +115,13 @@ this.svgList
 .attr('y', '10')
 .attr('x', '10');
 
-this.data = []; //data initially is empty
 
-	//add words
-	this.list = this.svgList
+
+	//add hurricanes name
+	/*this.list = this.svgList
 	.append('g')
 	.selectAll("text")
-	.data(this.data)
+	.data([])
 	.enter()
 	.append('text')
 	.text(function(d,i){
@@ -129,7 +132,56 @@ this.data = []; //data initially is empty
 	})
 	.attr('x', 30)
 	.attr('color','black')
+	.attr('font-size',20 );*/
+
+	var listCreator = new ListCreator();
+
+	this.list = listCreator.createList(this.svgList,'NAME');
+	this.listSpeed = listCreator.createList(this.svgList,'SPEED');
+
+	this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,'attribute':'speed'});
+	log(this.lists);
+	/*//add hurricanes speed
+	this.listSpeed = this.svgList
+	.append('g')
+	.selectAll("text")
+	.data([])
+	.enter()
+	.append('text')
+	.text(function(d,i){
+		return d;
+	})
+	.attr('y', function(d,i){
+		return i * 100+130;
+	})
+	.attr('x', 180)
+	.attr('color','black')
 	.attr('font-size',20 );
+
+	//add title NAME
+	this.svgList
+	.append('g')
+	.append('text')
+	.text('NAME')
+	.attr('y', function(){
+		return filterViewLayout.viewBoxWidth*0.05;
+	})
+	.attr('x', 30)
+	.attr('color','black')
+	.attr('font-size',20 );*/
+
+	/*//add title SPEED
+	this.svgList
+	.append('g')
+	.append('text')
+	.text('SPEED')
+	.attr('y', function(){
+		return filterViewLayout.viewBoxWidth*0.05;
+	})
+	.attr('x', 180)
+	.attr('color','black')
+	.attr('font-size',20 );*/
+
 
 	//add button arrow up
 	this.svgList
@@ -166,8 +218,8 @@ this.data = []; //data initially is empty
 		//return
 		if(direction === 'down' && filterViewLayout.lastWordIndex == filterViewLayout.data.length - filterViewLayout.wordBatchSize ||
 			direction === 'up' && filterViewLayout.lastWordIndex == 0){
-			return;
-		}
+			return;	
+	}
 
 		//unbind data
 		filterViewLayout.list = filterViewLayout.list
@@ -198,10 +250,13 @@ this.data = []; //data initially is empty
 		.enter()		
 		.append('text')
 		.text(function(d,i){
-			return d;
+			return d['name'];
 		})
 		.attr('y', function(d,i){
-			return 600;
+
+			return (direction === 'down') ? 
+			filterViewLayout.viewBoxHeight*0.7 :
+			filterViewLayout.viewBoxHeight*0.1;
 		})
 		.attr('x', 30)
 		.attr('color','black')
@@ -209,12 +264,9 @@ this.data = []; //data initially is empty
 
     	// move all the elements to their position
     	filterViewLayout.list
-    	.transition()
-    	.text(function(d,i){
-    		return d;
-    	})
+    	.transition()    	
     	.attr('y', function(d,i){
-    		return i * 100+130;
+    		return yValue(i) ;
     	})
     	.attr('x', 30)
     	.attr('color','black')
@@ -237,24 +289,31 @@ this.data = []; //data initially is empty
 		.remove();
 
 		//bind new data so that all the data to add is new
-		//just partially
+		//only load a batch
 		filterViewLayout.list = filterViewLayout.list
 		.data(this.data.slice(0,this.wordBatchSize));		
-
 
 		// add new elements at svg and update the list
 		filterViewLayout.list = filterViewLayout.list
 		.enter()		
 		.append('text')
 		.text(function(d,i){
-			return d;
+			log(d);
+			return d['name'];
 		})
 		.attr('y', function(d,i){
-			return i * 100+130;
+			return yValue(i);
 		})
 		.attr('x', 30)
 		.attr('color','black')
 		.attr('font-size',20 );	
+	}
+
+	//**UTILITY**//
+
+	//the function return the y value of the text accordingly to its index
+	function yValue(index){
+		return index * 100 + 130;
 	}
 
 };
@@ -265,7 +324,11 @@ FilterView.prototype.modelUpdated = function(data){
 
 
 f = new FilterView();
-f.modelUpdated(['primo','secondo','terzo','quarto','quinto',"sestads",'ancora','dipiue','ancoramiatuo','ultimo!!!']);
+
+umbertoData = hurricanes["hurricanes"].slice(1000,1020);
+log(umbertoData);
+f.modelUpdated(umbertoData);
+//f.modelUpdated(['primo','secondo','terzo','quarto','quinto',"sestads",'ancora','dipiue','ancoramiatuo','ultimo!!!']);
 
 
 
