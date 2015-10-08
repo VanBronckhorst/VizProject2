@@ -118,10 +118,9 @@ this.svgList
 var listCreator = new ListCreator();
 
 this.list = listCreator.createList(this.svgList,'NAME');
-this.listSpeed = listCreator.createList(this.svgList,'SPEED');
+this.listSpeed = listCreator.createList(this.svgList,'N');
 
-this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,'attribute':'speed'});
-log(this.lists);
+this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,'attribute':'n'});
 
 
 	//add button arrow up
@@ -172,12 +171,7 @@ log(this.lists);
 		// the upper is either the max length of data or the last index plust the batch size
 		var upperIndexSlice = d3.min([filterViewLayout.data.length,filterViewLayout.lastWordIndex + filterViewLayout.wordBatchSize]);
 		
-		log(filterViewLayout.list);
-		log(filterViewLayout.lists[0]);
-		log(filterViewLayout.lists[0]['list']);
-
-		updateValuesOf(filterViewLayout.lists[0]);
-
+		filterViewLayout.lists.forEach(function(d){updateValuesOf(d);})		
 
 		function updateValuesOf(list){
 			var attribute = list['attribute'];
@@ -219,30 +213,26 @@ log(this.lists);
     this.update = function(data){
     	//change data
     	this.data = data;
+    	updateSingleList(filterViewLayout.lists[0]);
 
+    	updateSingleList(filterViewLayout.lists[1]);
 
-    	filterViewLayout.lists[0]['list'] = filterViewLayout.lists[0]['list']
-    	.data(this.data.slice(0,this.wordBatchSize));
+    	function updateSingleList(list){
+    		var attribute = list['attribute'];
+    		list = list['list'];
 
-    	//insert new
-    	filterViewLayout.lists[0]['list']
-    	.enter()		
-    	.append('text')
-    	.text(function(d,i){
-    		return d['name'];
-    	})
-    	.attr('y', function(d,i){
-    		return yValue(i);
-    	});	
+    		list = list
+    		.data(filterViewLayout.data.slice(0,this.wordBatchSize));
 
-    	//update
-    	filterViewLayout.lists[0]['list']    	
-    	.text(function(d,i){
-    		return d['name'];
-    	})
-    	.attr('y', function(d,i){
-    		return yValue(i);
-    	});	
+    		//update
+    		list  	
+    		.text(function(d,i){
+    			return d[attribute];
+    		})
+    		.attr('y', function(d,i){
+    			return yValue(i);
+    		});	
+    	}
     }
 
 	//**UTILITY**//
