@@ -115,72 +115,13 @@ this.svgList
 .attr('y', '10')
 .attr('x', '10');
 
+var listCreator = new ListCreator();
 
+this.list = listCreator.createList(this.svgList,'NAME');
+this.listSpeed = listCreator.createList(this.svgList,'SPEED');
 
-	//add hurricanes name
-	/*this.list = this.svgList
-	.append('g')
-	.selectAll("text")
-	.data([])
-	.enter()
-	.append('text')
-	.text(function(d,i){
-		return d;
-	})
-	.attr('y', function(d,i){
-		return i * 100+130;
-	})
-	.attr('x', 30)
-	.attr('color','black')
-	.attr('font-size',20 );*/
-
-	var listCreator = new ListCreator();
-
-	this.list = listCreator.createList(this.svgList,'NAME');
-	this.listSpeed = listCreator.createList(this.svgList,'SPEED');
-
-	this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,'attribute':'speed'});
-	log(this.lists);
-	/*//add hurricanes speed
-	this.listSpeed = this.svgList
-	.append('g')
-	.selectAll("text")
-	.data([])
-	.enter()
-	.append('text')
-	.text(function(d,i){
-		return d;
-	})
-	.attr('y', function(d,i){
-		return i * 100+130;
-	})
-	.attr('x', 180)
-	.attr('color','black')
-	.attr('font-size',20 );
-
-	//add title NAME
-	this.svgList
-	.append('g')
-	.append('text')
-	.text('NAME')
-	.attr('y', function(){
-		return filterViewLayout.viewBoxWidth*0.05;
-	})
-	.attr('x', 30)
-	.attr('color','black')
-	.attr('font-size',20 );*/
-
-	/*//add title SPEED
-	this.svgList
-	.append('g')
-	.append('text')
-	.text('SPEED')
-	.attr('y', function(){
-		return filterViewLayout.viewBoxWidth*0.05;
-	})
-	.attr('x', 180)
-	.attr('color','black')
-	.attr('font-size',20 );*/
+this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,'attribute':'speed'});
+log(this.lists);
 
 
 	//add button arrow up
@@ -221,15 +162,7 @@ this.svgList
 			return;	
 	}
 
-		//unbind data
-		filterViewLayout.list = filterViewLayout.list
-		.data([]);
-		
-		//and remove old elements if any
-		filterViewLayout.list
-		.exit()
-		.remove();
-
+	
 		//update the lastWord Index accordingly to the direction
 		filterViewLayout.lastWordIndex = (direction === 'down') ? 
 		d3.min([filterViewLayout.data.length - filterViewLayout.wordBatchSize ,filterViewLayout.lastWordIndex + filterViewLayout.wordBatchSize])
@@ -239,75 +172,78 @@ this.svgList
 		// the upper is either the max length of data or the last index plust the batch size
 		var upperIndexSlice = d3.min([filterViewLayout.data.length,filterViewLayout.lastWordIndex + filterViewLayout.wordBatchSize]);
 		
-		
-		//bind new data so that all the data to add is new
-		filterViewLayout.list = filterViewLayout.list
+		log(filterViewLayout.list);
+		log(filterViewLayout.lists[0]);
+		log(filterViewLayout.lists[0]['list']);
+
+		updateValuesOf(filterViewLayout.lists[0]);
+
+
+		function updateValuesOf(list){
+			var attribute = list['attribute'];
+			list = list['list'];
+
+		//bind new data 
+		list = list
 		.data(filterViewLayout.data.slice(filterViewLayout.lastWordIndex,upperIndexSlice));		
 
+		//and remove old elements if any
+		list
+		.exit()
+		.remove();
 
-		// add new elements at the end of svg and update the list
-		filterViewLayout.list = filterViewLayout.list
-		.enter()		
-		.append('text')
-		.text(function(d,i){
-			return d['name'];
-		})
+		//move all elements down or up
+		list
 		.attr('y', function(d,i){
-
 			return (direction === 'down') ? 
 			filterViewLayout.viewBoxHeight*0.7 :
 			filterViewLayout.viewBoxHeight*0.1;
-		})
-		.attr('x', 30)
-		.attr('color','black')
-		.attr('font-size',20 );	
+		});	
 
     	// move all the elements to their position
-    	filterViewLayout.list
+    	list
     	.transition()    	
     	.attr('y', function(d,i){
     		return yValue(i) ;
     	})
-    	.attr('x', 30)
+    	.text(function(d,i){
+    		return d[attribute];
+    	})
     	.attr('color','black')
     	.attr('font-size',20 );
-
     }
+
+}
 
     //function to update list when model is updated
     this.update = function(data){
     	//change data
     	this.data = data;
 
-    	//unbind data
-    	filterViewLayout.list = filterViewLayout.list
-    	.data([]);
 
-		//and remove old elements if any
-		filterViewLayout.list
-		.exit()
-		.remove();
+    	filterViewLayout.lists[0]['list'] = filterViewLayout.lists[0]['list']
+    	.data(this.data.slice(0,this.wordBatchSize));
 
-		//bind new data so that all the data to add is new
-		//only load a batch
-		filterViewLayout.list = filterViewLayout.list
-		.data(this.data.slice(0,this.wordBatchSize));		
+    	//insert new
+    	filterViewLayout.lists[0]['list']
+    	.enter()		
+    	.append('text')
+    	.text(function(d,i){
+    		return d['name'];
+    	})
+    	.attr('y', function(d,i){
+    		return yValue(i);
+    	});	
 
-		// add new elements at svg and update the list
-		filterViewLayout.list = filterViewLayout.list
-		.enter()		
-		.append('text')
-		.text(function(d,i){
-			log(d);
-			return d['name'];
-		})
-		.attr('y', function(d,i){
-			return yValue(i);
-		})
-		.attr('x', 30)
-		.attr('color','black')
-		.attr('font-size',20 );	
-	}
+    	//update
+    	filterViewLayout.lists[0]['list']    	
+    	.text(function(d,i){
+    		return d['name'];
+    	})
+    	.attr('y', function(d,i){
+    		return yValue(i);
+    	});	
+    }
 
 	//**UTILITY**//
 
@@ -326,7 +262,6 @@ FilterView.prototype.modelUpdated = function(data){
 f = new FilterView();
 
 umbertoData = hurricanes["hurricanes"].slice(1000,1020);
-log(umbertoData);
 f.modelUpdated(umbertoData);
 //f.modelUpdated(['primo','secondo','terzo','quarto','quinto',"sestads",'ancora','dipiue','ancoramiatuo','ultimo!!!']);
 

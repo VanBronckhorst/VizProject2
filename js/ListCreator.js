@@ -11,7 +11,7 @@ var ListCreator = function(){
 		var list = place
 		.append('g')
 		.selectAll("text")
-		.data([])
+		.data(['empy','empty','empty'])
 		.enter()
 		.append('text')
 		.text(function(d){
@@ -38,7 +38,7 @@ var ListCreator = function(){
 
 		//increase number of lists created
 		numberOfListCreated++;
-		
+
 		return list;
 	}
 
