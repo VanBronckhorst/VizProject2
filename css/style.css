@@ -35,10 +35,19 @@
 	position:absolute;
 	bottom: 40;
 	left:40;
-	height: 5%;
+	height: 10%;
 	width: 10%;
+	z-index: 200;
 }
 .play-view-button{
+	height:100%;
+	width: 50%;
+	background: url("../images/play.png");
+	background-size: contain;
+	background-repeat: no-repeat; 
+	float: left;
+}
+.resume-view-button{
 	height:100%;
 	width: 50%;
 	background: url("../images/play.png");

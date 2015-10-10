@@ -1,16 +1,15 @@
 //Adapted from https://www.mapbox.com/mapbox.js/example/v1.0.0/rotating-controlling-marker/
 
+var hurrIcon= new L.Icon({iconUrl:'./images/hurr.png',iconSize: [30, 30]});
+var nonHurrIcon= new L.Icon({iconUrl:'./images/nonHurr.png',iconSize: [30, 30]});
 
 L.HurricaneMarker = L.Marker.extend({
   
   options: { angle: 0,
-	  		icon: L.icon({
-			    iconUrl: './images/hurr.png',
-			    iconSize: [24, 24],
-						}) 
+	  		icon: this.type==" HU"?hurrIcon:nonHurrIcon
 			},
 			
-  _setPos: function(pos) {
+  _setPos: function(pos,type) {
 	  
     L.Marker.prototype._setPos.call(this, pos);
     if (L.DomUtil.TRANSFORM) {
@@ -24,9 +23,12 @@ L.HurricaneMarker = L.Marker.extend({
       this._icon.style.filter += ' progid:DXImageTransform.Microsoft.Matrix(sizingMethod=\'auto expand\', M11=' +
         costheta + ', M12=' + (-sintheta) + ', M21=' + sintheta + ', M22=' + costheta + ')';
     }
+    
+   
   },
   
-  initialize: function(pos,options){
+  initialize: function(pos,type,options){
+	  this.type=type;
 	  L.Marker.prototype.initialize.call(this, pos);
 	  var that=this;
 	  this.timer = setInterval(function(){
@@ -34,6 +36,8 @@ L.HurricaneMarker = L.Marker.extend({
 		  									that.options.angle += -0.1 * (180 / Math.PI);
 		  									that.setLatLng(that.getLatLng());
 	  									 }, 20) 
+	  
+	  
   },
   
   onRemove: function(map){
@@ -41,6 +45,15 @@ L.HurricaneMarker = L.Marker.extend({
 	  L.Marker.prototype.onRemove.call(this,map);
 	  clearInterval(this.timer);
 	  
+  },
+  
+  setType: function(type){
+	   if (type!= this.type){
+	    
+	    this.type=type;
+	    console.log(this.type==" HU")
+	    this.setIcon(this.type==" HU"?hurrIcon:nonHurrIcon);
+		}
   }
   
   
