@@ -33,7 +33,7 @@ function MapView(){
 	L.control.layers(this.baseMaps,null,{position:"topleft"}).addTo(this.map);
 
 	// MAP Variables
-	this.dataDisplayed = hurricanes["hurricanes"].slice(300,320);
+	this.dataDisplayed = hurricanes["hurricanes"].slice(1100,1120);
 	this.visualizationModes=["LINES","COMPARE","PLAY"]
 	this.visualizationMode = this.visualizationModes[0]
 	//Holds The Displayed DATE and Time in PLAY Mode
@@ -47,6 +47,7 @@ function MapView(){
 	this.hurricaneLayer = L.layerGroup();
 	this.hurricaneLayer.addTo(this.map);
 	this.markers = {}
+	this.trails={}
 	
 	this.playView = new PlayView(this,"PlayView") 
 	
@@ -79,18 +80,29 @@ function MapView(){
 			if (pointToShow!= null){
 				if (this.markers[hurricaneI]){
 						shown +=1;
-						this.markers[hurricaneI].setLatLng([pointToShow["lat"],pointToShow["lon"] ])
+						this.markers[hurricaneI].setLatLng([pointToShow["lat"],pointToShow["lon"] ]);
+						this.markers[hurricaneI].setType(pointToShow["type"]);
+						
 					}else{
 						shown +=1;
-						this.markers[hurricaneI] =L.hurricaneMarker([pointToShow["lat"],pointToShow["lon"] ]);
+						this.markers[hurricaneI] =L.hurricaneMarker([pointToShow["lat"],pointToShow["lon"] ],pointToShow["type"]);
 						this.hurricaneLayer.addLayer(this.markers[hurricaneI]);	
+						
 					}
+				if (this.trails[hurricaneI]){
+					this.trails[hurricaneI].addLayer(L.circle([pointToShow["lat"],pointToShow["lon"] ],parseInt(pointToShow["maxSpeed"])*1000,{fillColor : "#D5EDF5",fillOpacity : 0.1,stroke:false}));
+				}else{
+					this.trails[hurricaneI]=L.layerGroup();
+					this.trails[hurricaneI].addLayer(L.circle([pointToShow["lat"],pointToShow["lon"] ],parseInt(pointToShow["maxSpeed"])*1000,{fillColor : "#D5EDF5",fillOpacity : 0.1,stroke:false}));
+					this.trails[hurricaneI].addTo(this.map);
+				}
 					
 			}else{
 				if (this.markers[hurricaneI]){
-					console.log(hurricaneI);
 					this.hurricaneLayer.removeLayer(this.markers[hurricaneI]);
 					this.markers[hurricaneI]=null;
+					this.map.removeLayer(this.trails[hurricaneI]);
+					this.trails[hurricaneI]=null;
 				}	
 			}
 		}
@@ -156,10 +168,29 @@ function MapView(){
 		this.playFrom(this.mapTime);
 		
 	} 
+	
+	this.pause = function(){
+		clearInterval(that.timer);
+	}
+	
+	this.resume = function(){
+		that.playFrom(that.mapTime);
+	}
+	
 	this.stop = function(){
 		clearInterval(this.timer);
+		
 		this.setMapTime(new Date());
+		
 		this.hurricaneLayer.clearLayers();
+		
+		for (t in this.trails){
+			if (this.trails[t]){
+				this.map.removeLayer(this.trails[t]);
+				
+			}
+		}
+		this.trails={}
 		this.visualizationMode=["LINES"];
 		this.displayLines();
 
