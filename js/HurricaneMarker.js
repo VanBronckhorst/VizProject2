@@ -97,19 +97,19 @@ var l34;
 function addTrail(group,point){
 	if( point["34NE"]| point["34NW"]|point["34SE"]| point["34SW"]){
 		r= Math.max(point["34NE"], point["34NW"],point["34SE"], point["34SW"]) * 1852;
-		l34=L.circle([point["lat"],point["lon"] ],r,{fillColor : color34,fillOpacity : 0.1,stroke:false})
+		l34=L.circle([point["lat"],point["lon"] ],r,{fillColor : color34,fillOpacity : 1,stroke:false})
 		group.addLayer(l34);
 		layerManager.add(l34, 1)
 	}
 	if( point["50NE"]| point["50NW"]|point["50SE"]| point["50SW"]){
 		r= Math.max(point["50NE"], point["50NW"],point["50SE"], point["50SW"]) * 1852;
-		l=L.circle([point["lat"],point["lon"] ],r,{fillColor : color50,fillOpacity : 0.1,stroke:false})
+		l=L.circle([point["lat"],point["lon"] ],r,{fillColor : color50,fillOpacity : 1,stroke:false})
 		group.addLayer(l);
 		layerManager.add(l, 2)
 	}
 	if( point["64NE"]| point["64NW"]|point["64SE"]| point["64SW"]){
 		r= Math.max(point["64NE"], point["64NW"],point["64SE"], point["64SW"]) * 1852;
-		l=L.circle([point["lat"],point["lon"] ],r,{fillColor : color64,fillOpacity : 0.1,stroke:false})
+		l=L.circle([point["lat"],point["lon"] ],r,{fillColor : color64,fillOpacity : 1,stroke:false})
 		group.addLayer(l);
 		layerManager.add(l, 3)
 	}
