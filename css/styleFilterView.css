@@ -31,11 +31,15 @@
 	width: 97%;
 	opacity: 0.9;
 	fill:grey;
+	stroke: black;
+	stroke-width: 3px;
 }
 #rect-filter{
 	width: 97%;
 	opacity: 0.9;
-	fill:red;
+	fill:grey;
+	stroke: black;
+	stroke-width: 3px;
 }
 
 #svg-arrow-filterView.open{

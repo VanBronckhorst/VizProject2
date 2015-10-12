@@ -129,9 +129,10 @@ this.svgFilters
 .append('rect')
 .attr('id', 'rect-filter')	
 .attr('height', (100 - heightSvgList - 5) + "%") //5 is the percentage of empty space at the bottom of the filters
-.attr('y', heightSvgList+ "%")
+.attr('y', (heightSvgList-(-2))+ "%") //add 2 percent for padding
 .attr('x', '10');
 
+var landedFilterOn = false;
 //add filters
 this.svgFilters
 .append('text')
@@ -141,10 +142,15 @@ this.svgFilters
 .attr('pointer-events','all' )
 .attr('x', 300 )
 .attr('y', (heightSvgList * 1.1)+ "%")
-.on('click',function(){log('filter landed');})
+.on('click',function(){
+	landedFilterOn = !landedFilterOn;
+	log('landed filter'+ landedFilterOn);
+	filterViewLayout.notifyAll(new ToggleFilter('L',landedFilterOn));})
 .text('LANDED');
 
-console.log(screen.height);
+//<label><input type="checkbox" name="checkbox" value="value">Text</label>
+
+
 
 //create COLUMNS OF LIST
 
@@ -271,16 +277,11 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
     	}
     }
 
-    function notifyAll(newFilter){
+    this.notifyAll= function(newFilter){
     	log('filter modified notifying...');
     	for(var o in this.observerList){
     		o.filterUpdated(newFilter); // I DO EXPECT TO FIND THIS METHOD IN THE CONTROLLER
     	}
-    }
-
-    function addObserver(observer){
-    	log('observer added');
-    	this.observerList.push(observer);
     }
 
 	//**UTILITY**//
@@ -295,6 +296,11 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
 FilterView.prototype.modelUpdated = function(data){	
 	log('model updated received');	
 	this.update(data);
+}
+
+FilterView.prototype.addObserver = function(observer){
+	log('observer added');
+	this.observerList.push(observer);
 }
 
 
