@@ -1,9 +1,9 @@
 // TODO adjust filterObject.values name
 
 // provides a series of filtering functions
-var filter = {
+var Filter = function() {
 
-	filterCurrent: function( filterObject, currentData ) { // names to be adjusted
+	this.filterCurrent = function( filterObject, currentData ) { // names to be adjusted
 
 		switch( filterObject.function ) {
 			case "sort": // serve davvero?
@@ -17,9 +17,9 @@ var filter = {
 			case "equal": // serve?
 				return this.equal( filterObject.name, data, filterObject.values );
 		}
-	},
+	};
 
-	filterVisual: function( filterObject, visualizedData, currentData ) {
+	this.filterVisual = function( filterObject, visualizedData, currentData ) {
 
 		switch ( filterObject.function ) {
 			case "add":
@@ -27,29 +27,29 @@ var filter = {
 			case "remove":
 				return this.remove( filterObject.name, visualizedData );
 			case "addAll":
-				return data;
+				return currentData;
 			case "removeAll":
 				return [];
 		}
-	},
+	};
 
 	// returns the dataset data1 with entries added from data2 whose name === name
-	add: function( name, data1, data2 ) {
+	this.add = function( name, data1, data2 ) {
 		[].push.apply( data1, data2.filter( function( d ) {
 			return d[ "name" ] === name;
 		}) );
 		return data1;
-	},
+	};
 
 	// returns the dataset without entries whose name === name
-	remove: function( name, data ) {
+	this.remove = function( name, data ) {
 		return data.filter( function( d ) {
 			return d[ "name" ] !== name;
 		})
-	},
+	};
 
 	// returns the datum for which attribute name is maximum
-	max: function( name, data ) {
+	this.max = function( name, data ) {
 		var result,
 			max = -Infinity,
 			value;
@@ -61,10 +61,10 @@ var filter = {
 			}
 		}
 		return result;
-	},
+	};
 
 	// returns the datum for which attribute name is minimum
-	min: function( name, data ) {
+	this.min = function( name, data ) {
 		var result,
 			min = Infinity,
 			value;
@@ -76,11 +76,11 @@ var filter = {
 			}
 		}
 		return result;
-	},
+	};
 
 	// TODO sistemare comparator
 	// sorts the data on the attribute name, ascending if order > 0, descending if < 0 
-	sort: function( name, data, order ) {
+	this.sort = function( name, data, order ) {
 		// compares two values accordingly with type
 		var compare = function( a, b ) {
 			if ( typeof a === 'string' ) {
@@ -92,34 +92,34 @@ var filter = {
 		return data.sort( function( a, b ) {
 			return order * compare( a[ name ], b[ name ] );
 		});
-	},
+	};
 
 	// returns top n data w.r.t. attribute name sorted from highest to lowest
-	top: function( name, data, n ) {
-		return sort( name, data, 1 ).slice( -n ).reverse();
+	this.top = function( name, data, n ) {
+		return this.sort( name, data, 1 ).slice( -n ).reverse();
 	},
 
 	// returns bottom n data w.r.t. attribute name sorted from lowest to highest
-	bottom: function( name, data, n ) {
-		return sort( name, data, -1 ).slice( -n ).reverse();
+	this.bottom = function( name, data, n ) {
+		return this.sort( name, data, -1 ).slice( -n ).reverse();
 	},
 
 	// filters the data to those whose attribute name is between lower and upper ( assumes lower <= upper )
-	range: function( name, data, lower, upper ) {
+	this.range = function( name, data, lower, upper ) {
 		return data.filter( function( d ) {
 			return d[ name ] >= lower && d[ name ] <= upper;
 		} );
-	},
+	};
 
 	// filters the data to those whose attribute name is equal to value
-	equal: function( name, data, value ) {
+	this.equal = function( name, data, value ) {
 		return data.filter( function( d ) {
 			return d[ name ] === value;
 		} );
-	},
+	};
 
 	// tests whether the first filter returns a subset of the second one
-	isSubset: function( fObj1, fObj2 ) {
+	this.isSubset = function( fObj1, fObj2 ) {
 		if ( fObj1.name === fObj2.name ) {
 			switch( fObj1.function ) {
 				case "sort":
@@ -135,5 +135,5 @@ var filter = {
 			}
 		}
 		return false;
-	}
+	};
 };
