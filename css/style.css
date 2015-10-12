@@ -71,3 +71,18 @@
 	background-repeat: no-repeat; 
 	float: left;
 }
+
+.leaflet-control-layers-toggle{ 
+    width:100;
+    background-position:3px 50% ;
+    padding:3px;
+    padding-left:36px;
+    text-decoration:none;
+    font-size: 36;
+    line-height:36px;
+
+}
+
+.control-layer-text{
+	font-size: 36;
+}

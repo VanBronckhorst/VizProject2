@@ -33,9 +33,9 @@ function MapView(){
 			
 	this.tiles = [this.geoTile,this.darkTile]
 	this.baseMaps = {
-    "Geo Map": this.geoTile,
-    "Dark Map": this.darkTile,
-    "Pirates ;)":this.pirateTile
+    "<g class = 'control-layer-text'>Geo Map</g>": this.geoTile,
+    "<g class = 'control-layer-text'>Dark Map</g>": this.darkTile,
+    "<g class = 'control-layer-text'>Pirates ;)</g>":this.pirateTile
 	};	
 	
 	//INITIATE THE MAP	
