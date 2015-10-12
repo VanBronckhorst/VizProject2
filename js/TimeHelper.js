@@ -34,7 +34,11 @@ function hurricanePositionAt(h,d){
 }
 
 function interpolatePoints(a,b,d){
-	var res={"date":a["date"],"hour":a["hour"],"type":a["type"],"maxSpeed":a["maxSpeed"],"ident":a["ident"]}
+	var res={"date":a["date"],"hour":a["hour"],"type":a["type"],"maxSpeed":a["maxSpeed"],"ident":a["ident"],
+			 "34NE":a["34NE"], "34NW":a["34NW"],"34SE":a["34SE"], "34SW":a["34SW"],
+			 "50NE":a["50NE"], "50NW":a["50NW"],"50SE":a["50SE"], "50SW":a["50SW"],
+			 "64NE":a["64NE"], "64NW":a["64NW"],"64SE":a["64SE"], "64SW":a["64SW"]
+	}
 	
 	var d1= hurricaneDateToJS(a["date"],a["hour"])
 	var d2= hurricaneDateToJS(b["date"],b["hour"])
