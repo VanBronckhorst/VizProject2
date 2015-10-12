@@ -73,7 +73,7 @@ var Model = function() {
 	// filters the visualized dataset accordingly to filterObject
 	this.filterVisual = function ( filterObject ) {
 		this.visualizedData = this.filter.filterVisual( filterObject, this.visualizedData, this.currentData );
-		notifyAll( this.visualizedData, this.currentData );
+		this.notifyAll( this.visualizedData, this.currentData );
 		return this;
 	};
 };
