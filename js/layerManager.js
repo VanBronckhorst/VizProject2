@@ -28,7 +28,6 @@ var layerManager = new function(){
 		for (l in ll){
 			this.remove(ll[l]);
 		}
-		console.log(this.layers)
 	}
 	
 	this.remove = function (layer){

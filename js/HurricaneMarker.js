@@ -2,6 +2,33 @@
 
 var hurrIcon= new L.Icon({iconUrl:'./images/hurr.png',iconSize: [30, 30]});
 var nonHurrIcon= new L.Icon({iconUrl:'./images/nonHurr.png',iconSize: [30, 30]});
+var hurricaneRotator = new function(){
+	var that=this
+	this.hurricanesToRotate=[]
+	
+	this.add = function(hurricane){
+
+		this.hurricanesToRotate.push(hurricane);
+		
+		clearInterval(this.timer);
+		
+		this.timer = setInterval(function(){
+											for (h in that.hurricanesToRotate){
+												var hurr = that.hurricanesToRotate[h]
+		  										hurr.options.angle += -0.15 * (180 / Math.PI);
+		  										hurr.setLatLng(hurr.getLatLng());
+		  									}
+	  									 }, 30) 
+	}
+	this.remove = function(hurr){
+		this.hurricanesToRotate = this.hurricanesToRotate.filter(function(el){ return hurr!=el;})
+		if (this.hurricanesToRotate.length==0){
+			clearInterval(this.timer);
+			this.timer=null;
+		}
+	}
+}
+
 
 L.HurricaneMarker = L.Marker.extend({
   
@@ -31,19 +58,14 @@ L.HurricaneMarker = L.Marker.extend({
 	  this.type=type;
 	  L.Marker.prototype.initialize.call(this, pos);
 	  var that=this;
-	  this.timer = setInterval(function(){
-		  									
-		  									that.options.angle += -0.1 * (180 / Math.PI);
-		  									that.setLatLng(that.getLatLng());
-	  									 }, 20) 
-	  
+	  hurricaneRotator.add(this);	  
 	  
   },
   
   onRemove: function(map){
 	  
 	  L.Marker.prototype.onRemove.call(this,map);
-	  clearInterval(this.timer);
+	  hurricaneRotator.remove(this);
 	  
   },
   

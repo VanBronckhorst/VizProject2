@@ -51,13 +51,14 @@ function MapView(){
 	this.dateControl = new DateControl(this.mapTime);
 	this.dateControl.addTo(this.map);
 	this.speed = 12;// hours per second
-	this.animationUpdate=50;
+	this.animationUpdate=100;
 	this.usingTimeWarp=true;
 	this.timeModel = new TimeAccelleratorModel();
 	this.hurricaneLayer = L.layerGroup();
 	this.hurricaneLayer.addTo(this.map);
 	this.markers = {}
 	this.trails={}
+	this.speedScale = d3.scale.linear().domain([20,80,140]).range(["#DEDE5F","#DEA35F","#F04337"])
 	
 	this.playView = new PlayView(this,"PlayView") 
 	
@@ -71,7 +72,7 @@ function MapView(){
 				
 				var point = hurricane['points'][pointI];
 				if (pointI==0){
-					this.hurricaneLayer.addLayer(L.circle([point["lat"],point["lon"]],5,{color:"yellow",fillColor: 'yellow',
+					this.hurricaneLayer.addLayer(L.circle([point["lat"],point["lon"]],5,{color:"yellow",fillColor: "yellow",
 							    fillOpacity: 0.5}));
 				}else{
 					this.hurricaneLayer.addLayer(L.polyline([[point["lat"],point["lon"]],[hurricane['points'][pointI-1]["lat"],hurricane['points'][pointI-1]["lon"]]],{color: "yellow"}));
@@ -80,6 +81,28 @@ function MapView(){
 		}
 	}
 	
+	this.compareLines = function(){
+		this.hurricaneLayer.clearLayers();
+		for (var hurricaneI in this.dataDisplayed){
+			var hurricane = this.dataDisplayed[hurricaneI];
+			for (var pointI in hurricane['points']){
+				
+				var point = hurricane['points'][pointI];
+				if (pointI==0){
+					this.hurricaneLayer.addLayer(L.circle([point["lat"],point["lon"]],5,{color:"yellow",fillColor: this.speedScale(point["maxSpeed"]),
+							    fillOpacity: 0.5}));
+				}else{
+					var line=L.polyline([[point["lat"],point["lon"]],[hurricane['points'][pointI-1]["lat"],hurricane['points'][pointI-1]["lon"]]],{color: this.speedScale(point["maxSpeed"])}).on("click",function(e){ that.hurricaneSelected(e.target.hurr)})
+					line.hurr=hurricane;
+					this.hurricaneLayer.addLayer(line);
+				}
+			}
+		}
+	}
+	
+	this.hurricaneSelected = function(h){
+		console.log(h)
+	}
 	
 	this.displayFrameTime = function(d){
 		shown = 0
@@ -209,8 +232,8 @@ function MapView(){
 	}
 	
 	//this.playSelected();
-	this.displayLines();
-	
+	//this.displayLines();
+	this.compareLines();
 	
 	this.modelUpdated= function(data){
 		this.dataDisplayed = data
