@@ -125,11 +125,11 @@ var Filter = function() {
 				case "sort":
 					return  fObj1.values === fObj2.values;
 				case "range":
-					return fObj1.values[0] >= fObj2.values[0] && fObj1.values[1] <= fObj2.values[1];
+					return fObj1.from >= fObj2.from && fObj1.to <= fObj2.to;
 				case "top":
-					return fObj1.values <= fObj2.values;
+					return fObj1.number <= fObj2.number;
 				case "bottom":
-					return fObj1.values <= fObj2.values;
+					return fObj1.number <= fObj2.number;
 				case "equal":
 					return fObj1.values === fObj2.values;
 			}

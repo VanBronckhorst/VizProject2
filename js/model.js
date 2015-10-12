@@ -65,7 +65,7 @@ var Model = function() {
 			this.visualizedData = this.currentData;
 		}
 		// notify observers
-		notifyAll( this.visualizedData, this.currentData );
+		this.notifyAll( this.visualizedData, this.currentData );
 		// allow chain calls
 		return this;
 	};
