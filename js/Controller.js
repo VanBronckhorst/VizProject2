@@ -18,7 +18,8 @@ var Controller = function(){
 	model.init();
 	
 	this.filterUpdated = function(filter){
-		if(filter.filterFunction === 'add' || filter.filterFunction ==='remove' || filter.filterFunction ==='addAll' || filter.filterFunction ==='removeAll'){
+		if(filter.function === 'add' || filter.function ==='remove' || filter.function ==='addAll' || filter.function ==='removeAll'){
+			log('chiamata visual');
 			model.filterVisual(filter);
 		}else{
 			model.filterCurrent(filter);
