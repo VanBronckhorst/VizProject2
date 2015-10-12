@@ -10,14 +10,18 @@ function log(something){
 var FilterView = function (){
 	'use-strict';
 
+	//VIEWBOX SETTINGS
 	this.viewBoxWidth = 800;
-	this.viewBoxHeight = 600;
+	this.viewBoxHeight = this.viewBoxWidth * 1.0;
+	this.offsetYViewBox = -40;
+
 
 	this.wordBatchSize = 3;
 	this.lastWordIndex = 0;
 
 	var filterViewLayout = this;
 
+	var heightSvgList = '70'; //NB it's a percetage!
 	this.lists = []; //has all the list displayed: the name of the hurricanes, the speeds
 
 	//data initially is empty
@@ -88,7 +92,7 @@ var FilterView = function (){
 //create svg for filterView
 var svg = this.filterViewDiv
 .append("svg")
-.attr("viewBox", "0 0 "+ this.viewBoxWidth+" "+this.viewBoxHeight) //VIEWBOX OF THE filtermap
+.attr("viewBox", "0 "+ this.offsetYViewBox +" "+ this.viewBoxWidth+" "+this.viewBoxHeight) //VIEWBOX OF THE filtermap
 .style('width','100%')
 .style('height', '100%');
 
@@ -103,7 +107,6 @@ this.g.append('text')
 .attr('x', '250');
 
 
-
 //add container svg for lists
 this.svgList = this.g.append('svg')
 .attr('id', 'svg-list')	
@@ -111,9 +114,26 @@ this.svgList = this.g.append('svg')
 
 this.svgList
 .append('rect')
-.attr('id', 'rect-list')	
+.attr('id', 'rect-list')
+.attr('height', heightSvgList+ "%")	
 .attr('y', '10')
 .attr('x', '10');
+
+//add container for filters 
+this.svgFilters =this.g.append('svg')
+.attr('id', 'svg-filter')	
+.append('g');
+
+this.svgFilters
+.append('rect')
+.attr('id', 'rect-filter')	
+.attr('height', (100 - heightSvgList - 5) + "%") //5 is the percentage of empty space at the bottom of the filters
+.attr('y', heightSvgList+ "%")
+.attr('x', '10');
+
+console.log(screen.height);
+
+//create COLUMNS OF LIST
 
 var listCreator = new ListCreator();
 
@@ -132,7 +152,7 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
 	.attr('font-size', 20)
 	.attr('pointer-events','all' )
 	.attr('x', 770 )
-	.attr('y', 40)
+	.attr('y', this.viewBoxHeight*0.05)
 	.on('click',function(){slideList('up');})
 	.text(function(d) { return '\uf139'; });
 
@@ -145,7 +165,7 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
 	.attr('font-size', 20)
 	.attr('pointer-events','all' )
 	.attr('x', 770 )
-	.attr('y', 400)
+	.attr('y', this.viewBoxHeight * heightSvgList * 0.0095)
 	.on('click',function(){slideList('down');} )
 	.text(function(d) { return '\uf13a'; });
 

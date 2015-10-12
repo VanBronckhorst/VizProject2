@@ -1,7 +1,3 @@
-#map{
-	height: 100%;
-	width: 100%;	
-}
 
 .filterView{	
 	background-color:rgba(255,255,255,0.5);	
@@ -26,12 +22,20 @@
 	width: 90%;
 	height: 100%;
 }
+#svg-filter{
+	width: 90%;
+	height: 100%;
+}
 
 #rect-list{
 	width: 97%;
-	height: 70%;
 	opacity: 0.9;
 	fill:grey;
+}
+#rect-filter{
+	width: 97%;
+	opacity: 0.9;
+	fill:red;
 }
 
 #svg-arrow-filterView.open{
