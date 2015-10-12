@@ -206,7 +206,7 @@ function addDatePicker(){
 		<div id="widgetCalendar"></div>
 		<p><a href="#" id="clearSelection">Clear selection</a></p>*/
 
-	d3.select('#map').append('div')
+	d3.select('body').append('div')
 	.attr('id', 'widget')
 	.append('div')
 	.attr('id','widgetField')
@@ -222,7 +222,6 @@ function addDatePicker(){
 
 
 	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
     //get today date
     var today = new Date();
 
@@ -244,7 +243,6 @@ function addDatePicker(){
         view: 'years',
         onChange: function(formated) {
         	$('#widgetField span').get(0).innerHTML = formated.join(' &divide; ');
-
             console.log($('#widgetCalendar').DatePickerGetDate(formated)); //TO GET THE DATE AS ARRAY OF STRINGS
         }
     });

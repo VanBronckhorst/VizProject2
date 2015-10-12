@@ -22,16 +22,14 @@ var ToggleFilter = function(attribute,buttonStatus){
 	this.buttonStatus = buttonStatus;
 }
 
-var TopFilter = function(attribute, number){
+var SliceFilter = function(attribute, number,fitlerFunction){// 'top' or 'bottom'
 this.name = attribute;
 this.number = number;
+this.filterFunction = filterFunction;
 }
 
-var BottomFilter = function(attribute, number){
-this.name = attribute;
-this.number = number;
-}
 
 var HurricaneNameFilter = function(name,filterFunction){ // 'add' or 'remove' or 'addAll' or 'removeAll'
 	this.name = attribute;
+	this.filterFunction = filterFunction;
 }
