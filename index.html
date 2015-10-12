@@ -9,8 +9,10 @@
 
 	<link rel="stylesheet" href="css/styleFilterView.css" /> <!-- myStyle css -->
 	<script type="text/javascript" src="data/hurricaneAtl.json"></script> <!-- data -->
+	<script type="text/javascript" src="data/hurricanePac.json"></script> <!-- data extended -->
 
-	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script> <!-- jquery -->
+
+	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script> <!-- jquery -->
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"> <!--font awesome -->
 
@@ -25,18 +27,21 @@
 	<script type="text/javascript" src="js/MapView.js"></script>
 	<script type="text/javascript" src="js/ListCreator.js"></script>
 	<script type="text/javascript" src="js/Filters.js"></script>
+	<script type="text/javascript" src="js/layerManager.js"></script>
+
 
 	<script type="text/javascript" src="js/datepicker.js"></script><!-- datePicker -->
 	<link rel="stylesheet" href="css/datePicker.css" /> <!-- datePicker css -->
 	<link rel="stylesheet" href="css/layoutDatePicker.css" /> <!-- layout date picker css -->
 
 
+	<script type="text/javascript" src="js/FilterView.js"></script>	
+
+
 
 </head>
-<body style="height: 100%">
-	<script type="text/javascript"> 
-	new MapView()
-	</script>
-	<script type="text/javascript" src="js/FilterView.js"></script>	
+<body style="height: 100%">	
+	<script type="text/javascript" src="js/Controller.js"></script>
+
 </body>
 </html>

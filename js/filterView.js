@@ -398,7 +398,7 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
     		o.filterUpdated(newFilter); // I DO EXPECT TO FIND THIS METHOD IN THE CONTROLLER
     	}
     }
-  
+
 
 	//**UTILITY**//
 
@@ -419,11 +419,6 @@ FilterView.prototype.addObserver = function(observer){
 	this.observerList.push(observer);
 }
 
-
-f = new FilterView();
-
-umbertoData = hurricanes["hurricanes"].slice(1000,1020);
-f.modelUpdated(umbertoData);
 //setTimeout(function(){f.modelUpdated(hurricanes["hurricanes"].slice(1030,1040))}, 5500);
 //f.modelUpdated(['primo','secondo','terzo','quarto','quinto',"sestads",'ancora','dipiue','ancoramiatuo','ultimo!!!']);
 
