@@ -52,6 +52,7 @@ var FilterView = function (){
 	.attr('y', 300)
 	.attr('fill', 'black')
 	.attr('id', 'arrowResizeFilter')
+	.attr('cursor', 'pointer')
 	.on('click',resizeFilterView)
 	.text(function(d) { return '\uf053'; });
 
@@ -133,7 +134,8 @@ this.svgFilters
 .attr('x', '10');
 
 var landedFilterOn = false;
-//add filters
+
+//add landed filter
 this.svgFilters
 .append('text')
 .attr('text-anchor', 'middle')
@@ -142,17 +144,34 @@ this.svgFilters
 .attr('pointer-events','all' )
 .attr('x', 300 )
 .attr('y', (heightSvgList * 1.1)+ "%")
-.on('click',function(){
-	landedFilterOn = !landedFilterOn;
-	log('landed filter'+ landedFilterOn);
-	filterViewLayout.notifyAll(new ToggleFilter('L',landedFilterOn));})
+//.on('click',toggleLanded)
 .text('LANDED');
 
-//<label><input type="checkbox" name="checkbox" value="value">Text</label>
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'FontAwesome')
+.attr('font-size', 20)
+.attr('cursor', 'pointer')
+.attr('x', 200 )
+.attr('y', (heightSvgList * 1.1)+ "%")
+.on('click',toggleLanded)
+.text(function() { return '\uf096'; });
 
+function toggleLanded(){
+	//toggle filtet
+	landedFilterOn = !landedFilterOn;
+	log('landed filter'+ landedFilterOn);
 
+	//notify
+	filterViewLayout.notifyAll(new ToggleFilter('L',landedFilterOn));
 
-//create COLUMNS OF LIST
+	//change icon
+	d3.select(this).text(function() { return (landedFilterOn)?'\uf046':'\uf096'; });
+}
+
+//create COLUMNS OF LIST(name,date,maxSpeed)
 
 var listCreator = new ListCreator();
 
@@ -172,6 +191,7 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
 	.attr('pointer-events','all' )
 	.attr('x', 770 )
 	.attr('y', this.viewBoxHeight*0.05)
+	.attr('cursor', 'pointer')
 	.on('click',function(){slideList('up');})
 	.text(function(d) { return '\uf139'; });
 
@@ -185,6 +205,7 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
 	.attr('pointer-events','all' )
 	.attr('x', 770 )
 	.attr('y', this.viewBoxHeight * heightSvgList * 0.0095)
+	.attr('cursor', 'pointer')
 	.on('click',function(){slideList('down');} )
 	.text(function(d) { return '\uf13a'; });
 
