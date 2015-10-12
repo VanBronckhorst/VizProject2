@@ -17,9 +17,10 @@ var RangeFilter = function(attribute,from,to,filterFunction){ //filterFunction i
 	this.filterFunction = filterFunction;
 }
 
-var ToggleFilter = function(attribute,buttonStatus){
+var ToggleFilter = function(attribute,buttonStatus,filterFunction){
 	this.name = attribute;
 	this.buttonStatus = buttonStatus;
+	this.filterFunction = filterFunction;
 }
 
 var SliceFilter = function(attribute, number,fitlerFunction){// 'top' or 'bottom'
@@ -30,6 +31,6 @@ this.filterFunction = filterFunction;
 
 
 var HurricaneNameFilter = function(name,filterFunction){ // 'add' or 'remove' or 'addAll' or 'removeAll'
-	this.name = attribute;
+	this.name = name;
 	this.filterFunction = filterFunction;
 }

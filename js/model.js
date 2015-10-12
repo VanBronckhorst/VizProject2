@@ -10,6 +10,8 @@ var Model = function() {
 
 	this.filters = {}; // holds the filters currently active "attrName": filterObject
 
+	this.filter = new Filter();
+
 	this.init = function() {
 		this.currentData = this.globalData;
 		this.visualizedData = this.globalData;
@@ -48,29 +50,29 @@ var Model = function() {
 	// filters the current dataset accordingly to filterObject  
 	this.filterCurrent = function( filterObject ) {
 		var oldFilter = this.filters[ filterObject.name ];
-		if ( oldFilter === undefined || filter.isSubset( filterObject, oldFilter ) ) {
+		if ( oldFilter === undefined || this.filter.isSubset( filterObject, oldFilter ) ) {
 			// if the attribute hasn't been previously filtered on or the older filter was coarser
 			this.filters[ filterObject.name ] = filterObject;
-			this.currentData = filter.filterCurrent( filterObject, this.currentData );
+			this.currentData = this.filter.filterCurrent( filterObject, this.currentData );
 			this.visualizedData = this.currentData;
 		} else {
 			// need to refilter the whole dataset
 			this.currentData = this.globalData;
 			this.filters[ filterObject.name ] = filterObject;
 			for ( var k in this.filters ) {
-				this.currentData = filter.filterCurrent( this.filters[k], this.currentData );
+				this.currentData = this.filter.filterCurrent( this.filters[k], this.currentData );
 			}
 			this.visualizedData = this.currentData;
 		}
 		// notify observers
-		notifyAll( this.visualizedData, this.currentData );
+		this.notifyAll( this.visualizedData, this.currentData );
 		// allow chain calls
 		return this;
 	};
 
 	// filters the visualized dataset accordingly to filterObject
 	this.filterVisual = function ( filterObject ) {
-		this.visualizedData = filter.filterVisual( filterObject, this.visualizedData, this.currentData );
+		this.visualizedData = this.filter.filterVisual( filterObject, this.visualizedData, this.currentData );
 		notifyAll( this.visualizedData, this.currentData );
 		return this;
 	};

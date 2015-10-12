@@ -164,7 +164,7 @@ function toggleLanded(){
 	log('landed filter'+ landedFilterOn);
 
 	//notify
-	filterViewLayout.notifyAll(new ToggleFilter('L',landedFilterOn));
+	filterViewLayout.notifyAll(new ToggleFilter('L',landedFilterOn,'toggle'));
 
 	//change icon
 	d3.select(this).text(function() { return (landedFilterOn)?'\uf046':'\uf096'; });
@@ -189,7 +189,7 @@ function toggleSelectAll(){
 	log('selectAll filter'+ selectAllOn);
 
 	//notify
-	filterViewLayout.notifyAll(new ToggleFilter('L',selectAllOn)); // TODO TROVARE UN CODICE PER IL SELECT ALL
+	filterViewLayout.notifyAll(new HurricaneNameFilter(null,'addAll')); 
 
 	//change icon
 	d3.select(this).text(function() { return (selectAllOn)?'\uf046':'\uf096'; });
@@ -392,8 +392,8 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
 
     this.notifyAll= function(newFilter){
     	log('filter modified notifying...');
-    	for(var o in this.observerList){
-    		o.filterUpdated(newFilter); // I DO EXPECT TO FIND THIS METHOD IN THE CONTROLLER
+    	for(var o in this.observerList){    		
+    		this.observerList[o].filterUpdated(newFilter); // I DO EXPECT TO FIND THIS METHOD IN THE CONTROLLER
     	}
     }
 
@@ -407,9 +407,9 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
 
 };
 
-FilterView.prototype.modelUpdated = function(data){	
+FilterView.prototype.modelUpdated = function(dataVisualized,dataCurrent){	
 	log('model updated received');	
-	this.update(data);
+	this.update(dataCurrent);
 }
 
 FilterView.prototype.addObserver = function(observer){
