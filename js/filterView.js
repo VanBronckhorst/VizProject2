@@ -195,6 +195,76 @@ function toggleSelectAll(){
 	d3.select(this).text(function() { return (selectAllOn)?'\uf046':'\uf096'; });
 }
 
+//add datepicker
+addDatePicker();
+function addDatePicker(){
+	/*<div id="widget">
+		<div id="widgetField">
+			<span>28 July, 2008 &divide; 31 July, 2008</span>
+				<a href="#">Select date range</a>
+		</div>
+		<div id="widgetCalendar"></div>
+		<p><a href="#" id="clearSelection">Clear selection</a></p>*/
+
+	d3.select('#map').append('div')
+	.attr('id', 'widget')
+	.append('div')
+	.attr('id','widgetField')
+	.append('span','28 July, 2008 &divide; 31 July, 2008')
+	.attr('font-size', 60)
+	.append('a')
+	.attr('href','#' )
+	.text('Select date range');
+
+	d3.select('#widget')
+	.append('div')
+	.attr('id', 'widgetCalendar');
+
+
+	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    //get today date
+    var today = new Date();
+
+    //get date in string format to put as default in the input box
+    var dd = today.getDate();
+    var mm = monthNames[today.getMonth()]; 
+    var yyyy = today.getFullYear();
+    var defaultDateString = [dd+' '+mm+', '+yyyy,dd+' '+mm+', '+yyyy];
+    $('#widgetField span').get(0).innerHTML = defaultDateString.join(' &divide; ');
+
+    // add the widget to the given div
+    $('#widgetCalendar').DatePicker({
+    	flat: true,
+    	format: 'd B, Y',
+        date: [new Date(today), new Date(today)], //the default choice is today
+        calendars: 2,
+        mode: 'range',
+        starts: 1,
+        view: 'years',
+        onChange: function(formated) {
+        	$('#widgetField span').get(0).innerHTML = formated.join(' &divide; ');
+
+            console.log($('#widgetCalendar').DatePickerGetDate(formated)); //TO GET THE DATE AS ARRAY OF STRINGS
+        }
+    });
+
+    // open and close the calendar
+    var state = false;
+    $('#widgetField>a').bind('click', function(){
+    	log('nmichia');
+    	$('#widgetCalendar').stop().animate({height: state ? 0 : $('#widgetCalendar div.datepicker').get(0).offsetHeight}, 500);
+    	state = !state;
+    	return false;
+    });
+    $('#widgetCalendar div.datepicker').css('position', 'absolute');
+
+    // clear selection
+    $('#clearSelection').bind('click', function(){
+    	$('#widgetCalendar').DatePickerClear();
+    	return false;
+    });
+}
 //create COLUMNS OF LIST(name,date,maxSpeed)
 
 var listCreator = new ListCreator();

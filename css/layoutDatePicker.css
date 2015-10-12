@@ -1,0 +1,60 @@
+
+html, body {
+	background-color: #fff;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 18px;
+	color: #52697E;
+}
+
+
+#widget {
+	position: relative;
+}
+#widgetField {
+	width: 290px;
+	height: 26px;
+	background: url(../images/datePicker/field.png);
+	overflow: hidden;
+	position: relative;
+}
+#widgetField a 	{
+	display: block;
+	position: absolute;
+	width: 26px;
+	height: 26px;
+	top: 0;
+	right: 0;
+	text-decoration: none;
+	text-indent: -3000px;
+}
+#widgetField span	{
+	font-size: 12px;
+	font-weight: bold;
+	color: #000;
+	position: absolute;
+	top: 0;
+	height: 26px;
+	line-height: 26px;
+	left: 5px;
+	width: 250px;
+	text-align: center;
+}
+#widgetCalendar {
+	position: absolute;
+	top: 26px;
+	left: 0;
+	height: 0px;
+	overflow: hidden;
+	width:400px;
+	background: #121212;
+}
+#widgetCalendar .datepicker {
+	position: absolute;
+	bottom: 0;
+	top: auto;
+}
+
+#widgetCalendar .datepicker a:hover{
+	color: #b6f063;
+}
