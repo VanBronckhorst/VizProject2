@@ -15,6 +15,7 @@ var FilterView = function (){
 	this.viewBoxHeight = this.viewBoxWidth * 1.0;
 	this.offsetYViewBox = -40;
 
+	this.observerList = [];//list of observer to notify when filterView is changed by the user
 
 	this.wordBatchSize = 3;
 	this.lastWordIndex = 0;
@@ -131,6 +132,18 @@ this.svgFilters
 .attr('y', heightSvgList+ "%")
 .attr('x', '10');
 
+//add filters
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-size', 20)
+.attr('pointer-events','all' )
+.attr('x', 300 )
+.attr('y', (heightSvgList * 1.1)+ "%")
+.on('click',function(){log('filter landed');})
+.text('LANDED');
+
 console.log(screen.height);
 
 //create COLUMNS OF LIST
@@ -233,8 +246,11 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
     this.update = function(data){
     	//change data
     	this.data = data;
-    	updateSingleList(filterViewLayout.lists[0]);
 
+    	//reset list to the beginning i.e. slide to the beginning
+    	filterViewLayout.lastWordIndex = 0;
+    	
+    	updateSingleList(filterViewLayout.lists[0]);
     	updateSingleList(filterViewLayout.lists[1]);
 
     	function updateSingleList(list){
@@ -255,6 +271,18 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
     	}
     }
 
+    function notifyAll(newFilter){
+    	log('filter modified notifying...');
+    	for(var o in this.observerList){
+    		o.filterUpdated(newFilter); // I DO EXPECT TO FIND THIS METHOD IN THE CONTROLLER
+    	}
+    }
+
+    function addObserver(observer){
+    	log('observer added');
+    	this.observerList.push(observer);
+    }
+
 	//**UTILITY**//
 
 	//the function return the y value of the text accordingly to its index
@@ -264,7 +292,8 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
 
 };
 
-FilterView.prototype.modelUpdated = function(data){		
+FilterView.prototype.modelUpdated = function(data){	
+	log('model updated received');	
 	this.update(data);
 }
 
@@ -273,6 +302,7 @@ f = new FilterView();
 
 umbertoData = hurricanes["hurricanes"].slice(1000,1020);
 f.modelUpdated(umbertoData);
+//setTimeout(function(){f.modelUpdated(hurricanes["hurricanes"].slice(1030,1040))}, 5500);
 //f.modelUpdated(['primo','secondo','terzo','quarto','quinto',"sestads",'ancora','dipiue','ancoramiatuo','ultimo!!!']);
 
 
