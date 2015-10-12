@@ -398,6 +398,7 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
     		o.filterUpdated(newFilter); // I DO EXPECT TO FIND THIS METHOD IN THE CONTROLLER
     	}
     }
+  
 
 	//**UTILITY**//
 
