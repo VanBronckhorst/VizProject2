@@ -21,9 +21,28 @@ var ListCreator = function(){
 		.attr('y', function(d,i){
 			return yValue(i);
 		})
-		.attr('x',function(d,i){return xOffset + columnWidth * numberOfListCreated;})
+		.attr('x',function(){return xOffset + columnWidth * numberOfListCreated;})
 		.attr('color','black')
 		.attr('font-size',valuesSize );
+
+		//add checkbox
+		var listCheckBox = place
+		.append('g')
+		.selectAll("text")
+		.data(['empy','empty','empty'])
+		.enter()
+		.append('text')
+		.attr('text-anchor', 'middle')
+		.attr('dominant-baseline', 'central')
+		.attr('font-family', 'FontAwesome')
+		.attr('font-size', 20)
+		.attr('cursor', 'pointer')
+		.attr('x', function(){return xOffset + columnWidth * numberOfListCreated - 10;} )
+		.attr('y', function(d,i){
+			return yValue(i);
+		})
+		//.on('click',toggleLanded)
+		.text(function() { return '\uf096'; });
 
 		//add title 
 		place

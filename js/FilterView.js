@@ -188,8 +188,9 @@ function toggleSelectAll(){
 	selectAllOn = !selectAllOn;
 	log('selectAll filter'+ selectAllOn);
 
+	var operation = (selectAllOn) ? 'addAll' : 'removeAll';
 	//notify
-	filterViewLayout.notifyAll(new HurricaneNameFilter(null,'addAll')); 
+	filterViewLayout.notifyAll(new HurricaneNameFilter(null,operation)); 
 
 	//change icon
 	d3.select(this).text(function() { return (selectAllOn)?'\uf046':'\uf096'; });
