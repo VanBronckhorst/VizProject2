@@ -237,6 +237,9 @@ function MapView(){
 	
 	this.modelUpdated= function(data){
 		this.dataDisplayed = data
+		this.stop();
+		this.displayLines();
+		
 		//TODO Look at stuff interrupted
 	}		
 	
