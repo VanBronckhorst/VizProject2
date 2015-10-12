@@ -8,6 +8,15 @@ function MapView(){
 		 	
 	
 	//TILES CREATION	
+	
+	
+	this.pirateTile= L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+	    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+	    maxZoom: 18,
+	    id: 'vanbronckhorst.nm2ecd0l',
+	    accessToken: 'pk.eyJ1IjoidmFuYnJvbmNraG9yc3QiLCJhIjoiYjgyYTRhNjY0YzYxNDQ2ZWUzN2U5ZGFjNWFmMDI4OGYifQ.KUupQiTEuAkdC-WJgXZ7kA'
+	})
+	
  	this. geoTile =L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 	    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
 	    maxZoom: 18,
@@ -25,7 +34,8 @@ function MapView(){
 	this.tiles = [this.geoTile,this.darkTile]
 	this.baseMaps = {
     "Geo Map": this.geoTile,
-    "Dark Map": this.darkTile
+    "Dark Map": this.darkTile,
+    "Pirates ;)":this.pirateTile
 	};	
 	
 	//INITIATE THE MAP	
@@ -33,7 +43,7 @@ function MapView(){
 	L.control.layers(this.baseMaps,null,{position:"topleft"}).addTo(this.map);
 
 	// MAP Variables
-	this.dataDisplayed = hurricanes["hurricanes"].slice(1100,1120);
+	this.dataDisplayed = hurricanes["hurricanes"].slice(hurricanes["hurricanes"].length-20,hurricanes["hurricanes"].length-1);
 	this.visualizationModes=["LINES","COMPARE","PLAY"]
 	this.visualizationMode = this.visualizationModes[0]
 	//Holds The Displayed DATE and Time in PLAY Mode
@@ -90,17 +100,18 @@ function MapView(){
 						
 					}
 				if (this.trails[hurricaneI]){
-					this.trails[hurricaneI].addLayer(L.circle([pointToShow["lat"],pointToShow["lon"] ],parseInt(pointToShow["maxSpeed"])*1000,{fillColor : "#D5EDF5",fillOpacity : 0.1,stroke:false}));
+					addTrail(this.trails[hurricaneI],pointToShow)
 				}else{
 					this.trails[hurricaneI]=L.layerGroup();
-					this.trails[hurricaneI].addLayer(L.circle([pointToShow["lat"],pointToShow["lon"] ],parseInt(pointToShow["maxSpeed"])*1000,{fillColor : "#D5EDF5",fillOpacity : 0.1,stroke:false}));
 					this.trails[hurricaneI].addTo(this.map);
+					addTrail(this.trails[hurricaneI],pointToShow)
 				}
 					
 			}else{
 				if (this.markers[hurricaneI]){
 					this.hurricaneLayer.removeLayer(this.markers[hurricaneI]);
 					this.markers[hurricaneI]=null;
+					layerManager.removeGroup(this.trails[hurricaneI])
 					this.map.removeLayer(this.trails[hurricaneI]);
 					this.trails[hurricaneI]=null;
 				}	
@@ -186,6 +197,7 @@ function MapView(){
 		
 		for (t in this.trails){
 			if (this.trails[t]){
+				layerManager.removeGroup(this.trails[t])
 				this.map.removeLayer(this.trails[t]);
 				
 			}
