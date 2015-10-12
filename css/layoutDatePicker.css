@@ -10,9 +10,11 @@ html, body {
 
 #widget {
 	position: relative;
+	z-index: 1000000;
+	pointer-events: all;
 }
 #widgetField {
-	width: 290px;
+	width: 500px;
 	height: 26px;
 	background: url(../images/datePicker/field.png);
 	overflow: hidden;
@@ -37,7 +39,7 @@ html, body {
 	height: 26px;
 	line-height: 26px;
 	left: 5px;
-	width: 250px;
+	width: 500px;
 	text-align: center;
 }
 #widgetCalendar {
@@ -46,7 +48,7 @@ html, body {
 	left: 0;
 	height: 0px;
 	overflow: hidden;
-	width:400px;
+	width:500px;
 	background: #121212;
 }
 #widgetCalendar .datepicker {

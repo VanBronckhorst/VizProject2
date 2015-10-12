@@ -210,9 +210,10 @@ function addDatePicker(){
 	.attr('id', 'widget')
 	.append('div')
 	.attr('id','widgetField')
-	.append('span','28 July, 2008 &divide; 31 July, 2008')
-	.attr('font-size', 60)
-	.append('a')
+	.append('span')
+	.text('28 July, 2008 &divide; 31 July, 2008')
+
+	d3.select("#widgetField").append('a')
 	.attr('href','#' )
 	.text('Select date range');
 
