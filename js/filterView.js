@@ -142,9 +142,8 @@ this.svgFilters
 .attr('dominant-baseline', 'central')
 .attr('font-size', 20)
 .attr('pointer-events','all' )
-.attr('x', 300 )
+.attr('x', this.viewBoxWidth*0.9 )
 .attr('y', (heightSvgList * 1.1)+ "%")
-//.on('click',toggleLanded)
 .text('LANDED');
 
 this.svgFilters
@@ -154,7 +153,7 @@ this.svgFilters
 .attr('font-family', 'FontAwesome')
 .attr('font-size', 20)
 .attr('cursor', 'pointer')
-.attr('x', 200 )
+.attr('x', this.viewBoxWidth*0.82 )
 .attr('y', (heightSvgList * 1.1)+ "%")
 .on('click',toggleLanded)
 .text(function() { return '\uf096'; });
@@ -169,6 +168,31 @@ function toggleLanded(){
 
 	//change icon
 	d3.select(this).text(function() { return (landedFilterOn)?'\uf046':'\uf096'; });
+}
+
+//add select all
+this.svgList
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'FontAwesome')
+.attr('font-size', 20)
+.attr('cursor', 'pointer')
+.attr('x', this.viewBoxWidth*0.05 )
+.attr('y', this.viewBoxHeight*0.04)
+.on('click',toggleSelectAll)
+.text(function() { return '\uf096'; });
+var selectAllOn = false;
+function toggleSelectAll(){
+	//toggle filtet
+	selectAllOn = !selectAllOn;
+	log('selectAll filter'+ selectAllOn);
+
+	//notify
+	filterViewLayout.notifyAll(new ToggleFilter('L',selectAllOn)); // TODO TROVARE UN CODICE PER IL SELECT ALL
+
+	//change icon
+	d3.select(this).text(function() { return (selectAllOn)?'\uf046':'\uf096'; });
 }
 
 //create COLUMNS OF LIST(name,date,maxSpeed)

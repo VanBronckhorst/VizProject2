@@ -5,6 +5,7 @@ var ListCreator = function(){
 	var titleY = 40;
 	var valuesSize = 20;
 	var titleSize = 25;
+	var titleXOffset = 30;
 
 	this.createList = function(place,name){
 		//add list texts
@@ -32,7 +33,7 @@ var ListCreator = function(){
 		.attr('y', function(){
 			return titleY;
 		})
-		.attr('x', function(d,i){return xOffset + columnWidth * numberOfListCreated;})
+		.attr('x', function(d,i){return xOffset + titleXOffset + columnWidth * numberOfListCreated;})
 		.attr('color','black')
 		.attr('font-size',titleSize );
 
