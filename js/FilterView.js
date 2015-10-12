@@ -410,15 +410,14 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
 FilterView.prototype.modelUpdated = function(dataVisualized,dataCurrent){	
 	log('model updated received');	
 	this.update(dataCurrent);
+	log(dataVisualized);
+	log(dataCurrent);
 }
 
 FilterView.prototype.addObserver = function(observer){
 	log('observer added');
 	this.observerList.push(observer);
 }
-
-//setTimeout(function(){f.modelUpdated(hurricanes["hurricanes"].slice(1030,1040))}, 5500);
-//f.modelUpdated(['primo','secondo','terzo','quarto','quinto',"sestads",'ancora','dipiue','ancoramiatuo','ultimo!!!']);
 
 
 
