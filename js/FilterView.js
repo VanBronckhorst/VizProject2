@@ -268,10 +268,11 @@ function addDatePicker(){
 
 var listCreator = new ListCreator();
 
-this.list = listCreator.createList(this.svgList,'NAME');
-this.listSpeed = listCreator.createList(this.svgList,'N');
+this.list = listCreator.createList(this.svgList,'NAME',true);
+this.listSpeed = listCreator.createList(this.svgList,'maxSpeed',false);
+this.listDate = listCreator.createList(this.svgList,'startDate',false);
 
-this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,'attribute':'n'});
+this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,'attribute':'maxSpeed'},{'list':this.listDate, 'attribute':'startDate'});
 
 
 	//add button arrow up

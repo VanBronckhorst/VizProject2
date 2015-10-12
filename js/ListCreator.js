@@ -1,13 +1,13 @@
 var ListCreator = function(){
 	var numberOfListCreated = 0;
 	var columnWidth = 180;
-	var xOffset = 30;
+	var xOffset = 50;
 	var titleY = 40;
 	var valuesSize = 20;
 	var titleSize = 25;
 	var titleXOffset = 30;
 
-	this.createList = function(place,name){
+	this.createList = function(place,name,wantCheckBox){
 		//add list texts
 		var list = place
 		.append('g')
@@ -21,10 +21,11 @@ var ListCreator = function(){
 		.attr('y', function(d,i){
 			return yValue(i);
 		})
-		.attr('x',function(){return xOffset + columnWidth * numberOfListCreated;})
+		.attr('x',function(){return xOffset+titleXOffset + columnWidth * numberOfListCreated;})
 		.attr('color','black')
 		.attr('font-size',valuesSize );
 
+		if(wantCheckBox){
 		//add checkbox
 		var listCheckBox = place
 		.append('g')
@@ -37,12 +38,13 @@ var ListCreator = function(){
 		.attr('font-family', 'FontAwesome')
 		.attr('font-size', 20)
 		.attr('cursor', 'pointer')
-		.attr('x', function(){return xOffset + columnWidth * numberOfListCreated - 10;} )
+		.attr('x', function(){return xOffset + columnWidth * numberOfListCreated - 15;} )
 		.attr('y', function(d,i){
-			return yValue(i);
+			return yValue(i) - 8;
 		})
 		//.on('click',toggleLanded)
 		.text(function() { return '\uf096'; });
+	}
 
 		//add title 
 		place

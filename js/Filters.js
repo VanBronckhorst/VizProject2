@@ -19,7 +19,7 @@ var RangeFilter = function(attribute,from,to,filterFunction){ //filterFunction i
 
 var ToggleFilter = function(attribute,buttonStatus,filterFunction){
 	this.name = attribute;
-	this.buttonStatus = buttonStatus;
+	this.value = buttonStatus;
 	this.function = filterFunction;
 }
 
