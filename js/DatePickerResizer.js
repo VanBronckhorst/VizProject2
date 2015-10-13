@@ -14,8 +14,8 @@ var newFont = parseInt(fontOrig * increment)
 
 console.log(w, globW)
 
-d3.selectAll("#widgetField").style("width",w).style("height",h).style("font-size", newFont)
-d3.selectAll("#widgetCalendar").style("width",w).style("height",h).style("font-size", newFont)
+d3.selectAll("#widgetField").style("width",w).style("height",h).style("font-size", newFont).style("display","none")
+d3.selectAll("#widgetCalendar").style("width",w).style("height",h).style("font-size", newFont).style("display","none")
 d3.selectAll(".datePicker").style("width",w).style("height",w/ratio2).style("font-size", newFont)
 d3.selectAll(".datePickerContainer").style("width",w).style("height",w/ratio2).style("font-size", newFont)
 
