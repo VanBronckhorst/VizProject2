@@ -227,7 +227,7 @@ function MapView(){
 		}
 		this.trails={}
 		this.visualizationMode=["LINES"];
-		this.displayLines();
+		this.compareLines();
 
 	}
 	
