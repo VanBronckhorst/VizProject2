@@ -207,22 +207,22 @@ function addDatePicker(){
 		<div id="widgetCalendar"></div>
 		<p><a href="#" id="clearSelection">Clear selection</a></p>*/
 
-	d3.select('body').append('div')
-	.attr('id', 'widget')
-	.append('div')
-	.attr('id','widgetField')
-	.append('span','28 July, 2008 &divide; 31 July, 2008')
-	.attr('font-size', 60)
-	.append('a')
-	.attr('href','#' )
-	.text('Select date range');
+		d3.select('body').append('div')
+		.attr('id', 'widget')
+		.append('div')
+		.attr('id','widgetField')
+		.append('span','28 July, 2008 &divide; 31 July, 2008')
+		.attr('font-size', 60)
+		.append('a')
+		.attr('href','#' )
+		.text('Select date range');
 
-	d3.select('#widget')
-	.append('div')
-	.attr('id', 'widgetCalendar');
+		d3.select('#widget')
+		.append('div')
+		.attr('id', 'widgetCalendar');
 
 
-	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+		var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     //get today date
     var today = new Date();
 
@@ -268,11 +268,35 @@ function addDatePicker(){
 
 var listCreator = new ListCreator();
 
-this.list = listCreator.createList(this.svgList,'NAME',true);
-this.listSpeed = listCreator.createList(this.svgList,'maxSpeed',false);
-this.listDate = listCreator.createList(this.svgList,'startDate',false);
+this.checkBoxList =  listCreator.checkBoxList(this.svgList);
+this.checkBoxList
+.on('click',toggleChecked);
 
-this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,'attribute':'maxSpeed'},{'list':this.listDate, 'attribute':'startDate'});
+function toggleChecked(d){
+	log(d);
+	//toggle filtet
+	log(d3.select(this).attr('status'));
+	var newStatus = (d3.select(this).attr('status') === 'true')?'false':'true';
+	d3.select(this).attr('status',newStatus);
+	log('nesStatsu filter '+ newStatus);
+
+	var operation = (newStatus === 'true') ? 'add' : 'remove';
+
+	//notify
+	filterViewLayout.notifyAll(new HurricaneNameFilter(d.name,operation)); 
+
+	//change icon
+	d3.select(this).text(function() { return (newStatus === 'true')?'\uf046':'\uf096'; });
+}	
+
+this.list = listCreator.createList(this.svgList,'NAME');
+this.listSpeed = listCreator.createList(this.svgList,'maxSpeed');
+this.listDate = listCreator.createList(this.svgList,'startDate');
+
+this.lists.push({'list':this.list, 'attribute' : 'name'},
+	{'list':this.listSpeed,'attribute':'maxSpeed'},
+	{'list':this.listDate, 'attribute':'startDate'},
+	{'list':this.checkBoxList, 'attribute' : null});
 
 
 	//add button arrow up
@@ -355,7 +379,8 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
     		return yValue(i) ;
     	})
     	.text(function(d,i){
-    		return d[attribute];
+    		log(d3.select(this));
+    		return d[attribute]||this.getAttribute('text');
     	})
     	.attr('color','black')
     	.attr('font-size',20 );
@@ -369,10 +394,9 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
     	this.data = data;
 
     	//reset list to the beginning i.e. slide to the beginning
-    	filterViewLayout.lastWordIndex = 0;
-    	
-    	updateSingleList(filterViewLayout.lists[0]);
-    	updateSingleList(filterViewLayout.lists[1]);
+    	filterViewLayout.lastWordIndex = 0;    	    
+
+    	filterViewLayout.lists.forEach(function(d){updateSingleList(d);})	
 
     	function updateSingleList(list){
     		var attribute = list['attribute'];
@@ -384,7 +408,7 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
     		//update
     		list  	
     		.text(function(d,i){
-    			return d[attribute];
+    			return d[attribute] || '\uf046';
     		})
     		.attr('y', function(d,i){
     			return yValue(i);

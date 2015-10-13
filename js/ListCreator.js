@@ -23,28 +23,7 @@ var ListCreator = function(){
 		})
 		.attr('x',function(){return xOffset+titleXOffset + columnWidth * numberOfListCreated;})
 		.attr('color','black')
-		.attr('font-size',valuesSize );
-
-		if(wantCheckBox){
-		//add checkbox
-		var listCheckBox = place
-		.append('g')
-		.selectAll("text")
-		.data(['empy','empty','empty'])
-		.enter()
-		.append('text')
-		.attr('text-anchor', 'middle')
-		.attr('dominant-baseline', 'central')
-		.attr('font-family', 'FontAwesome')
-		.attr('font-size', 20)
-		.attr('cursor', 'pointer')
-		.attr('x', function(){return xOffset + columnWidth * numberOfListCreated - 15;} )
-		.attr('y', function(d,i){
-			return yValue(i) - 8;
-		})
-		//.on('click',toggleLanded)
-		.text(function() { return '\uf096'; });
-	}
+		.attr('font-size',valuesSize );		
 
 		//add title 
 		place
@@ -62,6 +41,30 @@ var ListCreator = function(){
 		numberOfListCreated++;
 
 		return list;
+	}
+
+	this.checkBoxList = function(place){
+			//add checkbox
+			var listCheckBox = place
+			.append('g')
+			.selectAll("text")
+			.data(['empy','empty','empty'])
+			.enter()
+			.append('text')
+			.attr('text-anchor', 'middle')
+			.attr('dominant-baseline', 'central')
+			.attr('font-family', 'FontAwesome')
+			.attr('font-size', 20)
+			.attr('cursor', 'pointer')
+			.attr('status','true')
+			.attr('x', function(){return xOffset + columnWidth * numberOfListCreated - 15;} )
+			.attr('y', function(d,i){
+				return yValue(i) - 8;
+			})			
+			.text(function() { return '\uf046'; });	
+
+			return listCheckBox;		
+
 	}
 
 	//the function return the y value of the text accordingly to its index
