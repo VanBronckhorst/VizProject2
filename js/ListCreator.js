@@ -12,7 +12,7 @@ var ListCreator = function(){
 		var list = place
 		.append('g')
 		.selectAll("text")
-		.data(['empy','empty','empty'])
+		.data(['empy','empty','empty','empty','empty'])
 		.enter()
 		.append('text')
 		.text(function(d){
@@ -48,7 +48,7 @@ var ListCreator = function(){
 			var listCheckBox = place
 			.append('g')
 			.selectAll("text")
-			.data(['empy','empty','empty'])
+			.data(['empy','empty','empty','empty','empty'])
 			.enter()
 			.append('text')
 			.attr('text-anchor', 'middle')

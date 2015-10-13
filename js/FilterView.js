@@ -17,7 +17,7 @@ var FilterView = function (){
 
 	this.observerList = [];//list of observer to notify when filterView is changed by the user
 
-	this.wordBatchSize = 3;
+	this.wordBatchSize = 5;
 	this.lastWordIndex = 0;
 
 	var filterViewLayout = this;
@@ -182,7 +182,7 @@ this.svgList
 .attr('y', this.viewBoxHeight*0.04)
 .on('click',toggleSelectAll)
 .text(function() { return '\uf046'; });
-var selectAllOn = false;
+var selectAllOn = true;
 function toggleSelectAll(){
 	//toggle filtet
 	selectAllOn = !selectAllOn;
@@ -208,20 +208,20 @@ function addDatePicker(){
 		<p><a href="#" id="clearSelection">Clear selection</a></p>*/
 
 
-	d3.select('#map').append('div')
-	.attr('id', 'widget')
-	.append('div')
-	.attr('id','widgetField')
-	.append('span')
-	.text('28 July, 2008 &divide; 31 July, 2008')
+		d3.select('#map').append('div')
+		.attr('id', 'widget')
+		.append('div')
+		.attr('id','widgetField')
+		.append('span')
+		.text('28 July, 2008 &divide; 31 July, 2008')
 
-	d3.select("#widgetField").append('a')
-	.attr('href','#' )
-	.text('Select date range');
+		d3.select("#widgetField").append('a')
+		.attr('href','#' )
+		.text('Select date range');
 
-	d3.select('#widget')
-	.append('div')
-	.attr('id', 'widgetCalendar');
+		d3.select('#widget')
+		.append('div')
+		.attr('id', 'widgetCalendar');
 
 
 		d3.select('#widget')
@@ -280,20 +280,18 @@ this.checkBoxList
 .on('click',toggleChecked);
 
 function toggleChecked(d){
-	log(d);
-	//toggle filtet
-	log(d3.select(this).attr('status'));
+	
 	var newStatus = (d3.select(this).attr('status') === 'true')?'false':'true';
-	d3.select(this).attr('status',newStatus);
-	log('nesStatsu filter '+ newStatus);
+	d3.select(this).attr('status',newStatus);	
 
 	var operation = (newStatus === 'true') ? 'add' : 'remove';
+
+	//change icon
+	d3.select(this).text(function() { return (newStatus === 'true')?'\uf046':'\uf096'; });
 
 	//notify
 	filterViewLayout.notifyAll(new HurricaneNameFilter(d.name,operation)); 
 
-	//change icon
-	d3.select(this).text(function() { return (newStatus === 'true')?'\uf046':'\uf096'; });
 }	
 
 this.list = listCreator.createList(this.svgList,'NAME');
@@ -386,9 +384,16 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},
     		return yValue(i) ;
     	})
     	.text(function(d,i){
-    		if(d[attribute] == null){
-    			return (this.getAttribute('status')==='true') ? '\uf046' : '\uf096';
-    		}    	
+    		//it's the checkbox
+    		if(d[attribute]==null){ 
+    			if(filterViewLayout.dataVisualized.indexOf(d)>-1){
+    				log('ok');
+    				return '\uf046';
+    			}else{
+    				log('NOK');
+    				return '\uf096';
+    			}
+    		}	
     		return d[attribute];
     	})
     	.attr('color','black')
@@ -399,11 +404,16 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},
 
     //function to update list when model is updated
     this.update = function(data,dataVisualized){
+    /*	if(data != this.data){
+    		filterViewLayout.lastWordIndex = 0;     		
+    	}  */
+    	    		filterViewLayout.lastWordIndex = 0;     		
+
     	//change data
     	this.data = data;
     	this.dataVisualized = dataVisualized;
     	//reset list to the beginning i.e. slide to the beginning
-    	filterViewLayout.lastWordIndex = 0;    	    
+    	log(filterViewLayout.lastWordIndex);
 
     	filterViewLayout.lists.forEach(function(d){updateSingleList(d);})	
 
@@ -417,7 +427,8 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},
     		//update
     		list  	
     		.text(function(d,i){
-    			if(d[attribute]==null){
+    			//it's the checkbox
+    			if(d[attribute]==null){ 
     				if(dataVisualized.indexOf(d)>-1){
     					log('ok');
     					return '\uf046';
@@ -426,6 +437,13 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},
     					return '\uf096';
     				}
     			}
+
+    			//the date
+    			if(attribute ==='startDate'){
+    				return hurricaneDateToJS(d[attribute],'0000').toLocaleDateString();
+    			}
+
+    			//everything else
     			return d[attribute];
     		})
     		.attr('y', function(d,i){
