@@ -15,7 +15,16 @@ div.datepicker {
 	position: absolute;
 	top: 10px;
 	left: 10px;
+	width:100%;
 }
+
+table {
+	width:100%;
+	font-size: 8px;
+	table-layout: fixed;
+}
+
+
 .datepickerBorderT {
 	position: absolute;
 	left: 100px;

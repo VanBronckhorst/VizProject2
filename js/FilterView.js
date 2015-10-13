@@ -207,15 +207,22 @@ function addDatePicker(){
 		<div id="widgetCalendar"></div>
 		<p><a href="#" id="clearSelection">Clear selection</a></p>*/
 
-		d3.select('body').append('div')
-		.attr('id', 'widget')
-		.append('div')
-		.attr('id','widgetField')
-		.append('span','28 July, 2008 &divide; 31 July, 2008')
-		.attr('font-size', 60)
-		.append('a')
-		.attr('href','#' )
-		.text('Select date range');
+
+	d3.select('#map').append('div')
+	.attr('id', 'widget')
+	.append('div')
+	.attr('id','widgetField')
+	.append('span')
+	.text('28 July, 2008 &divide; 31 July, 2008')
+
+	d3.select("#widgetField").append('a')
+	.attr('href','#' )
+	.text('Select date range');
+
+	d3.select('#widget')
+	.append('div')
+	.attr('id', 'widgetCalendar');
+
 
 		d3.select('#widget')
 		.append('div')
