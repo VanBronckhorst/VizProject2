@@ -3,7 +3,7 @@
   font-size:0.6em;
 }
 
-path {
+.panel path {
   fill:none;
   stroke:black;
   stroke-width:2px;
