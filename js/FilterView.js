@@ -164,7 +164,7 @@ function toggleLanded(){
 	log('landed filter'+ landedFilterOn);
 
 	//notify
-	filterViewLayout.notifyAll(new ToggleFilter('L',landedFilterOn));
+	filterViewLayout.notifyAll(new ToggleFilter('L',landedFilterOn,'toggle'));
 
 	//change icon
 	d3.select(this).text(function() { return (landedFilterOn)?'\uf046':'\uf096'; });
@@ -188,8 +188,9 @@ function toggleSelectAll(){
 	selectAllOn = !selectAllOn;
 	log('selectAll filter'+ selectAllOn);
 
+	var operation = (selectAllOn) ? 'addAll' : 'removeAll';
 	//notify
-	filterViewLayout.notifyAll(new ToggleFilter('L',selectAllOn)); // TODO TROVARE UN CODICE PER IL SELECT ALL
+	filterViewLayout.notifyAll(new HurricaneNameFilter(null,operation)); 
 
 	//change icon
 	d3.select(this).text(function() { return (selectAllOn)?'\uf046':'\uf096'; });
@@ -205,6 +206,7 @@ function addDatePicker(){
 		</div>
 		<div id="widgetCalendar"></div>
 		<p><a href="#" id="clearSelection">Clear selection</a></p>*/
+
 
 	d3.select('#map').append('div')
 	.attr('id', 'widget')
@@ -222,8 +224,12 @@ function addDatePicker(){
 	.attr('id', 'widgetCalendar');
 
 
-	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+		d3.select('#widget')
+		.append('div')
+		.attr('id', 'widgetCalendar');
 
+
+		var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     //get today date
     var today = new Date();
 
@@ -245,7 +251,6 @@ function addDatePicker(){
         view: 'years',
         onChange: function(formated) {
         	$('#widgetField span').get(0).innerHTML = formated.join(' &divide; ');
-
             console.log($('#widgetCalendar').DatePickerGetDate(formated)); //TO GET THE DATE AS ARRAY OF STRINGS
         }
     });
@@ -270,10 +275,35 @@ function addDatePicker(){
 
 var listCreator = new ListCreator();
 
-this.list = listCreator.createList(this.svgList,'NAME');
-this.listSpeed = listCreator.createList(this.svgList,'N');
+this.checkBoxList =  listCreator.checkBoxList(this.svgList);
+this.checkBoxList
+.on('click',toggleChecked);
 
-this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,'attribute':'n'});
+function toggleChecked(d){
+	log(d);
+	//toggle filtet
+	log(d3.select(this).attr('status'));
+	var newStatus = (d3.select(this).attr('status') === 'true')?'false':'true';
+	d3.select(this).attr('status',newStatus);
+	log('nesStatsu filter '+ newStatus);
+
+	var operation = (newStatus === 'true') ? 'add' : 'remove';
+
+	//notify
+	filterViewLayout.notifyAll(new HurricaneNameFilter(d.name,operation)); 
+
+	//change icon
+	d3.select(this).text(function() { return (newStatus === 'true')?'\uf046':'\uf096'; });
+}	
+
+this.list = listCreator.createList(this.svgList,'NAME');
+this.listSpeed = listCreator.createList(this.svgList,'maxSpeed');
+this.listDate = listCreator.createList(this.svgList,'startDate');
+
+this.lists.push({'list':this.list, 'attribute' : 'name'},
+	{'list':this.listSpeed,'attribute':'maxSpeed'},
+	{'list':this.listDate, 'attribute':'startDate'},
+	{'list':this.checkBoxList, 'attribute' : null});
 
 
 	//add button arrow up
@@ -356,7 +386,8 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
     		return yValue(i) ;
     	})
     	.text(function(d,i){
-    		return d[attribute];
+    		log(d3.select(this));
+    		return d[attribute]||this.getAttribute('text');
     	})
     	.attr('color','black')
     	.attr('font-size',20 );
@@ -370,10 +401,9 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
     	this.data = data;
 
     	//reset list to the beginning i.e. slide to the beginning
-    	filterViewLayout.lastWordIndex = 0;
-    	
-    	updateSingleList(filterViewLayout.lists[0]);
-    	updateSingleList(filterViewLayout.lists[1]);
+    	filterViewLayout.lastWordIndex = 0;    	    
+
+    	filterViewLayout.lists.forEach(function(d){updateSingleList(d);})	
 
     	function updateSingleList(list){
     		var attribute = list['attribute'];
@@ -385,7 +415,7 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
     		//update
     		list  	
     		.text(function(d,i){
-    			return d[attribute];
+    			return d[attribute] || '\uf046';
     		})
     		.attr('y', function(d,i){
     			return yValue(i);
@@ -395,8 +425,8 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
 
     this.notifyAll= function(newFilter){
     	log('filter modified notifying...');
-    	for(var o in this.observerList){
-    		o.filterUpdated(newFilter); // I DO EXPECT TO FIND THIS METHOD IN THE CONTROLLER
+    	for(var o in this.observerList){    		
+    		this.observerList[o].filterUpdated(newFilter); // I DO EXPECT TO FIND THIS METHOD IN THE CONTROLLER
     	}
     }
 
@@ -410,18 +440,17 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},{'list':this.listSpeed,
 
 };
 
-FilterView.prototype.modelUpdated = function(data){	
+FilterView.prototype.modelUpdated = function(dataVisualized,dataCurrent){	
 	log('model updated received');	
-	this.update(data);
+	this.update(dataCurrent);
+	log(dataVisualized);
+	log(dataCurrent);
 }
 
 FilterView.prototype.addObserver = function(observer){
 	log('observer added');
 	this.observerList.push(observer);
 }
-
-//setTimeout(function(){f.modelUpdated(hurricanes["hurricanes"].slice(1030,1040))}, 5500);
-//f.modelUpdated(['primo','secondo','terzo','quarto','quinto',"sestads",'ancora','dipiue','ancoramiatuo','ultimo!!!']);
 
 
 

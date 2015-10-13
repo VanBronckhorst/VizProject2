@@ -1,7 +1,7 @@
 var ThresholdFilter = function(attribute,threshold,filterFunction){
 	this.name = attribute;
 	this.threshold = threshold;
-	this.filterFunction = filterFunction;
+	this.function = filterFunction;
 
 	var from = (filterFunction ==='max') ? -Infinity : threshold;
 	var to = (filterFunction === 'max') ? threshold : +Infinity;
@@ -14,24 +14,23 @@ var RangeFilter = function(attribute,from,to,filterFunction){ //filterFunction i
 	this.name = attribute;
 	this.from = from;
 	this.to = to;
-	this.filterFunction = filterFunction;
+	this.function = filterFunction;
 }
 
-var ToggleFilter = function(attribute,buttonStatus){
+var ToggleFilter = function(attribute,buttonStatus,filterFunction){
 	this.name = attribute;
-	this.buttonStatus = buttonStatus;
+	this.value = buttonStatus;
+	this.function = filterFunction;
 }
 
-var TopFilter = function(attribute, number){
+var SliceFilter = function(attribute, number,fitlerFunction){// 'top' or 'bottom'
 this.name = attribute;
 this.number = number;
+this.function = filterFunction;
 }
 
-var BottomFilter = function(attribute, number){
-this.name = attribute;
-this.number = number;
-}
 
 var HurricaneNameFilter = function(name,filterFunction){ // 'add' or 'remove' or 'addAll' or 'removeAll'
-	this.name = attribute;
+	this.name = name;
+	this.function = filterFunction;
 }
