@@ -181,7 +181,7 @@ this.svgList
 .attr('x', this.viewBoxWidth*0.05 )
 .attr('y', this.viewBoxHeight*0.04)
 .on('click',toggleSelectAll)
-.text(function() { return '\uf096'; });
+.text(function() { return '\uf046'; });
 var selectAllOn = false;
 function toggleSelectAll(){
 	//toggle filtet
@@ -379,8 +379,10 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},
     		return yValue(i) ;
     	})
     	.text(function(d,i){
-    		log(d3.select(this));
-    		return d[attribute]||this.getAttribute('text');
+    		if(d[attribute] == null){
+    			return (this.getAttribute('status')==='true') ? '\uf046' : '\uf096';
+    		}    	
+    		return d[attribute];
     	})
     	.attr('color','black')
     	.attr('font-size',20 );
@@ -389,10 +391,10 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},
 }
 
     //function to update list when model is updated
-    this.update = function(data){
+    this.update = function(data,dataVisualized){
     	//change data
     	this.data = data;
-
+    	this.dataVisualized = dataVisualized;
     	//reset list to the beginning i.e. slide to the beginning
     	filterViewLayout.lastWordIndex = 0;    	    
 
@@ -408,7 +410,16 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},
     		//update
     		list  	
     		.text(function(d,i){
-    			return d[attribute] || '\uf046';
+    			if(d[attribute]==null){
+    				if(dataVisualized.indexOf(d)>-1){
+    					log('ok');
+    					return '\uf046';
+    				}else{
+    					log('NOK');
+    					return '\uf096';
+    				}
+    			}
+    			return d[attribute];
     		})
     		.attr('y', function(d,i){
     			return yValue(i);
@@ -419,7 +430,7 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},
     this.notifyAll= function(newFilter){
     	log('filter modified notifying...');
     	for(var o in this.observerList){    		
-    		this.observerList[o].filterUpdated(newFilter); // I DO EXPECT TO FIND THIS METHOD IN THE CONTROLLER
+    		this.observerList[o].filterUpdated(newFilter); 
     	}
     }
 
@@ -435,7 +446,7 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},
 
 FilterView.prototype.modelUpdated = function(dataVisualized,dataCurrent){	
 	log('model updated received');	
-	this.update(dataCurrent);
+	this.update(dataCurrent,dataVisualized);
 	log(dataVisualized);
 	log(dataCurrent);
 }
