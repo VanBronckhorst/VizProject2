@@ -56,7 +56,8 @@ var FilterView = function (){
 	.on('click',resizeFilterView)
 	.text(function(d) { return '\uf053'; });
 
-
+	d3.selectAll(".leaflet-left").style("left","25%");
+	
 	//code to close and open the panel
 	var toggle = true;
 	function resizeFilterView(){
@@ -70,8 +71,14 @@ var FilterView = function (){
 					$('#divArrowFilter').animate({
 						left: '0'
 					}, 'slow');
+					$('.leaflet-left').animate({
+						left: '0'
+					}, 'slow');
 				}else{
 					$('#divArrowFilter').animate({
+						left: '25%'
+					}, 'slow');
+					$('.leaflet-left').animate({
 						left: '25%'
 					}, 'slow');
 				}
