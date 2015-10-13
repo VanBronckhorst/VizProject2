@@ -171,7 +171,7 @@ function toggleLanded(){
 	log('landed filter'+ landedFilterOn);
 
 	//notify
-	filterViewLayout.notifyAll(new ToggleFilter('L',landedFilterOn,'toggle'));
+	//filterViewLayout.notifyAll(new ToggleFilter('L',landedFilterOn,'toggle'));
 
 	//change icon
 	d3.select(this).text(function() { return (landedFilterOn)?'\uf046':'\uf096'; });
@@ -206,15 +206,7 @@ function toggleSelectAll(){
 //add datepicker
 addDatePicker();
 function addDatePicker(){
-	/*<div id="widget">
-		<div id="widgetField">
-			<span>28 July, 2008 &divide; 31 July, 2008</span>
-				<a href="#">Select date range</a>
-		</div>
-		<div id="widgetCalendar"></div>
-		<p><a href="#" id="clearSelection">Clear selection</a></p>*/
-
-
+	
 		d3.select('#map').append('div')
 		.attr('id', 'widget')
 		.append('div')
