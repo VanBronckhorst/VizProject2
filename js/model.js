@@ -1,6 +1,6 @@
 var Model = function() {
 	
-	this.globalData = hurricanes[ "hurricanes" ].slice(1000, 1020);
+	this.globalData = hurricanes[ "hurricanes" ].slice(1772,1792);
 
 	this.currentData = [];
 
