@@ -50,6 +50,8 @@ function MapView(){
 	this.mapTime= new Date();
 	this.dateControl = new DateControl(this.mapTime);
 	this.dateControl.addTo(this.map);
+	this.legendControl = new LegendControl(null,null);
+	this.legendControl.addTo(this.map);
 	this.speed = 12;// hours per second
 	this.animationUpdate=100;
 	this.usingTimeWarp=true;
@@ -58,13 +60,22 @@ function MapView(){
 	this.hurricaneLayer.addTo(this.map);
 	this.markers = {}
 	this.trails={}
-	this.speedScale = d3.scale.linear().domain([20,80,140]).range(["#DEDE5F","#DEA35F","#F04337"])
-	
-	this.playView = new PlayView(this,"PlayView") 
-	
-	
+	this.speedColors = ["#DEDE5F","#DEA35F","#F04337"]
+	this.speedLabels = ["20 Kn","80 Kn","140 Kn"]
+	this.pressureColors = ["#00CCFF","#0099FF","#0066FF"]
+	this.pressureLabels = ["900 mb","960 mb","1020 mb"]
+	this.speedScale = d3.scale.linear().domain([20,80,140]).range(this.speedColors)
+	this.pressureScale = d3.scale.linear().domain([900,960,1020]).range(this.pressureColors)
+	this.comparingAttr = "speed";
+	this.playControl = new PlayControl(this);
+	this.playControl.addTo(this.map);
+	this.chooseControl = new ChooseControl(this);
+	this.chooseControl.addTo(this.map);
 	
 	this.displayLines = function(){
+		if (this.legendControl.isOnMap()){
+			this.map.removeControl(this.legendControl);
+		}
 		this.hurricaneLayer.clearLayers();
 		for (var hurricaneI in this.dataDisplayed){
 			var hurricane = this.dataDisplayed[hurricaneI];
@@ -72,31 +83,54 @@ function MapView(){
 				
 				var point = hurricane['points'][pointI];
 				if (pointI==0){
-					this.hurricaneLayer.addLayer(L.circle([point["lat"],point["lon"]],5,{color:"yellow",fillColor: "yellow",
-							    fillOpacity: 0.5}));
+					this.hurricaneLayer.addLayer(L.circle([point["lat"],point["lon"]],5,
+												{color:"yellow",fillColor: "yellow",
+												fillOpacity: 0.5}));
 				}else{
-					this.hurricaneLayer.addLayer(L.polyline([[point["lat"],point["lon"]],[hurricane['points'][pointI-1]["lat"],hurricane['points'][pointI-1]["lon"]]],{color: "yellow"}));
+					this.hurricaneLayer.addLayer(L.polyline([[point["lat"],point["lon"]],
+															[hurricane['points'][pointI-1]["lat"],hurricane['points'][pointI-1]["lon"]]],
+															{color: "yellow"}));
 				}
 			}
 		}
 	}
 	
 	this.compareLines = function(){
+		console.log(d3.select("#map").node().nodeName);
 		this.hurricaneLayer.clearLayers();
+		var scale = this.comparingAttr == "speed" ? this.speedScale: this.pressureScale;
 		for (var hurricaneI in this.dataDisplayed){
 			var hurricane = this.dataDisplayed[hurricaneI];
 			for (var pointI in hurricane['points']){
 				
 				var point = hurricane['points'][pointI];
 				if (pointI==0){
-					this.hurricaneLayer.addLayer(L.circle([point["lat"],point["lon"]],5,{color:"yellow",fillColor: this.speedScale(point["maxSpeed"]),
+					this.hurricaneLayer.addLayer(L.circle([point["lat"],point["lon"]],5,
+								{fillColor: scale(this.comparingAttr == "speed" ?point["maxSpeed"]:point["pressure"]),
 							    fillOpacity: 0.5}));
 				}else{
-					var line=L.polyline([[point["lat"],point["lon"]],[hurricane['points'][pointI-1]["lat"],hurricane['points'][pointI-1]["lon"]]],{color: this.speedScale(point["maxSpeed"])}).on("click",function(e){ that.hurricaneSelected(e.target.hurr)})
+					var line=L.polyline([[point["lat"],point["lon"]],[hurricane['points'][pointI-1]["lat"],hurricane['points'][pointI-1]["lon"]]],
+											{color: scale(this.comparingAttr == "speed" ?point["maxSpeed"]:point["pressure"]),opacity:1})
+											.on("click",function(e){ that.hurricaneSelected(e.target.hurr)})
 					line.hurr=hurricane;
 					this.hurricaneLayer.addLayer(line);
 				}
 			}
+		}
+		
+		if( this.comparingAttr == "speed"){
+			if (!this.legendControl.isOnMap()){
+				
+				this.legendControl.addTo(this.map);
+			}
+			this.legendControl.changeLegend(this.speedColors,this.speedLabels,"Speed");
+			
+		}else {
+			if (!this.legendControl.isOnMap()){
+				this.legendControl.addTo(this.map);
+			}
+			this.legendControl.changeLegend(this.pressureColors,this.pressureLabels,"Pressure");
+			
 		}
 	}
 	
@@ -153,6 +187,8 @@ function MapView(){
 			clearInterval(this.timer)
 		}
 		this.timer = setInterval(this.updateTime, this.animationUpdate);
+		
+		this.legendControl.changeLegend(["yellow","red"],["Tropical Storm","Hurricane"],"Type");
 		
 	}
 	
@@ -231,6 +267,25 @@ function MapView(){
 
 	}
 	
+	this.increaseSpeed = function(){
+		this.speed *= 2;
+		
+		this.playControl.updateSpeed(this.speed);
+		if (this.timeModel){
+			this.timeModel.changeSpeed(this.speed);
+		}
+	}
+	
+	this.decreaseSpeed = function(){
+		this.speed /= 2;
+		
+		this.playControl.updateSpeed(this.speed);
+		if (this.timeModel){
+			this.timeModel.changeSpeed(this.speed);
+		}
+	}
+	
+	
 	//this.playSelected();
 	//this.displayLines();
 	this.compareLines();
@@ -241,7 +296,25 @@ function MapView(){
 		this.compareLines();
 		
 		//TODO Look at stuff interrupted
-	}		
+	};		
+	
+	this.changeVisualization = function(choiche){
+		if (choiche==0){
+			this.comparingAttr="speed";
+			this.compareLines();
+		}else{
+			if (choiche==1){
+				this.comparingAttr="pressure";
+				this.compareLines();
+			}else {
+				if (choiche==2){
+					
+					this.displayLines();
+					}
+			}
+		}
+	};
 	
 
 }
+

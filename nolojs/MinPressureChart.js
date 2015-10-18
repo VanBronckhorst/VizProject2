@@ -1,8 +1,8 @@
-console.log('inTheScript');
-console.log(hurricanes);
+//console.log('inTheScript');
+//console.log(hurricanes);
 
 function MinPressureChart(dataset, container, columnId, percOn) {
-  console.log('inTheFunction');
+  //console.log('inTheFunction');
 
   var chartContainer = container;
   var hurrData = dataset;
@@ -18,7 +18,7 @@ function MinPressureChart(dataset, container, columnId, percOn) {
   for (var i = 0; i < hurrData.length; i++) {
     totalPopulation = totalPopulation + parseInt(stateData[i].POPEST2014);
   }
-  console.log(totalPopulation);*/
+  //console.log(totalPopulation);*/
 
   // Define ViewBox dimensions
   var viewBoxWidth = 800;
@@ -125,7 +125,7 @@ function MinPressureChart(dataset, container, columnId, percOn) {
   .append('circle')
   .attr('class', 'min_pressure')
   .attr('cx', function (d, i) {
-    console.log('inthecircles');
+    //console.log('inthecircles');
     return xScale(d.YEAR);
   })
   .attr('cy', function (d, i) {
@@ -144,7 +144,7 @@ function MinPressureChart(dataset, container, columnId, percOn) {
     if(d.MIN_PRESSURE != 'NA') {
       //return 'MediumSeaGreen';
     } else {
-      console.log('inthecolor');
+      //console.log('inthecolor');
       return 'Black';
     }
   });
@@ -155,11 +155,11 @@ function MinPressureChart(dataset, container, columnId, percOn) {
   .data(hurrData)
   .enter().append('rect')
   .attr('x', function (d, i) {
-    //console.log(i);
+    ////console.log(i);
     return xScale(d.YEAR);
   })
   .attr('y', function (d, i) {
-    //console.log(d.POPEST2010_CIV);
+    ////console.log(d.POPEST2010_CIV);
     if(percentageOn) {
       //return viewBoxHeight - yScale(parseInt(d.POPEST2014)/totalPopulation);
     } else {

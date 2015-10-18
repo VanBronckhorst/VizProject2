@@ -7,6 +7,13 @@
 	height: 100%;
 	width: 100%;	
 }
+.legend-control-svg{
+	background-color: white;	
+}
+.legend-labels{
+	dominant-baseline: hanging;
+}
+
 .layer-svg{
 	height: 100%;
 	width: 100%;	
@@ -41,7 +48,7 @@
 }
 .play-view-button{
 	height:100%;
-	width: 50%;
+	width: 20%;
 	background: url("../images/play.png");
 	background-size: contain;
 	background-repeat: no-repeat; 
@@ -49,7 +56,7 @@
 }
 .resume-view-button{
 	height:100%;
-	width: 50%;
+	width: 20%;
 	background: url("../images/play.png");
 	background-size: contain;
 	background-repeat: no-repeat; 
@@ -57,7 +64,7 @@
 }
 .pause-view-button{
 	height:100%;
-	width: 50%;
+	width: 20%;
 	background: url("../images/pause.png");
 	background-size: contain;
 	background-repeat: no-repeat; 
@@ -65,10 +72,33 @@
 }
 .stop-view-button{
 	height:100%;
-	width: 50%;
+	width: 20%;
 	background: url("../images/stop.png");
 	background-size: contain;
 	background-repeat: no-repeat; 
+	float: left;
+}
+.ff-view-button{
+	height:100%;
+	width: 20%;
+	background: url("../images/ff.png");
+	background-size: contain;
+	background-repeat: no-repeat; 
+	float: left;
+}
+.rw-view-button{
+	height:100%;
+	width: 20%;
+	background: url("../images/rw.png");
+	background-size: contain;
+	background-repeat: no-repeat; 
+	float: left;
+}
+
+.speed-view-button{
+	height:100%;
+	width: 20%;
+	
 	float: left;
 }
 

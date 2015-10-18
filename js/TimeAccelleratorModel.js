@@ -1,5 +1,6 @@
 function TimeAccelleratorModel(){
 	var that=this;
+	this.startFakeTime = new Date();
 	this.init=function (startDate, speedInHourperSec){
 		this.accRate = speedInHourperSec*60*60;//*1000  / 1000  How many milliseconds pass in a real millisecond
 		
@@ -16,5 +17,10 @@ function TimeAccelleratorModel(){
 	this.timeWarp = function(){
 		that.startFakeTime.setTime(that.getTime().getTime()+that.accRate*1000);
 		that.startRealTime = new Date();
+	}
+	this.changeSpeed= function(newSpeed){
+		that.startFakeTime.setTime(that.getTime().getTime());
+		that.startRealTime = new Date();
+		this.accRate = newSpeed*60*60;
 	}
 }

@@ -2,7 +2,7 @@ var DEBUG = true;
 
 function log(something){
   if(DEBUG){
-    console.log(something);
+    //console.log(something);
   }
 }
 
@@ -11,7 +11,7 @@ function log(something){
 //TILES CREATION
 var GraphsView = function () {
   'use-strict';
-  console.log('iinnnn');
+  ////console.log('iinnnn');
 
   this.graphsBoxWidth = 800;
   this.graphsBoxHeight = 600;
@@ -36,9 +36,10 @@ var GraphsView = function () {
   var toggle = [true, true, true];
 
   function resizeFilterView(panelId) {
-    //console.log('inthefunction');
+    //////console.log('inthefunction');
     //var widthVal = (toggle[panelId])? 0 : 25;
     var widthVal = (toggle[panelId])? (2 + panelId) : 50;
+
     //var heightVal = (toggle[panelId])? 100 : 100;
   $('.panel.' + panelId).animate({'width' : widthVal+'%'/*, 'height': heightVal+'%'*/}, {
       //duration:750,
