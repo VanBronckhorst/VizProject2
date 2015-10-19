@@ -4,7 +4,7 @@ var ChooseControl = L.Control.extend({
     },
     initialize: function (map,options /*{ data: {...}  }*/) {
     // constructor
-    this.choiches = ["Compare Speed","Compare Pressure","Only Lines"];
+    this.choiches = ["Compare Speed","Compare Pressure","Only Lines","Cloropleth"];
     this.selected = 0;
     this.map = map;
     L.Util.setOptions(this, options);
@@ -14,8 +14,8 @@ var ChooseControl = L.Control.extend({
         // create the control container with a particular class name
         var container = L.DomUtil.create('div', 'date-control');
         
-        this.w= parseInt(d3.select("body").style("width"))*0.1+"px";
-		this.h= parseInt(this.w)/3 + "px";
+        this.w= parseInt(d3.select("body").style("width"))*0.15+"px";
+		this.h= parseInt(this.w)/2 + "px";
 		
 		
 		this.div = d3.select(container);

@@ -96,7 +96,6 @@ function MapView(){
 	}
 	
 	this.compareLines = function(){
-		console.log(d3.select("#map").node().nodeName);
 		this.hurricaneLayer.clearLayers();
 		var scale = this.comparingAttr == "speed" ? this.speedScale: this.pressureScale;
 		for (var hurricaneI in this.dataDisplayed){
@@ -132,6 +131,32 @@ function MapView(){
 			this.legendControl.changeLegend(this.pressureColors,this.pressureLabels,"Pressure");
 			
 		}
+	}
+	
+	this.getCloroplethColor = function(d) {
+    return d > 1000 ? '#800026' :
+           d > 500  ? '#BD0026' :
+           d > 200  ? '#E31A1C' :
+           d > 100  ? '#FC4E2A' :
+           d > 50   ? '#FD8D3C' :
+           d > 20   ? '#FEB24C' :
+           d > 10   ? '#FED976' :
+                      '#FFEDA0';
+	}
+	this.cloroplethStyle = function(feature) {
+    return {
+        fillColor: that.getCloroplethColor(feature.properties.density),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+	
+	this.showCloropleth = function(){
+		this.hurricaneLayer.clearLayers();
+		L.geoJson(statesData,{style: that.cloroplethStyle }).addTo(this.hurricaneLayer);
 	}
 	
 	this.hurricaneSelected = function(h){
@@ -310,6 +335,10 @@ function MapView(){
 				if (choiche==2){
 					
 					this.displayLines();
+					}
+				if (choiche==3){
+					
+					this.showCloropleth();
 					}
 			}
 		}
