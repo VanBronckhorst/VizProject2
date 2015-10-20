@@ -169,12 +169,10 @@ function toggleLanded(){
 	//toggle filtet
 	landedFilterOn = !landedFilterOn;
 	log('landed filter'+ landedFilterOn);
-
-	//notify
-	//filterViewLayout.notifyAll(new ToggleFilter('L',landedFilterOn,'toggle'));
-
 	//change icon
 	d3.select(this).text(function() { return (landedFilterOn)?'\uf046':'\uf096'; });
+	//notify
+	filterViewLayout.notifyAll(new ToggleFilter('L',landedFilterOn,'toggle'));
 }
 
 //add select all
@@ -476,19 +474,16 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},
 FilterView.prototype.modelUpdated = function(dataVisualized,dataCurrent){	
 	log('model updated received');	
 
-	//update the data shown only if it's different
-	if(this.data == dataCurrent){
-		log('same data');
-		//do not slide list to the top
-	}else{
-		log('not same data');
-		this.update(dataCurrent,dataVisualized);
-
-	}
-	//always update the filters selection
-	this.dataVisualized = dataVisualized;
 	log(dataVisualized);
 	log(dataCurrent);
+	//update the data shown only if it's different
+	if(this.data != dataCurrent){	
+		this.update(dataCurrent,dataVisualized);
+	}
+
+	//always update the filters selection
+	this.dataVisualized = dataVisualized;
+
 }
 
 FilterView.prototype.addObserver = function(observer){
