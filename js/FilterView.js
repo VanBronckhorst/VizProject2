@@ -47,7 +47,7 @@ var FilterView = function (){
 	.append('text')
 	.attr('dominant-baseline', 'central')
 	.attr('font-family', 'FontAwesome')
-	.attr('font-size', 600)
+	.attr('font-size', 1000)
 	.attr('x', 90 )
 	.attr('y', 300)
 	.attr('fill', 'black')
@@ -207,28 +207,28 @@ function toggleSelectAll(){
 addDatePicker();
 function addDatePicker(){
 	
-		d3.select('#map').append('div')
-		.attr('id', 'widget')
-		.append('div')
-		.attr('id','widgetField')
-		.append('span')
-		.text('28 July, 2008 &divide; 31 July, 2008')
+	d3.select('#map').append('div')
+	.attr('id', 'widget')
+	.append('div')
+	.attr('id','widgetField')
+	.append('span')
+	.text('28 July, 2008 &divide; 31 July, 2008')
 
-		d3.select("#widgetField").append('a')
-		.attr('href','#' )
-		.text('Select date range');
+	d3.select("#widgetField").append('a')
+	.attr('href','#' )
+	.text('Select date range');
 
-		d3.select('#widget')
-		.append('div')
-		.attr('id', 'widgetCalendar');
-
-
-		d3.select('#widget')
-		.append('div')
-		.attr('id', 'widgetCalendar');
+	d3.select('#widget')
+	.append('div')
+	.attr('id', 'widgetCalendar');
 
 
-		var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	d3.select('#widget')
+	.append('div')
+	.attr('id', 'widgetCalendar');
+
+
+	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     //get today date
     var today = new Date();
 
@@ -294,8 +294,8 @@ function toggleChecked(d){
 }	
 
 this.list = listCreator.createList(this.svgList,'NAME');
-this.listSpeed = listCreator.createList(this.svgList,'maxSpeed');
-this.listDate = listCreator.createList(this.svgList,'startDate');
+this.listSpeed = listCreator.createList(this.svgList,'Max Speed');
+this.listDate = listCreator.createList(this.svgList,'Start Date');
 
 this.lists.push({'list':this.list, 'attribute' : 'name'},
 	{'list':this.listSpeed,'attribute':'maxSpeed'},
@@ -393,6 +393,11 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},
     				return '\uf096';
     			}
     		}	
+    		//the date
+    		if(attribute ==='startDate'){
+    			return hurricaneDateToJS(d[attribute],'0000').toLocaleDateString();
+    		}
+
     		return d[attribute];
     	})
     	.attr('color','black')
@@ -402,11 +407,11 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},
 }
 
     //function to update list when model is updated
-    this.update = function(data,dataVisualized){
+    this.update = function(data,dataVisualized){    	
     /*	if(data != this.data){
     		filterViewLayout.lastWordIndex = 0;     		
     	}  */
-    	    		filterViewLayout.lastWordIndex = 0;     		
+    	filterViewLayout.lastWordIndex = 0;     		
 
     	//change data
     	this.data = data;
@@ -470,7 +475,18 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},
 
 FilterView.prototype.modelUpdated = function(dataVisualized,dataCurrent){	
 	log('model updated received');	
-	this.update(dataCurrent,dataVisualized);
+
+	//update the data shown only if it's different
+	if(this.data == dataCurrent){
+		log('same data');
+		//do not slide list to the top
+	}else{
+		log('not same data');
+		this.update(dataCurrent,dataVisualized);
+
+	}
+	//always update the filters selection
+	this.dataVisualized = dataVisualized;
 	log(dataVisualized);
 	log(dataCurrent);
 }

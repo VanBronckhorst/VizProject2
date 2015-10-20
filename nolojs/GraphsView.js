@@ -1,11 +1,3 @@
-var DEBUG = true;
-
-function log(something){
-  if(DEBUG){
-    //console.log(something);
-  }
-}
-
 
 
 //TILES CREATION
@@ -52,7 +44,7 @@ var GraphsView = function () {
 var allDiv = this.graphsViewDiv
 .append("div")
 .attr('class', 'panel ' + 0)
-.style('background-color', 'red')
+.style('background-color', 'white')
 .on('click', function () {
   resizeFilterView(0);
 });
