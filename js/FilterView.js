@@ -292,12 +292,15 @@ function toggleChecked(d){
 }	
 
 this.list = listCreator.createList(this.svgList,'NAME');
-this.listSpeed = listCreator.createList(this.svgList,'Max Speed');
-this.listDate = listCreator.createList(this.svgList,'Start Date');
+this.listSpeed = listCreator.createList(this.svgList,'MAX SPEED');
+this.listDate = listCreator.createList(this.svgList,'START DATE');
+this.listDanger = listCreator.createList(this.svgList,'DANGER');
+
 
 this.lists.push({'list':this.list, 'attribute' : 'name'},
 	{'list':this.listSpeed,'attribute':'maxSpeed'},
 	{'list':this.listDate, 'attribute':'startDate'},
+	{'list':this.listDanger, 'attribute':'maxSpeed'}, //TODO put the right value here
 	{'list':this.checkBoxList, 'attribute' : null});
 
 
@@ -378,6 +381,10 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},
     	list
     	.transition()    	
     	.attr('y', function(d,i){
+    		//it's the checkbox
+    		if(d[attribute]==null){ 
+    			return yValue(i)-5;
+    		}	
     		return yValue(i) ;
     	})
     	.text(function(d,i){
@@ -447,10 +454,10 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},
 
     			//everything else
     			return d[attribute];
-    		})
-    		.attr('y', function(d,i){
+    		});
+    		/*.attr('y', function(d,i){
     			return yValue(i);
-    		});	
+    		});	*/
     	}
     }
 

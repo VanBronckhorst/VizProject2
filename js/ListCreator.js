@@ -1,13 +1,28 @@
 var ListCreator = function(){
 	var numberOfListCreated = 0;
-	var columnWidth = 180;
 	var xOffset = 50;
 	var titleY = 40;
 	var valuesSize = 20;
 	var titleSize = 25;
-	var titleXOffset = 30;
+	var titleXOffset = 5;
+	var busyWidth = 0;
+	var columnGap = 60;
 
 	this.createList = function(place,name,wantCheckBox){
+		//add title 
+		var tit = place
+		.append('g')
+		.append('text')
+		.text(name)
+		.attr('y', function(){
+			return titleY;
+		})
+		.attr('x', function(){return xOffset + titleXOffset + busyWidth+ columnGap*numberOfListCreated;})
+		.attr('color','black')
+		.attr('font-size',titleSize );
+
+
+
 		//add list texts
 		var list = place
 		.append('g')
@@ -21,32 +36,30 @@ var ListCreator = function(){
 		.attr('y', function(d,i){
 			return yValue(i);
 		})
-		.attr('x',function(){return xOffset+titleXOffset + columnWidth * numberOfListCreated;})
+		.attr('x',function(){return xOffset + titleXOffset + busyWidth+ columnGap*numberOfListCreated;})
 		.attr('color','black')
-		.attr('font-size',valuesSize );		
+		.attr('font-size',valuesSize );	
 
-		//add title 
-		var tit = place
-		.append('g')
-		.append('text')
-		.text(name)
-		.attr('y', function(){
-			return titleY;
-		})
-		.attr('x', function(){return xOffset + titleXOffset + columnWidth * numberOfListCreated;})
-		.attr('color','black')
-		.attr('font-size',titleSize );
-	
+		log('list');
+		log(list);
+		log(tit[0][0].clientWidth);
+		log(list[0][0].clientWidth);
+		log(d3.max([tit[0][0].clientWidth,list[0][0].clientWidth]));
+
+		busyWidth += d3.max([tit[0][0].clientWidth,list[0][0].clientWidth]);
+
+		
 		//add orderButton ascending near title
 		place
 		.append('g')
 		.append('text')
+		.attr('id', 'asc-'+name)
 		.attr('text-anchor', 'middle')
 		.attr('dominant-baseline', 'central')
 		.attr('font-family', 'FontAwesome')
 		.attr('font-size', 20)
 		.attr('cursor', 'pointer')
-		.attr('x', function(){return xOffset + titleXOffset + columnWidth * numberOfListCreated+(tit[0][0].clientWidth+15);} )
+		.attr('x', function(){return xOffset + titleXOffset + busyWidth+ columnGap*numberOfListCreated+10;} )
 		.attr('y', function(){
 			return titleY-13;
 		})			
@@ -55,12 +68,13 @@ var ListCreator = function(){
 		place
 		.append('g')
 		.append('text')
+		.attr('id', 'des-'+name)
 		.attr('text-anchor', 'middle')
 		.attr('dominant-baseline', 'central')
 		.attr('font-family', 'FontAwesome')
 		.attr('font-size', 20)
 		.attr('cursor', 'pointer')
-		.attr('x', function(){return xOffset + titleXOffset + columnWidth * numberOfListCreated+(tit[0][0].clientWidth+15);} )
+		.attr('x', function(){return xOffset + titleXOffset + busyWidth+ columnGap*numberOfListCreated+10;} )
 		.attr('y', function(){
 			return titleY-5;
 		})			
@@ -86,14 +100,13 @@ var ListCreator = function(){
 			.attr('font-size', 20)
 			.attr('cursor', 'pointer')
 			.attr('status','true')
-			.attr('x', function(){return xOffset + columnWidth * numberOfListCreated - 15;} )
-			.attr('y', function(d,i){
-				return yValue(i) - 8;
+			.attr('x', function(){return xOffset + busyWidth  - 15;} )
+			.attr('y', function(d,i){				
+				return (yValue(i) - 5);
 			})			
 			.text(function() { return '\uf046'; });	
 
 			return listCheckBox;		
-
 		}
 
 	//the function return the y value of the text accordingly to its index
