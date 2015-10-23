@@ -476,8 +476,10 @@ FilterView.prototype.modelUpdated = function(dataVisualized,dataCurrent){
 
 	log(dataVisualized);
 	log(dataCurrent);
+
 	//update the data shown only if it's different
 	if(this.data != dataCurrent){	
+		dataCurrent.sort(UtilityView.nameAscending);
 		this.update(dataCurrent,dataVisualized);
 	}
 

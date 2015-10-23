@@ -26,16 +26,45 @@ var ListCreator = function(){
 		.attr('font-size',valuesSize );		
 
 		//add title 
-		place
+		var tit = place
 		.append('g')
 		.append('text')
 		.text(name)
 		.attr('y', function(){
 			return titleY;
 		})
-		.attr('x', function(d,i){return xOffset + titleXOffset + columnWidth * numberOfListCreated;})
+		.attr('x', function(){return xOffset + titleXOffset + columnWidth * numberOfListCreated;})
 		.attr('color','black')
 		.attr('font-size',titleSize );
+	
+		//add orderButton ascending near title
+		place
+		.append('g')
+		.append('text')
+		.attr('text-anchor', 'middle')
+		.attr('dominant-baseline', 'central')
+		.attr('font-family', 'FontAwesome')
+		.attr('font-size', 20)
+		.attr('cursor', 'pointer')
+		.attr('x', function(){return xOffset + titleXOffset + columnWidth * numberOfListCreated+(tit[0][0].clientWidth+15);} )
+		.attr('y', function(){
+			return titleY-13;
+		})			
+		.text(function() { return '\uf0de'; });	
+		//add orderButton descending near title
+		place
+		.append('g')
+		.append('text')
+		.attr('text-anchor', 'middle')
+		.attr('dominant-baseline', 'central')
+		.attr('font-family', 'FontAwesome')
+		.attr('font-size', 20)
+		.attr('cursor', 'pointer')
+		.attr('x', function(){return xOffset + titleXOffset + columnWidth * numberOfListCreated+(tit[0][0].clientWidth+15);} )
+		.attr('y', function(){
+			return titleY-5;
+		})			
+		.text(function() { return '\uf0dd'; });	
 
 		//increase number of lists created
 		numberOfListCreated++;
@@ -65,7 +94,7 @@ var ListCreator = function(){
 
 			return listCheckBox;		
 
-	}
+		}
 
 	//the function return the y value of the text accordingly to its index
 	function yValue(index){
