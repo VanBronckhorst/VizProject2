@@ -1,17 +1,19 @@
 var UtilityView = {
-	nameAscending: function (a,b) {
-		if (a.name < b.name)
-			return -1;
-		if (a.name > b.name)
+	variable : 'maxSpeed', //default 
+
+	descending: function(a,b){		
+		if(a[UtilityView.variable]< b[UtilityView.variable])
 			return 1;
+		if (a[UtilityView.variable] > b[UtilityView.variable])
+			return -1;
 		return 0;
 	},
 
-	nameDescending: function(a,b){
-		if (a.name < b.name)
-			return 1;
-		if (a.name > b.name)
+	ascending: function(a,b){		
+		if(a[UtilityView.variable]< b[UtilityView.variable])
 			return -1;
+		if (a[UtilityView.variable] > b[UtilityView.variable])
+			return 1;
 		return 0;
-	}
+	},
 }

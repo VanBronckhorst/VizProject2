@@ -300,15 +300,73 @@ this.listDanger = listCreator.createList(this.svgList,'DANGER');
 //SET THE ACTIONS FOR THE ORDER ASCENDING AND DESCENDING ARROWS=========================
 d3.select('#des-NAME')
 .on('click',function(){
+	//set variable to sort on 
+	UtilityView.variable = 'name';
 	//sort by descending name
-	filterViewLayout.data.sort(UtilityView.nameDescending);
+	filterViewLayout.data.sort(UtilityView.descending);
 	//update
 	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
 });
 d3.select('#asc-NAME')
 .on('click',function(){
+	//set variable to sort on 
+	UtilityView.variable = 'name';
 	//sort by ascending name
-	filterViewLayout.data.sort(UtilityView.nameAscending);
+	filterViewLayout.data.sort(UtilityView.ascending);
+	//update
+	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
+});
+d3.select('#asc-MAXSPEED')
+.on('click',function(){
+	//set variable to sort on 
+	UtilityView.variable = 'maxSpeed';
+	//sort by ascending name
+	filterViewLayout.data.sort(UtilityView.ascending);
+	//update
+	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
+});
+d3.select('#des-MAXSPEED')
+.on('click',function(){
+	//set variable to sort on 
+	UtilityView.variable = 'maxSpeed';
+	//sort by ascending name
+	filterViewLayout.data.sort(UtilityView.descending);
+	//update
+	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
+});
+d3.select('#asc-STARTDATE')
+.on('click',function(){
+	//set variable to sort on 
+	UtilityView.variable = 'startDate';
+	//sort by ascending name
+	filterViewLayout.data.sort(UtilityView.ascending);
+	//update
+	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
+});
+d3.select('#des-STARTDATE')
+.on('click',function(){
+	//set variable to sort on 
+	UtilityView.variable = 'startDate';
+	//sort by ascending name
+	filterViewLayout.data.sort(UtilityView.descending);
+	//update
+	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
+});
+d3.select('#asc-DANGER')
+.on('click',function(){
+	//set variable to sort on 
+	UtilityView.variable = 'startDate';//FIXME put the right variable
+	//sort by ascending name
+	filterViewLayout.data.sort(UtilityView.ascending);
+	//update
+	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
+});
+d3.select('#des-DANGER')
+.on('click',function(){
+	//set variable to sort on 
+	UtilityView.variable = 'startDate';//FIXME put the right variable
+	//sort by ascending name
+	filterViewLayout.data.sort(UtilityView.descending);
 	//update
 	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
 });
@@ -430,16 +488,12 @@ this.lists.push(
 
     //function to update list when model is updated
     this.update = function(data,dataVisualized){    	
-    /*	if(data != this.data){
-    		filterViewLayout.lastWordIndex = 0;     		
-    	}  */
-    	filterViewLayout.lastWordIndex = 0;     		
+   		//make the list slide to the beginning
+   		filterViewLayout.lastWordIndex = 0;     		
 
     	//change data
     	this.data = data;
     	this.dataVisualized = dataVisualized;
-    	//reset list to the beginning i.e. slide to the beginning
-    	log(filterViewLayout.lastWordIndex);
 
     	filterViewLayout.lists.forEach(function(d){updateSingleList(d);})	
 
@@ -456,10 +510,8 @@ this.lists.push(
     			//it's the checkbox
     			if(d[attribute]==null){ 
     				if(dataVisualized.indexOf(d)>-1){
-    					log('ok');
     					return '\uf046';
     				}else{
-    					log('NOK');
     					return '\uf096';
     				}
     			}
@@ -472,18 +524,16 @@ this.lists.push(
     			//everything else
     			return d[attribute];
     		});
-    		/*.attr('y', function(d,i){
-    			return yValue(i);
-    		});	*/
-}
-}
+    		
+    	}
+    }
 
-this.notifyAll= function(newFilter){
-	log('filter modified notifying...');
-	for(var o in this.observerList){    		
-		this.observerList[o].filterUpdated(newFilter); 
-	}
-}
+    this.notifyAll= function(newFilter){
+    	log('filter modified notifying...');
+    	for(var o in this.observerList){    		
+    		this.observerList[o].filterUpdated(newFilter); 
+    	}
+    }
 
 
 	//**UTILITY**//
@@ -500,15 +550,28 @@ FilterView.prototype.modelUpdated = function(dataVisualized,dataCurrent){
 
 	log(dataVisualized);
 	log(dataCurrent);
+	
+	//always update the filters selection
+	this.dataVisualized = dataVisualized;
 
 	//update the data shown only if it's different
 	if(this.data != dataCurrent){	
 		dataCurrent.sort(UtilityView.nameAscending);
 		this.update(dataCurrent,dataVisualized);
+	}else{
+		//update the checkbox only
+		this.checkBoxList  	
+		.text(function(d,i){
+    		//it's the checkbox
+    		if(dataVisualized.indexOf(d)>-1){
+    			return '\uf046';
+    		}else{
+    			return '\uf096';
+    		}    			
+
+    	});
 	}
 
-	//always update the filters selection
-	this.dataVisualized = dataVisualized;
 
 }
 

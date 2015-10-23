@@ -53,7 +53,7 @@ var ListCreator = function(){
 		place
 		.append('g')
 		.append('text')
-		.attr('id', 'asc-'+name)
+		.attr('id', 'asc-'+name.replace(/\s+/g, ''))
 		.attr('text-anchor', 'middle')
 		.attr('dominant-baseline', 'central')
 		.attr('font-family', 'FontAwesome')
@@ -68,7 +68,7 @@ var ListCreator = function(){
 		place
 		.append('g')
 		.append('text')
-		.attr('id', 'des-'+name)
+		.attr('id', 'des-'+name.replace(/\s+/g, ''))
 		.attr('text-anchor', 'middle')
 		.attr('dominant-baseline', 'central')
 		.attr('font-family', 'FontAwesome')
