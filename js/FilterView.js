@@ -268,10 +268,11 @@ function addDatePicker(){
     	return false;
     });
 }
-//create COLUMNS OF LIST(name,date,maxSpeed)
+
+//create ================================COLUMNS OF LIST(name,date,maxSpeed,danger)
 
 var listCreator = new ListCreator();
-
+//checkbox is a world on its own=======
 this.checkBoxList =  listCreator.checkBoxList(this.svgList);
 this.checkBoxList
 .on('click',toggleChecked);
@@ -290,14 +291,30 @@ function toggleChecked(d){
 	filterViewLayout.notifyAll(new HurricaneNameFilter(d.name,operation)); 
 
 }	
-
+//name,speed etc.=====
 this.list = listCreator.createList(this.svgList,'NAME');
 this.listSpeed = listCreator.createList(this.svgList,'MAX SPEED');
 this.listDate = listCreator.createList(this.svgList,'START DATE');
 this.listDanger = listCreator.createList(this.svgList,'DANGER');
 
+//SET THE ACTIONS FOR THE ORDER ASCENDING AND DESCENDING ARROWS=========================
+d3.select('#des-NAME')
+.on('click',function(){
+	//sort by descending name
+	filterViewLayout.data.sort(UtilityView.nameDescending);
+	//update
+	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
+});
+d3.select('#asc-NAME')
+.on('click',function(){
+	//sort by ascending name
+	filterViewLayout.data.sort(UtilityView.nameAscending);
+	//update
+	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
+});
 
-this.lists.push({'list':this.list, 'attribute' : 'name'},
+this.lists.push(
+	{'list':this.list, 'attribute' : 'name'},
 	{'list':this.listSpeed,'attribute':'maxSpeed'},
 	{'list':this.listDate, 'attribute':'startDate'},
 	{'list':this.listDanger, 'attribute':'maxSpeed'}, //TODO put the right value here
@@ -458,15 +475,15 @@ this.lists.push({'list':this.list, 'attribute' : 'name'},
     		/*.attr('y', function(d,i){
     			return yValue(i);
     		});	*/
-    	}
-    }
+}
+}
 
-    this.notifyAll= function(newFilter){
-    	log('filter modified notifying...');
-    	for(var o in this.observerList){    		
-    		this.observerList[o].filterUpdated(newFilter); 
-    	}
-    }
+this.notifyAll= function(newFilter){
+	log('filter modified notifying...');
+	for(var o in this.observerList){    		
+		this.observerList[o].filterUpdated(newFilter); 
+	}
+}
 
 
 	//**UTILITY**//
