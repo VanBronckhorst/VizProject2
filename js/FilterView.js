@@ -140,9 +140,99 @@ this.svgFilters
 .attr('y', (heightSvgList-(-2))+ "%") //add 2 percent for padding
 .attr('x', '10');
 
+//==========ADD SELECTOR FOR PERIODS
+this.svgFilters
+.append('text')
+.text('SEASON')
+.on('click',function(){
+	//slide line
+	filterViewLayout.underlineLine
+	.transition()
+	.duration(500)
+	.attr('x1', '33%')
+	.attr("x2", '42%');
+	//hide all calendars
+	d3.select('#calendar')
+	.style('visibility', 'hidden');
+
+	//show calendar
+	d3.select('#svg-season')
+	.style('visibility', 'visible');
+})
+.attr('cursor', 'pointer')
+.style('font-size', 18)
+.attr('y', (heightSvgList-(-6))+ "%") 
+.attr('x', '33%');
+
+this.svgFilters
+.append('text')
+.text('DAY')
+.on('click',function(){
+	//slide line
+	filterViewLayout.underlineLine
+	.transition()
+	.duration(500)
+	.attr('x1', '26%')
+	.attr("x2", '30%');
+
+	//hide all calendars
+	d3.select('#svg-season')
+	.style('visibility', 'hidden');
+
+	//show calendar
+	d3.select('#calendar')
+	.style('visibility', 'visible'); //this calendar is for the day
+})
+.attr('cursor', 'pointer')
+.style('font-size', 18)
+.attr('y', (heightSvgList-(-6))+ "%") 
+.attr('x', '26%');
+
+this.svgFilters
+.append('text')
+.text('YEAR')
+.on('click',function(){
+	//slide line
+	filterViewLayout.underlineLine
+	.transition()
+	.duration(500)
+	.attr('x1', '16%')
+	.attr("x2", '22%');
+
+	//hide all calendars
+	d3.select('#svg-season')
+	.style('visibility', 'hidden'); 
+
+	//show calendar
+	d3.select('#calendar')
+	.style('visibility', 'visible');	//this calendar is only for the year
+})
+.attr('cursor', 'pointer')
+.style('font-size', 18)
+.attr('y', (heightSvgList-(-6))+ "%") 
+.attr('x', '16%');
+
+this.svgFilters
+.append('text')
+.text('PICK:')
+.style('font-size', 25)
+.attr('y', (heightSvgList-(-6))+ "%") 
+.attr('x', '3%');
+
+//=========ADD LINE TO UNDERLINE PERIOD
+this.underlineLine = this.svgFilters
+.append("line")
+.attr('y1',(heightSvgList-(-7))+ "%") 
+.attr('x1', '16%')
+.attr('y2', (heightSvgList-(-7))+ "%") 
+.attr('x2', '23%')
+.attr("stroke-width", 2)
+.attr("stroke", "black");
+
 //SVG SEASON PICKING==============================================================================
 this.svgSeason =this.g.append('svg')
 .attr('id', 'svg-season')	
+.attr('visibility', 'hidden')
 .append('g');
 
 //========ATLANTIC===============
@@ -161,8 +251,8 @@ this.svgSeason
 })
 .attr('cursor', 'pointer')
 .attr('id', 'rect-season-atlantic')	
-.attr('height', (100 - heightSvgList - 28) + "%") 
-.attr('y', (heightSvgList-(-7))+ "%") 
+.attr('height', (100 - heightSvgList - 30) + "%") 
+.attr('y', (heightSvgList-(-9))+ "%") 
 .attr('x', '3%');
 
 this.svgSeason
@@ -221,8 +311,8 @@ this.svgSeason
 })
 .attr('cursor', 'pointer')
 .attr('id', 'rect-season-pacific')	
-.attr('height', (100 - heightSvgList - 28) + "%") //5 is the percentage of empty space at the bottom of the filters
-.attr('y', (heightSvgList-(-22))+ "%") //add 2 percent for padding
+.attr('height', (100 - heightSvgList - 28) + "%") 
+.attr('y', (heightSvgList-(-22))+ "%") 
 .attr('x', '3%');
 
 this.svgSeason
@@ -267,9 +357,7 @@ this.svgSeason
 
 
 
-
-
-//=========LANDED FILTER
+//===============LANDED FILTER
 
 var landedFilterOn = false;
 
@@ -306,7 +394,8 @@ function toggleLanded(){
 	filterViewLayout.notifyAll(new ToggleFilter('L',landedFilterOn,'toggle'));
 }
 
-//add select all
+
+//==============SELECT ALL
 this.svgList
 .append('text')
 .attr('text-anchor', 'middle')
@@ -332,16 +421,16 @@ function toggleSelectAll(){
 	d3.select(this).text(function() { return (selectAllOn)?'\uf046':'\uf096'; });
 }
 
-//add datepicker
+//================DATE PICKER
 addDatePicker();
 function addDatePicker(){
 	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 	d3.select('#map').append('div')
 	.attr('id', 'calendar')
-	.style('visibility', 'hidden') //CALENDAR IS HIDDEN
+	.style('visibility', 'visible') 
 	.style('position', 'absolute')
-	.style('top', "65%");	
+	.style('top', "68%");	
 
     //get today date
     var today = new Date();
