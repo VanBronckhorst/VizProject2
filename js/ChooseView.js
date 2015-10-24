@@ -7,10 +7,12 @@ var ChooseControl = L.Control.extend({
     this.choiches = ["Compare Speed","Compare Pressure","Only Lines","Cloropleth"];
     this.selected = 0;
     this.map = map;
+    this.onMap = false;
     L.Util.setOptions(this, options);
 	},
 
     onAdd: function (map) {
+	    this.onMap = true;
         // create the control container with a particular class name
         var container = L.DomUtil.create('div', 'date-control');
         
@@ -28,6 +30,9 @@ var ChooseControl = L.Control.extend({
 		//this.updateLegend();
 		this.updateView();
         return container;
+    },
+    onRemove: function(){
+	    this.onMap=false;
     },
     updateView: function(){
 	    var that=this;
@@ -63,5 +68,11 @@ var ChooseControl = L.Control.extend({
 	    this.selected = i;
 	    this.updateView();
 	    this.map.changeVisualization(i);
+    },
+    getSelected: function(){
+	    return this.selected;
+    },
+    isOnMap: function(){
+	    return this.onMap;
     }
 });

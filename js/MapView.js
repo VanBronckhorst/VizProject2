@@ -203,6 +203,9 @@ function MapView(){
 	}
 	
 	this.playFrom = function(start){
+		if (this.chooseControl.isOnMap()){
+			this.map.removeControl(this.chooseControl);
+		}
 		this.hurricaneLayer.clearLayers();
 		this.markers={};
 		this.visualizationMode=["PLAY"];
@@ -286,9 +289,12 @@ function MapView(){
 				
 			}
 		}
+		this.playControl.reset();
 		this.trails={}
-		this.visualizationMode=["LINES"];
-		this.compareLines();
+		this.chooseControl.changeSelected(this.chooseControl.getSelected());
+		if (! this.chooseControl.isOnMap()){
+			this.chooseControl.addTo(this.map);
+		}
 
 	}
 	
@@ -313,12 +319,12 @@ function MapView(){
 	
 	//this.playSelected();
 	//this.displayLines();
-	this.compareLines();
+	//this.compareLines();
 	
 	this.modelUpdated= function(data){
 		this.dataDisplayed = data
 		this.stop();
-		this.compareLines();
+		
 		
 		//TODO Look at stuff interrupted
 	};		

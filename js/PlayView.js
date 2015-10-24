@@ -69,5 +69,8 @@ var PlayControl = L.Control.extend({
 	    
 	    this.speedText.text(newSpeed>24?newSpeed/24+" d/s" :newSpeed<1?parseInt(newSpeed*60+"")+ " min/s" :newSpeed+" hr/s");
 			
+    },
+    reset: function(){
+	    this.playButton.attr("class","play-view-button");
     }
 });

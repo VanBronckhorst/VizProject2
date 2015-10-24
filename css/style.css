@@ -103,7 +103,7 @@
 }
 
 .leaflet-control-layers-toggle{ 
-    width:100;
+    width:100%;
     background-position:3px 50% ;
     padding:3px;
     padding-left:36px;
@@ -111,6 +111,21 @@
     font-size: 36;
     line-height:36px;
 
+}
+.leaflet-left.leaflet-top{
+	width:15%;
+}
+.leaflet-control-zoom{
+	width:50%;
+}
+.leaflet-control-zoom a{
+	width:100%;
+}
+.leaflet-control-zoom a:hover{
+	width:100%;
+}
+.leaflet-control-layers{
+	width:100%
 }
 
 .control-layer-text{
