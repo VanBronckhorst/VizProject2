@@ -16,7 +16,7 @@ var PlayControl = L.Control.extend({
 		
 		this.div = d3.select(container);
 		//Calculating the right size from the body size
-		this.w= parseInt(d3.select("body").style("width"))*0.20+"px";
+		this.w= parseInt(d3.select("body").style("width"))*0.18+"px";
 		this.h= parseInt(this.w)/5+"px";
 		this.div.style("width",this.w).style("height",this.h);
 		

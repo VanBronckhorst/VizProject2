@@ -1,7 +1,6 @@
 div.datepicker {
 	position: relative;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
 	width: 196px;
 	height: 147px;
 	position: absolute;
@@ -20,8 +19,13 @@ div.datepicker {
 
 table {
 	width:100%;
+/*<<<<<<< HEAD
 	height: 100%;
-	font-size: 50px; /*here you change the font size of the table*/
+	font-size: 50px; here you change the font size of the table
+=======*/
+	height:100%;
+	table-layout: fixed;
+/*>>>>>>> d10a3bbc6480c538ddbdf828446898c82ccac1a3*/
 }
 
 
@@ -122,16 +126,12 @@ div.datepicker tbody a {
 	display: block;
 }
 .datepickerDays a {
-	width: 20px;
-	line-height: 16px;
-	height: 16px;
+
 	padding-right: 2px;
 }
 .datepickerYears a,
 .datepickerMonths a{
-	width: 44px;
-	line-height: 36px;
-	height: 36px;
+
 	text-align: center;
 }
 td.datepickerNotInMonth a {
@@ -158,22 +158,21 @@ div.datepicker tbody th {
 	text-align: left;
 }
 .datepickerSpace div {
-	width: 20px;
+	
 }
 .datepickerGoNext a,
 .datepickerGoPrev a,
 .datepickerMonth a {
 	text-align: center;
-	height: 20px;
-	line-height: 20px;
+
 }
 .datepickerGoNext a {
 	float: right;
-	width: 20px;
+
 }
 .datepickerGoPrev a {
 	float: left;
-	width: 20px;
+	
 }
 table.datepickerViewDays tbody.datepickerMonths,
 table.datepickerViewDays tbody.datepickerYears {

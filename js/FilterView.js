@@ -204,7 +204,7 @@ function toggleSelectAll(){
 //add datepicker
 addDatePicker();
 function addDatePicker(){
-	 var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	/* var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   
     d3.select('#map').append('div')
 	.attr('id', 'calendar');	
@@ -231,8 +231,8 @@ function addDatePicker(){
          onChange: function(formated) {            
             console.log($('#calendar').DatePickerGetDate(formated)); //TO GET THE DATE AS ARRAY OF STRINGS
         }
-    });
-/*	d3.select('#map').append('div')
+    });*/
+	d3.select('#map').append('div')
 	.attr('id', 'widget')
 	.append('div')
 	.attr('id','widgetField')
@@ -248,9 +248,11 @@ function addDatePicker(){
 	.attr('id', 'widgetCalendar');
 
 
+
 	d3.select('#widget')
 	.append('div')
 	.attr('id', 'widgetCalendar');
+
 
 
 	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -265,15 +267,8 @@ function addDatePicker(){
     $('#widgetField span').get(0).innerHTML = defaultDateString.join(' &divide; ');
 
     // add the widget to the given div
-    $('#widgetCalendar')
+    $('#widgetCalendar')    
     .DatePicker({
-    	flat: true,
-    	date: '2008-07-31',
-    	current: '2008-07-31',
-    	calendars: 1,
-    	starts: 1
-    });
- /*   .DatePicker({
     	flat: true,
     	format: 'd B, Y',
         date: [new Date(today), new Date(today)], //the default choice is today
@@ -285,9 +280,9 @@ function addDatePicker(){
         	$('#widgetField span').get(0).innerHTML = formated.join(' &divide; ');
             console.log($('#widgetCalendar').DatePickerGetDate(formated)); //TO GET THE DATE AS ARRAY OF STRINGS
         }
-    });*/
+    });
 
-   /* // open and close the calendar
+    // open and close the calendar
     var state = false;
     $('#widgetField>a').bind('click', function(){
     	log('nmichia');
@@ -301,7 +296,7 @@ function addDatePicker(){
     $('#clearSelection').bind('click', function(){
     	$('#widgetCalendar').DatePickerClear();
     	return false;
-    });*/
+    });
 }
 
 //create ================================COLUMNS OF LIST(name,date,maxSpeed,danger)

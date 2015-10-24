@@ -14,14 +14,14 @@ var LegendControl = L.Control.extend({
         this.onMap=true;
         var container = L.DomUtil.create('div', 'date-control');
         
-        this.w= parseInt(d3.select("body").style("width"))*0.05+"px";
-		this.h= parseInt(this.w)*3 + "px";
+        this.w= parseInt(d3.select("body").style("width"))*0.07+"px";
+		this.h= parseInt(this.w)*2 + "px";
 		
 		
 		this.div = d3.select(container);
 		this.div.style("width",this.w).style("height",this.h);
 		
-		this.svgH = 240;
+		this.svgH = 160;
 		this.svgW = 80;
 		this.svg = this.div.append("svg").attr("id","legendControlSVG").attr("class","legend-control-svg control-svg").attr("viewBox","0 0 "+ this.svgW+" "+this.svgH).attr("preserveAspectRatio","xMidYMid meet");
 		

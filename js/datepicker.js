@@ -459,6 +459,7 @@
 				});
 			},
 			click = function(ev) {
+				
 				if ($(ev.target).is('span')) {
 					ev.target = ev.target.parentNode;
 				}
@@ -582,6 +583,20 @@
 						options.onChange.apply(this, prepareDate(options));
 					}
 				}
+				var ratio = 290/25;
+				var ratio2 = 196/147
+				var globH = parseInt(d3.select("body").style("height"));
+				var globW = parseInt(d3.select("body").style("width"));
+				var percW = 0.2;
+				var w = globW * percW;
+				var h= w/ratio
+				var border=10
+				var fontOrig = 12
+				var increment = w/290;
+				var newFont = parseInt(fontOrig * increment*0.8)
+				d3.selectAll("td").style("font-size", newFont)
+				d3.selectAll("th").style("font-size", newFont*1.1)
+				
 				return false;
 			},
 			prepareDate = function (options) {
