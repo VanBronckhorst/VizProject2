@@ -223,10 +223,6 @@ function addDatePicker(){
 		.attr('id', 'widgetCalendar');
 
 
-		d3.select('#widget')
-		.append('div')
-		.attr('id', 'widgetCalendar');
-
 
 		var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     //get today date

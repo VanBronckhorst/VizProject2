@@ -7,17 +7,21 @@ var globW = parseInt(d3.select("body").style("width"));
 var percW = 0.2;
 var w = globW * percW;
 var h= w/ratio
-
+var border=10
 var fontOrig = 12
 var increment = w/290;
-var newFont = parseInt(fontOrig * increment)
+var newFont = parseInt(fontOrig * increment*0.8)
+var wSpace=10;
 
 console.log(w, globW)
 
-d3.selectAll("#widgetField").style("width",w).style("height",h).style("font-size", newFont).style("display","none")
-d3.selectAll("#widgetCalendar").style("width",w).style("height",h).style("font-size", newFont).style("display","none")
+d3.selectAll("#widgetField").style("width",w).style("height",h).style("font-size", newFont).style("line-height",h+"px")
+d3.selectAll("#widgetCalendar").style("width",w).style("font-size", newFont).style("top",h)
 d3.selectAll(".datePicker").style("width",w).style("height",w/ratio2).style("font-size", newFont)
-d3.selectAll(".datePickerContainer").style("width",w).style("height",w/ratio2).style("font-size", newFont)
+d3.selectAll(".datepickerSpace").style("width",wSpace)
+d3.selectAll(".datePickerContainer").style("width",w-2*border).style("height",w/ratio2-2*border).style("font-size", newFont)
+d3.selectAll("td").style("font-size", newFont)
 
+d3.selectAll("th").style("font-size", newFont*1.1)
 }
 

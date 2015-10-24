@@ -1,6 +1,6 @@
 var ChooseControl = L.Control.extend({
     options: {
-        position: 'topright'
+        position: 'bottomleft'
     },
     initialize: function (map,options /*{ data: {...}  }*/) {
     // constructor
@@ -14,7 +14,7 @@ var ChooseControl = L.Control.extend({
         // create the control container with a particular class name
         var container = L.DomUtil.create('div', 'date-control');
         
-        this.w= parseInt(d3.select("body").style("width"))*0.15+"px";
+        this.w= parseInt(d3.select("body").style("width"))*0.13+"px";
 		this.h= parseInt(this.w)/2 + "px";
 		
 		
