@@ -587,15 +587,15 @@
 				var ratio2 = 196/147
 				var globH = parseInt(d3.select("body").style("height"));
 				var globW = parseInt(d3.select("body").style("width"));
-				var percW = 0.2;
+				var percW = 0.1;
 				var w = globW * percW;
 				var h= w/ratio
 				var border=10
 				var fontOrig = 12
 				var increment = w/290;
-			//	var newFont = parseInt(fontOrig * increment*0.8)
-			//	d3.selectAll("td").style("font-size", newFont)
-			//	d3.selectAll("th").style("font-size", newFont)
+				var newFont = parseInt(fontOrig * increment*1.5)
+				d3.selectAll("td").style("font-size", newFont)
+				d3.selectAll("th").style("font-size", newFont)
 				
 				return false;
 			},
