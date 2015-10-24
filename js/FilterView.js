@@ -17,12 +17,12 @@ var FilterView = function (){
 
 	this.observerList = [];//list of observer to notify when filterView is changed by the user
 
-	this.wordBatchSize = 5;
+	this.wordBatchSize = 10;
 	this.lastWordIndex = 0;
 
 	var filterViewLayout = this;
 
-	var heightSvgList = '70'; //NB it's a percetage!
+	var heightSvgList = '57'; //NB it's a percetage!
 	this.lists = []; //has all the list displayed: the name of the hurricanes, the speeds
 
 	//data initially is empty
@@ -183,7 +183,7 @@ this.svgList
 .attr('font-family', 'FontAwesome')
 .attr('font-size', 20)
 .attr('cursor', 'pointer')
-.attr('x', this.viewBoxWidth*0.05 )
+.attr('x', this.viewBoxWidth*0.045 )
 .attr('y', this.viewBoxHeight*0.04)
 .on('click',toggleSelectAll)
 .text(function() { return '\uf046'; });
@@ -370,6 +370,7 @@ d3.select('#des-DANGER')
 	//update
 	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
 });
+//===========================end ordering functions
 
 this.lists.push(
 	{'list':this.list, 'attribute' : 'name'},
@@ -475,7 +476,9 @@ this.lists.push(
     		}	
     		//the date
     		if(attribute ==='startDate'){
-    			return hurricaneDateToJS(d[attribute],'0000').toLocaleDateString();
+    			//return hurricaneDateToJS(d[attribute],'0000').toLocaleDateString();
+    			return timeConverter(d[attribute]);
+    			//return 'sort';
     		}
 
     		return d[attribute];
@@ -484,6 +487,22 @@ this.lists.push(
     	.attr('font-size',20 );
     }
 
+    function timeConverter(date){
+    	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    	var year = Math.floor(date/10000);
+    	var monthIndex = Math.floor((date % 10000)/100);
+    	var month = months[monthIndex-1];
+
+    	var day = date%100;	
+
+    	var time = pad(day,2) + '  ' + month + '  ' + year;
+    	return time;
+
+    	function pad(num, size) {
+    		var s = "00" + num;
+    		return s.substr(s.length-size);
+    	}
+    }
 }
 
     //function to update list when model is updated
@@ -523,7 +542,7 @@ this.lists.push(
 
     			//everything else
     			return d[attribute];
-    		});
+    		});  
     		
     	}
     }
@@ -540,9 +559,8 @@ this.lists.push(
 
 	//the function return the y value of the text accordingly to its index
 	function yValue(index){
-		return index * 100 + 130;
+		return index * 40 + 80;
 	}
-
 };
 
 FilterView.prototype.modelUpdated = function(dataVisualized,dataCurrent){	

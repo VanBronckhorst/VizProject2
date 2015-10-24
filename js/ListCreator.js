@@ -27,7 +27,7 @@ var ListCreator = function(){
 		var list = place
 		.append('g')
 		.selectAll("text")
-		.data(['empy','empty','empty','empty','empty'])
+		.data(['empy','empty','empty','empty','empty','empty','empty','empty','empty','empty'])
 		.enter()
 		.append('text')
 		.text(function(d){
@@ -36,7 +36,9 @@ var ListCreator = function(){
 		.attr('y', function(d,i){
 			return yValue(i);
 		})
-		.attr('x',function(){return xOffset + titleXOffset + busyWidth+ columnGap*numberOfListCreated;})
+		.attr('x',function(){
+			return xOffset + titleXOffset + busyWidth+ columnGap*numberOfListCreated;
+		})
 		.attr('color','black')
 		.attr('font-size',valuesSize );	
 
@@ -91,7 +93,7 @@ var ListCreator = function(){
 			var listCheckBox = place
 			.append('g')
 			.selectAll("text")
-			.data(['empy','empty','empty','empty','empty'])
+			.data(['empy','empty','empty','empty','empty','empty','empty','empty','empty','empty'])
 			.enter()
 			.append('text')
 			.attr('text-anchor', 'middle')
@@ -111,6 +113,6 @@ var ListCreator = function(){
 
 	//the function return the y value of the text accordingly to its index
 	function yValue(index){
-		return index * 100 + 130;
+		return index * 40 + 80;
 	}
 }
