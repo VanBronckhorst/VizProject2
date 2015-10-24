@@ -25,6 +25,10 @@
 	width: 90%;
 	height: 100%;
 }
+#svg-season{
+	width: 90%;
+	height: 100%;
+}
 
 #rect-list{
 	width: 97%;
@@ -39,6 +43,34 @@
 	fill:white;
 	stroke: black;
 	stroke-width: 3px;
+}
+#rect-season-atlantic{
+	width: 45%;
+	opacity: 0.7;
+	fill:white;
+	stroke: black;
+	stroke-width: 1px;
+}
+#rect-season-pacific{
+	width: 45%;
+	opacity: 0.7;
+	fill:white;
+	stroke: black;
+	stroke-width: 1px;
+}
+#rect-season-pacific.seasonOn{
+	fill:red;
+}
+#rect-season-pacific.seasonOff{
+	opacity: 0.7;
+	fill:white;
+}
+#rect-season-atlantic.seasonOn{
+	fill:red;
+}
+#rect-season-atlantic.seasonOff{
+	opacity: 0.7;
+	fill:white;
 }
 
 #svg-arrow-filterView.open{

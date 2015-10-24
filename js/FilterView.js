@@ -140,6 +140,225 @@ this.svgFilters
 .attr('y', (heightSvgList-(-2))+ "%") //add 2 percent for padding
 .attr('x', '10');
 
+//==========ADD SELECTOR FOR PERIODS
+this.svgFilters
+.append('text')
+.text('SEASON')
+.on('click',function(){
+	//slide line
+	filterViewLayout.underlineLine
+	.transition()
+	.duration(500)
+	.attr('x1', '33%')
+	.attr("x2", '42%');
+	//hide all calendars
+	d3.select('#calendar')
+	.style('visibility', 'hidden');
+
+	//show calendar
+	d3.select('#svg-season')
+	.style('visibility', 'visible');
+})
+.attr('cursor', 'pointer')
+.style('font-size', 18)
+.attr('y', (heightSvgList-(-6))+ "%") 
+.attr('x', '33%');
+
+this.svgFilters
+.append('text')
+.text('DAY')
+.on('click',function(){
+	//slide line
+	filterViewLayout.underlineLine
+	.transition()
+	.duration(500)
+	.attr('x1', '26%')
+	.attr("x2", '30%');
+
+	//hide all calendars
+	d3.select('#svg-season')
+	.style('visibility', 'hidden');
+
+	//show calendar
+	d3.select('#calendar')
+	.style('visibility', 'visible'); //this calendar is for the day
+})
+.attr('cursor', 'pointer')
+.style('font-size', 18)
+.attr('y', (heightSvgList-(-6))+ "%") 
+.attr('x', '26%');
+
+this.svgFilters
+.append('text')
+.text('YEAR')
+.on('click',function(){
+	//slide line
+	filterViewLayout.underlineLine
+	.transition()
+	.duration(500)
+	.attr('x1', '16%')
+	.attr("x2", '22%');
+
+	//hide all calendars
+	d3.select('#svg-season')
+	.style('visibility', 'hidden'); 
+
+	//show calendar
+	d3.select('#calendar')
+	.style('visibility', 'visible');	//this calendar is only for the year
+})
+.attr('cursor', 'pointer')
+.style('font-size', 18)
+.attr('y', (heightSvgList-(-6))+ "%") 
+.attr('x', '16%');
+
+this.svgFilters
+.append('text')
+.text('PICK:')
+.style('font-size', 25)
+.attr('y', (heightSvgList-(-6))+ "%") 
+.attr('x', '3%');
+
+//=========ADD LINE TO UNDERLINE PERIOD
+this.underlineLine = this.svgFilters
+.append("line")
+.attr('y1',(heightSvgList-(-7))+ "%") 
+.attr('x1', '16%')
+.attr('y2', (heightSvgList-(-7))+ "%") 
+.attr('x2', '23%')
+.attr("stroke-width", 2)
+.attr("stroke", "black");
+
+//SVG SEASON PICKING==============================================================================
+this.svgSeason =this.g.append('svg')
+.attr('id', 'svg-season')	
+.attr('visibility', 'hidden')
+.append('g');
+
+//========ATLANTIC===============
+var atlanticOn = false;
+this.svgSeason
+.append('rect')
+.on('click',function(){
+	if(!atlanticOn){
+		this.setAttribute('class', 'seasonOn');
+		d3.select('#rect-season-pacific').attr('class', 'seasonOff');
+		pacificOn = false;
+	}else{
+		this.setAttribute('class', 'seasonOff');
+	}
+	atlanticOn = !atlanticOn;
+})
+.attr('cursor', 'pointer')
+.attr('id', 'rect-season-atlantic')	
+.attr('height', (100 - heightSvgList - 30) + "%") 
+.attr('y', (heightSvgList-(-9))+ "%") 
+.attr('x', '3%');
+
+this.svgSeason
+.append('text')
+.text('ATLANTIC SEASON')
+.style('font-size', 20)
+.attr('y', (heightSvgList-(-11))+ "%") 
+.attr('x', '12%');
+
+this.svgSeason
+.append('text')
+.text('MAY')
+.style('font-size', 15)
+.attr('y', (heightSvgList-(-16))+ "%") 
+.attr('x', '18%');
+this.svgSeason
+.append('text')
+.text('NOVEMBER')
+.style('font-size', 15)
+.attr('y', (heightSvgList-(-16))+ "%") 
+.attr('x', '34%');
+
+this.svgSeason
+.append("line")
+.attr('y1', (heightSvgList-(-18))+ "%") 
+.attr('x1', '20%')
+.attr('y2', (heightSvgList-(-18))+ "%") 
+.attr('x2', '40%')
+.attr("stroke-width", 2)
+.attr("stroke", "black");
+
+this.svgSeason
+.append("circle")
+.attr("cx", "20%")
+.attr("cy",(heightSvgList-(-18))+ "%")
+.attr("r", 7);
+this.svgSeason
+.append("circle")
+.attr("cx", "40%")
+.attr("cy",(heightSvgList-(-18))+ "%")
+.attr("r", 7);
+
+//============PACIFIC===================
+var pacificOn=false;
+this.svgSeason
+.append('rect')
+.on('click',function(){
+	if(!pacificOn){
+		this.setAttribute('class', 'seasonOn');
+		atlanticOn = false;
+		d3.select('#rect-season-atlantic').attr('class', 'seasonOff');
+	}else{
+		this.setAttribute('class', 'seasonOff');
+	}
+	pacificOn = !pacificOn;
+})
+.attr('cursor', 'pointer')
+.attr('id', 'rect-season-pacific')	
+.attr('height', (100 - heightSvgList - 28) + "%") 
+.attr('y', (heightSvgList-(-22))+ "%") 
+.attr('x', '3%');
+
+this.svgSeason
+.append('text')
+.text('PACIFIC SEASON')
+.style('font-size', 20)
+.attr('y', (heightSvgList-(-26))+ "%") 
+.attr('x', '13%');
+
+this.svgSeason
+.append('text')
+.text('JUN')
+.style('font-size', 15)
+.attr('y',(heightSvgList-(-31))+ "%") 
+.attr('x', '13%');
+this.svgSeason
+.append('text')
+.text('NOVEMBER')
+.style('font-size', 15)
+.attr('y', (heightSvgList-(-31))+ "%") 
+.attr('x', '34%');
+
+this.svgSeason
+.append("line")
+.attr('y1', (heightSvgList-(-33))+ "%") 
+.attr('x1', '15%')
+.attr('y2', (heightSvgList-(-33))+ "%") 
+.attr('x2', '40%')
+.attr("stroke-width", 2)
+.attr("stroke", "black");
+
+this.svgSeason
+.append("circle")
+.attr("cx", "15%")
+.attr("cy",(heightSvgList-(-33))+ "%")
+.attr("r", 7);
+this.svgSeason
+.append("circle")
+.attr("cx", "40%")
+.attr("cy",(heightSvgList-(-33))+ "%")
+.attr("r", 7);
+
+
+
+//===============LANDED FILTER
+
 var landedFilterOn = false;
 
 //add landed filter
@@ -175,7 +394,8 @@ function toggleLanded(){
 	filterViewLayout.notifyAll(new ToggleFilter('L',landedFilterOn,'toggle'));
 }
 
-//add select all
+
+//==============SELECT ALL
 this.svgList
 .append('text')
 .attr('text-anchor', 'middle')
@@ -201,13 +421,16 @@ function toggleSelectAll(){
 	d3.select(this).text(function() { return (selectAllOn)?'\uf046':'\uf096'; });
 }
 
-//add datepicker
+//================DATE PICKER
 addDatePicker();
 function addDatePicker(){
-	/* var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  
-    d3.select('#map').append('div')
-	.attr('id', 'calendar');	
+	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+	d3.select('#map').append('div')
+	.attr('id', 'calendar')
+	.style('visibility', 'visible') 
+	.style('position', 'absolute')
+	.style('top', "68%");	
 
     //get today date
     var today = new Date();
@@ -221,18 +444,18 @@ function addDatePicker(){
     // add the widget to the given div
     $('#calendar')
     .DatePicker({
-        flat: true,
-        mode:'single',
-        date: new Date(today),
-        current: new Date(today),
-        view: 'years',
-        calendars: 1,
-        starts: 1,
-         onChange: function(formated) {            
+    	flat: true,
+    	mode:'single',
+    	date: new Date(today),
+    	current: new Date(today),
+    	view: 'years',
+    	calendars: 1,
+    	starts: 1,
+    	onChange: function(formated) {            
             console.log($('#calendar').DatePickerGetDate(formated)); //TO GET THE DATE AS ARRAY OF STRINGS
         }
-    });*/
-	d3.select('#map').append('div')
+    });
+/*	d3.select('#map').append('div')
 	.attr('id', 'widget')
 	.append('div')
 	.attr('id','widgetField')
@@ -267,8 +490,15 @@ function addDatePicker(){
     $('#widgetField span').get(0).innerHTML = defaultDateString.join(' &divide; ');
 
     // add the widget to the given div
-    $('#widgetCalendar')    
+    $('#widgetCalendar')
     .DatePicker({
+    	flat: true,
+    	date: '2008-07-31',
+    	current: '2008-07-31',
+    	calendars: 1,
+    	starts: 1
+    });
+ /*   .DatePicker({
     	flat: true,
     	format: 'd B, Y',
         date: [new Date(today), new Date(today)], //the default choice is today
@@ -280,9 +510,9 @@ function addDatePicker(){
         	$('#widgetField span').get(0).innerHTML = formated.join(' &divide; ');
             console.log($('#widgetCalendar').DatePickerGetDate(formated)); //TO GET THE DATE AS ARRAY OF STRINGS
         }
-    });
+    });*/
 
-    // open and close the calendar
+   /* // open and close the calendar
     var state = false;
     $('#widgetField>a').bind('click', function(){
     	log('nmichia');
@@ -296,7 +526,7 @@ function addDatePicker(){
     $('#clearSelection').bind('click', function(){
     	$('#widgetCalendar').DatePickerClear();
     	return false;
-    });
+    });*/
 }
 
 //create ================================COLUMNS OF LIST(name,date,maxSpeed,danger)

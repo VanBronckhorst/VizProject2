@@ -593,9 +593,9 @@
 				var border=10
 				var fontOrig = 12
 				var increment = w/290;
-				var newFont = parseInt(fontOrig * increment*0.8)
-				d3.selectAll("td").style("font-size", newFont)
-				d3.selectAll("th").style("font-size", newFont*1.1)
+			//	var newFont = parseInt(fontOrig * increment*0.8)
+			//	d3.selectAll("td").style("font-size", newFont)
+			//	d3.selectAll("th").style("font-size", newFont)
 				
 				return false;
 			},

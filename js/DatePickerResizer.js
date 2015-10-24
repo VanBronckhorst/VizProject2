@@ -14,7 +14,7 @@ var h= w/ratio
 var border=10
 var fontOrig = 12
 var increment = w/290;
-var newFont = parseInt(fontOrig * increment*0.8)
+var newFont = parseInt(fontOrig * increment*1.5)
 var wSpace=10;
 
 log(w, globW)
@@ -33,6 +33,7 @@ d3.selectAll(".datepickerSpace").style("width",wSpace)
 d3.selectAll(".datePickerContainer").style("width",w-2*border).style("height",w/ratio2-2*border).style("font-size", newFont)
 d3.selectAll("td").style("font-size", newFont)
 //>>>>>>> d10a3bbc6480c538ddbdf828446898c82ccac1a3
+d3.selectAll('td').selectAll('a').selectAll('span').style('font-size', newFont)
 
 d3.selectAll("th").style("font-size", newFont*1.1)
 }

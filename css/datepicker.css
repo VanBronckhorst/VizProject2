@@ -12,20 +12,16 @@ div.datepicker {
 .datepickerContainer {
 	background: #121212;
 	position: absolute;
-/*	top: 10px;
-	left: 10px;*/
+/top: 10px;
+	left:5%;
 	width:100%;
 }
 
 table {
-	width:100%;
-/*<<<<<<< HEAD
-	height: 100%;
-	font-size: 50px; here you change the font size of the table
-=======*/
+	width:95%;
+	font-size: 50px; /*here you change the font size of the table*/
 	height:100%;
 	table-layout: fixed;
-/*>>>>>>> d10a3bbc6480c538ddbdf828446898c82ccac1a3*/
 }
 
 
@@ -35,7 +31,7 @@ table {
 	top: 0;
 	right: 10px;
 	height: 10px;
-	background: url(../images/datePicker/datepicker_t.png);
+	/*background: url(../images/datePicker/datepicker_t.png);*/
 }
 .datepickerBorderB {
 	position: absolute;
@@ -43,7 +39,7 @@ table {
 	bottom: 0;
 	right: 10px;
 	height: 10px;
-	background: url(../images/datePicker/datepicker_b.png);
+	/*background: url(../images/datePicker/datepicker_b.png);*/
 }
 .datepickerBorderL {
 	position: absolute;
@@ -51,7 +47,7 @@ table {
 	bottom: 10px;
 	top: 10px;
 	width: 10px;
-	background: url(../images/datePicker/datepicker_l.png);
+	/*background: url(../images/datePicker/datepicker_l.png);*/
 }
 .datepickerBorderR {
 	position: absolute;
@@ -59,7 +55,7 @@ table {
 	bottom: 10px;
 	top: 10px;
 	width: 10px;
-	background: url(../images/datePicker/datepicker_r.png);
+/*	background: url(../images/datePicker/datepicker_r.png);*/
 }
 .datepickerBorderTL {
 	position: absolute;
@@ -67,7 +63,7 @@ table {
 	left: 0;
 	width: 10px;
 	height: 10px;
-	background: url(../images/datePicker/datepicker_tl.png);
+/*	background: url(../images/datePicker/datepicker_tl.png);*/
 }
 .datepickerBorderTR {
 	position: absolute;
@@ -75,7 +71,7 @@ table {
 	right: 0;
 	width: 10px;
 	height: 10px;
-	background: url(../images/datePicker/datepicker_tr.png);
+	/*background: url(../images/datePicker/datepicker_tr.png);*/
 }
 .datepickerBorderBL {
 	position: absolute;
@@ -83,7 +79,7 @@ table {
 	left: 0;
 	width: 10px;
 	height: 10px;
-	background: url(../images/datePicker/datepicker_bl.png);
+	/*background: url(../images/datePicker/datepicker_bl.png);*/
 }
 .datepickerBorderBR {
 	position: absolute;
@@ -91,8 +87,8 @@ table {
 	right: 0;
 	width: 10px;
 	height: 10px;
-	background: url(../images/datePicker/datepicker_br.png);
-}
+/*	background: url(../images/datePicker/datepicker_br.png);
+*/}
 .datepickerHidden {
 	display: none;
 }
@@ -186,8 +182,17 @@ table.datepickerViewMonths tr.datepickerDoW {
 table.datepickerViewYears tbody.datepickerDays,
 table.datepickerViewYears tbody.datepickerMonths,
 table.datepickerViewYears tr.datepickerDoW {
+	position: absolute;
+	top: 10%;
+	left:10%;
 	display: none;
 }
+ tr.datepickerDoW {
+	position: absolute;
+	top: 10%;
+	left:10%;
+}
+
 td.datepickerDisabled a,
 td.datepickerDisabled.datepickerNotInMonth a{
 	color: #333;
