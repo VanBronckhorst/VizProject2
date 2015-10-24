@@ -140,6 +140,137 @@ this.svgFilters
 .attr('y', (heightSvgList-(-2))+ "%") //add 2 percent for padding
 .attr('x', '10');
 
+//SVG SEASON PICKING==============================================================================
+this.svgSeason =this.g.append('svg')
+.attr('id', 'svg-season')	
+.append('g');
+
+//========ATLANTIC===============
+var atlanticOn = false;
+this.svgSeason
+.append('rect')
+.on('click',function(){
+	if(!atlanticOn){
+		this.setAttribute('class', 'seasonOn');
+		d3.select('#rect-season-pacific').attr('class', 'seasonOff');
+		pacificOn = false;
+	}else{
+		this.setAttribute('class', 'seasonOff');
+	}
+	atlanticOn = !atlanticOn;
+})
+.attr('cursor', 'pointer')
+.attr('id', 'rect-season-atlantic')	
+.attr('height', (100 - heightSvgList - 28) + "%") 
+.attr('y', (heightSvgList-(-7))+ "%") 
+.attr('x', '3%');
+
+this.svgSeason
+.append('text')
+.text('ATLANTIC SEASON')
+.style('font-size', 20)
+.attr('y', (heightSvgList-(-11))+ "%") 
+.attr('x', '12%');
+
+this.svgSeason
+.append('text')
+.text('MAY')
+.style('font-size', 15)
+.attr('y', (heightSvgList-(-16))+ "%") 
+.attr('x', '18%');
+this.svgSeason
+.append('text')
+.text('NOVEMBER')
+.style('font-size', 15)
+.attr('y', (heightSvgList-(-16))+ "%") 
+.attr('x', '34%');
+
+this.svgSeason
+.append("line")
+.attr('y1', (heightSvgList-(-18))+ "%") 
+.attr('x1', '20%')
+.attr('y2', (heightSvgList-(-18))+ "%") 
+.attr('x2', '40%')
+.attr("stroke-width", 2)
+.attr("stroke", "black");
+
+this.svgSeason
+.append("circle")
+.attr("cx", "20%")
+.attr("cy",(heightSvgList-(-18))+ "%")
+.attr("r", 7);
+this.svgSeason
+.append("circle")
+.attr("cx", "40%")
+.attr("cy",(heightSvgList-(-18))+ "%")
+.attr("r", 7);
+
+//============PACIFIC===================
+var pacificOn=false;
+this.svgSeason
+.append('rect')
+.on('click',function(){
+	if(!pacificOn){
+		this.setAttribute('class', 'seasonOn');
+		atlanticOn = false;
+		d3.select('#rect-season-atlantic').attr('class', 'seasonOff');
+	}else{
+		this.setAttribute('class', 'seasonOff');
+	}
+	pacificOn = !pacificOn;
+})
+.attr('cursor', 'pointer')
+.attr('id', 'rect-season-pacific')	
+.attr('height', (100 - heightSvgList - 28) + "%") //5 is the percentage of empty space at the bottom of the filters
+.attr('y', (heightSvgList-(-22))+ "%") //add 2 percent for padding
+.attr('x', '3%');
+
+this.svgSeason
+.append('text')
+.text('PACIFIC SEASON')
+.style('font-size', 20)
+.attr('y', (heightSvgList-(-26))+ "%") 
+.attr('x', '13%');
+
+this.svgSeason
+.append('text')
+.text('JUN')
+.style('font-size', 15)
+.attr('y',(heightSvgList-(-31))+ "%") 
+.attr('x', '13%');
+this.svgSeason
+.append('text')
+.text('NOVEMBER')
+.style('font-size', 15)
+.attr('y', (heightSvgList-(-31))+ "%") 
+.attr('x', '34%');
+
+this.svgSeason
+.append("line")
+.attr('y1', (heightSvgList-(-33))+ "%") 
+.attr('x1', '15%')
+.attr('y2', (heightSvgList-(-33))+ "%") 
+.attr('x2', '40%')
+.attr("stroke-width", 2)
+.attr("stroke", "black");
+
+this.svgSeason
+.append("circle")
+.attr("cx", "15%")
+.attr("cy",(heightSvgList-(-33))+ "%")
+.attr("r", 7);
+this.svgSeason
+.append("circle")
+.attr("cx", "40%")
+.attr("cy",(heightSvgList-(-33))+ "%")
+.attr("r", 7);
+
+
+
+
+
+//=========LANDED FILTER
+
 var landedFilterOn = false;
 
 //add landed filter
@@ -204,10 +335,11 @@ function toggleSelectAll(){
 //add datepicker
 addDatePicker();
 function addDatePicker(){
-	 var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  
-    d3.select('#map').append('div')
+	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+	d3.select('#map').append('div')
 	.attr('id', 'calendar')
+	.style('visibility', 'hidden') //CALENDAR IS HIDDEN
 	.style('position', 'absolute')
 	.style('top', "65%");	
 
@@ -223,14 +355,14 @@ function addDatePicker(){
     // add the widget to the given div
     $('#calendar')
     .DatePicker({
-        flat: true,
-        mode:'single',
-        date: new Date(today),
-        current: new Date(today),
-        view: 'years',
-        calendars: 1,
-        starts: 1,
-         onChange: function(formated) {            
+    	flat: true,
+    	mode:'single',
+    	date: new Date(today),
+    	current: new Date(today),
+    	view: 'years',
+    	calendars: 1,
+    	starts: 1,
+    	onChange: function(formated) {            
             console.log($('#calendar').DatePickerGetDate(formated)); //TO GET THE DATE AS ARRAY OF STRINGS
         }
     });
