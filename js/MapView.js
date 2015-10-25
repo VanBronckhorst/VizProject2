@@ -39,7 +39,10 @@ function MapView(){
 	};	
 	
 	//INITIATE THE MAP	
-	this.map = L.map('map',{layers: [this.darkTile]}).setView([28.0, -94.0], 5);		
+	this.map = L.map('map',{layers: [this.darkTile],
+							doubleClickZoom: false,
+							markerZoomAnimation: false
+	}).setView([28.0, -94.0], 5);		
 	L.control.layers(this.baseMaps,null,{position:"topleft"}).addTo(this.map);
 
 	// MAP Variables
@@ -134,18 +137,18 @@ function MapView(){
 	}
 	
 	this.getCloroplethColor = function(d) {
-    return d > 1000 ? '#800026' :
-           d > 500  ? '#BD0026' :
-           d > 200  ? '#E31A1C' :
-           d > 100  ? '#FC4E2A' :
-           d > 50   ? '#FD8D3C' :
-           d > 20   ? '#FEB24C' :
+    return d > 10000 ? '#800026' :
+           d > 5000  ? '#BD0026' :
+           d > 1000  ? '#E31A1C' :
+           d > 500  ? '#FC4E2A' :
+           d > 100   ? '#FD8D3C' :
+           d > 50   ? '#FEB24C' :
            d > 10   ? '#FED976' :
                       '#FFEDA0';
 	}
 	this.cloroplethStyle = function(feature) {
     return {
-        fillColor: that.getCloroplethColor(feature.properties.density),
+        fillColor: that.getCloroplethColor(feature.properties.danger),
         weight: 2,
         opacity: 1,
         color: 'white',
@@ -173,7 +176,7 @@ function MapView(){
 				if (this.markers[hurricaneI]){
 						shown +=1;
 						this.markers[hurricaneI].setLatLng([pointToShow["lat"],pointToShow["lon"] ]);
-						this.markers[hurricaneI].setType(pointToShow["type"]);
+						this.markers[hurricaneI].setType(getHurricaneType(pointToShow));
 						
 					}else{
 						shown +=1;
@@ -216,7 +219,7 @@ function MapView(){
 		}
 		this.timer = setInterval(this.updateTime, this.animationUpdate);
 		
-		this.legendControl.changeLegend(["yellow","red"],["Tropical Storm","Hurricane"],"Type");
+		this.legendControl.changeLegend(["#bfad23","red","#5ea034"],["Tr. Storm","Hurricane","Tr. Cyclone"],"Type");
 		
 	}
 	

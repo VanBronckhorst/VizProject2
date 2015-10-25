@@ -117,3 +117,28 @@ function lastPointInHurricanes(h){
 	return new Date(year,month,day,hour,min);
 }
 
+function getHurricaneType(h){
+	if (h["type"]==" HU"){
+		if (h["maxSpeed"]<82){
+			return "HU1"
+		}
+		if (h["maxSpeed"]<95){
+			return "HU2"
+		}
+		if (h["maxSpeed"]<112){
+			return "HU3"
+		}
+		if (h["maxSpeed"]<136){
+			return "HU4"
+		}
+		return "HU5"
+	}
+	if (h["type"]==" TS" || h["type"]==" TD"){
+		return "TS";
+	}
+	if (h["type"]==" SS" || h["type"]==" SD" || h["type"]==" EX"){
+		return "EX";
+	}
+	return "EX";
+}
+

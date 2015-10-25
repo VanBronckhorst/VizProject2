@@ -25,6 +25,11 @@
 	stroke: white;
 	fill: white;
 }
+.time-bar-control-text{
+	stroke: white;
+	fill: white;
+	text-align: right;
+}
 
 .warp-overlay{
 	position: absolute;

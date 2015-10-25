@@ -41,7 +41,12 @@ var layerManager = new function(){
 	}
 	
 	this.update = function(){
-		for (i in this.layers){
+		var count = 0;
+		for (var i in this.layers) {
+		   if (this.layers.hasOwnProperty(i)) count++;
+		}
+
+		for (var i=2;i<count+1;i++){
 			var g = this.layers[i];
 			for (l in g){
 				

@@ -1,7 +1,37 @@
 //Adapted from https://www.mapbox.com/mapbox.js/example/v1.0.0/rotating-controlling-marker/
 
-var hurrIcon= new L.Icon({iconUrl:'./images/hurr.png',iconSize: [30, 30]});
-var nonHurrIcon= new L.Icon({iconUrl:'./images/nonHurr.png',iconSize: [30, 30]});
+
+
+var hurrIcon= new L.Icon({iconUrl:'./images/hurr.png',iconSize: [50, 50]});
+var hurr2Icon= new L.Icon({iconUrl:'./images/hurr2.png',iconSize: [50, 50]});
+var hurr3Icon= new L.Icon({iconUrl:'./images/hurr3.png',iconSize: [50, 50]});
+var hurr4Icon= new L.Icon({iconUrl:'./images/hurr4.png',iconSize: [50, 50]});
+var hurr5Icon= new L.Icon({iconUrl:'./images/hurr5.png',iconSize: [50, 50]});
+var nonHurrIcon= new L.Icon({iconUrl:'./images/ts.png',iconSize: [50, 50]});
+var exIcon= new L.Icon({iconUrl:'./images/ex.png',iconSize: [50, 50]});
+
+function getIconFromType(t){
+	if (t=="HU1"){
+		return hurrIcon
+	}
+	if (t=="HU2"){
+		return hurr2Icon
+	}
+	if (t=="HU3"){
+		return hurr3Icon
+	}
+	if (t=="HU4"){
+		return hurr4Icon
+	}
+	if (t=="HU5"){
+		return hurr5Icon
+	}
+	if (t=="EX"){
+		return exIcon
+	}
+	return nonHurrIcon;
+}
+
 var hurricaneRotator = new function(){
 	var that=this
 	this.hurricanesToRotate=[]
@@ -73,7 +103,7 @@ L.HurricaneMarker = L.Marker.extend({
 	   if (type!= this.type){
 	    
 	    this.type=type;
-	    this.setIcon(this.type==" HU"?hurrIcon:nonHurrIcon);
+	    this.setIcon(getIconFromType(type));
 		}
   }
   
