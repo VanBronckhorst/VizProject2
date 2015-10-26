@@ -44,27 +44,40 @@
   width: 20%;
 }
 .graphsView.buttons.container .controls.area .button {
-  height: 50%;
+  height: 49%;
   width: 100%;
+  border-style: solid;
+  border-color: black;
+  border-width: 3px;
 }
+
 
 .graphsView.buttons.container .controls.activation {
   float: left;
   height: 50%;
   width: 80%;
+  display: flex;
 }
 .graphsView.buttons.container .controls.activation .button {
-  height: 100%;
-  width: 33.333%;
+  height: 99%;
+  width: 50%;
+  border-style: solid;
+  border-color: black;
+  border-width: 3px;
 }
+
 
 .graphsView.buttons.container .controls.granularity {
   float: left;
   height: 50%;
   width: 80%;
+  display: flex;
 }
 .graphsView.buttons.container .controls.granularity .button{
-  height: 100%;
+  height: 99%;
   width: 33.333%;
+  border-style: solid;
+  border-color: black;
+  border-width: 3px;
 }
 
