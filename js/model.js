@@ -6,6 +6,8 @@ var Model = function() {
 
 	this.visualizedData = [];
 
+	this.selectedHurricane = null;
+
 	this.observers = []; 
 
 	this.filters = {}; // holds the filters currently active "attrName": filterObject

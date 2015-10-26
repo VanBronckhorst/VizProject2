@@ -34,3 +34,9 @@ var HurricaneNameFilter = function(name,filterFunction){ // 'add' or 'remove' or
 	this.name = name;
 	this.function = filterFunction;
 }
+
+var ActiveFilter = function( name, filterFunction, date ) {
+	this.name = name; // "dates"
+	this.function = filterFunction; // "active"
+	this.date = date; // e.g. 20151026
+}
