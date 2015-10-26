@@ -65,17 +65,17 @@ var GraphsView = function () {
   var allAtlanticHurricanes = AtlanticGenerator(allDataset);
   var allPacificHurricanes = PacificGenerator(allDataset);
 
-  var allHPDdiv = allDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph day all number');
-  var allMWDdiv = allDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph day all maxwind');
-  var allMPDdiv = allDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph day all minpress');
+  var allHPDdiv = allDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph day all number');
+  var allMWDdiv = allDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph day all maxwind');
+  var allMPDdiv = allDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph day all minpress');
 
   var allHPMdiv = allDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph month all number');
   var allMWMdiv = allDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph month all maxwind');
   var allMPMdiv = allDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph month all minpress');
 
-  var allHPYdiv = allDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph year all number');
-  var allMWYdiv = allDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph year all maxwind');
-  var allMPYdiv = allDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph year all minpress');
+  var allHPYdiv = allDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph year all number');
+  var allMWYdiv = allDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph year all maxwind');
+  var allMPYdiv = allDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph year all minpress');
 
   // Day
   var allHPD = new HurrPerDayChart(DayStatsGenerator(allAtlanticHurricanes), allHPDdiv, 1, false);
@@ -113,17 +113,17 @@ var GraphsView = function () {
   .attr('y', '60%')
   .text('Visualized');
 
-  var visHPDdiv = visDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph day vis number');
-  var visMWDdiv = visDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph day vis maxwind');
-  var visMPDdiv = visDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph day vis minpress');
+  var visHPDdiv = visDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph day vis number');
+  var visMWDdiv = visDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph day vis maxwind');
+  var visMPDdiv = visDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph day vis minpress');
 
   var visHPMdiv = visDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph month vis number');
   var visMWMdiv = visDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph month vis maxwind');
   var visMPMdiv = visDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph month vis minpress');
 
-  var visHPYdiv = visDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph year vis number');
-  var visMWYdiv = visDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph year vis maxwind');
-  var visMPYdiv = visDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph year vis minpress');
+  var visHPYdiv = visDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph year vis number');
+  var visMWYdiv = visDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph year vis maxwind');
+  var visMPYdiv = visDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph year vis minpress');
 
   // Day
   var visHPD = new HurrPerDayChart(DayStatsGenerator(visAtlanticHurricanes), visHPDdiv, 1, false);
