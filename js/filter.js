@@ -6,16 +6,18 @@ var Filter = function() {
 	this.filterCurrent = function( filterObject, currentData ) { // names to be adjusted
 
 		switch( filterObject.function ) {
-			case "sort": // serve davvero?
-				return this.sort( filterObject.name, currentData, filterObject.values );
+			case "sort": 
+				return this.sort( filterObject.name, currentData, filterObject.order );
 			case "range":
 				return this.range( filterObject.name, currentData, filterObject.from, filterObject.to );
 			case "top":
 				return this.top( filterObject.name, currentData, filterObject.number );
 			case "bottom":
 				return this.bottom( filterObject.name, currentData, filterObject.number );		
-			case "equal": // serve?
-				return this.equal( filterObject.name, currentData, filterObject.value);
+			case "equal":
+				return this.equal( filterObject.name, currentData, filterObject.value );
+			case "active":
+				return this.active( currentData, filterObject.date );
 		}
 	};
 
@@ -78,7 +80,6 @@ var Filter = function() {
 		return result;
 	};
 
-	// TODO sistemare comparator
 	// sorts the data on the attribute name, ascending if order > 0, descending if < 0 
 	this.sort = function( name, data, order ) {
 		// compares two values accordingly with type
@@ -123,6 +124,23 @@ var Filter = function() {
 		} );
 	};
 
+	// filters the hurricanes to those that were active on the given day
+	this.active = function( data, date ) {
+		var newData = [];
+		for ( var i = 0, len = data.length; i < len; ++i ) {
+			var hurr = data[ i ];
+			var points = hurr[ "points" ];
+			points = points.filter( function( p ) {
+				p[ "date" ] === date;
+			} );
+			hurr[ "points" ] = points;
+			if ( points.length > 0 ) {
+				newData.push( hurr );
+			}
+		}
+		return newData;
+	};
+
 	// tests whether the first filter returns a subset of the second one
 	this.isSubset = function( fObj1, fObj2 ) {
 		if ( fObj1.name === fObj2.name ) {
@@ -137,6 +155,8 @@ var Filter = function() {
 					return fObj1.number <= fObj2.number;
 				case "equal":
 					return fObj1.value === fObj2.value;
+				case "active":
+					return fObj1.date === fObj2.date;
 			}
 		}
 		return false;

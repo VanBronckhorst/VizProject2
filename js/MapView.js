@@ -169,7 +169,7 @@ function MapView(){
 		if (!this.legendControl.isOnMap()){
 				this.legendControl.addTo(this.map);
 			}
-		this.legendControl.changeLegend(this.cloroplethColors,['1','2','3','4','5','6','7'],"Danger");
+		this.legendControl.changeLegend(this.cloroplethColors,['Inexistent','Very Low','Low','Medium','High','Very High','Ultra High'],"Danger");
 	}
 	
 	this.hurricaneSelected = function(h){
