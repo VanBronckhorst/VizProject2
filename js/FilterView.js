@@ -598,7 +598,7 @@ function toggleFavorite(){
 }
 //===============PACIFIC FILTER
 
-var pacificFilterOn = false;
+var pacificFilterOn = true;
 
 //add favorite filter
 this.svgFilters
@@ -621,7 +621,7 @@ this.svgFilters
 .attr('x', this.viewBoxWidth*0.57 )
 .attr('y', (heightSvgList * 1.19)+ "%")
 .on('click',toggleFilterPacific)
-.text(function() { return '\uf096'; });
+.text(function() { return '\uf046'; });
 
 function toggleFilterPacific(){
 	//toggle filtet
@@ -630,12 +630,24 @@ function toggleFilterPacific(){
 	//change icon
 	d3.select(this).text(function() { return (pacificFilterOn)?'\uf046':'\uf096'; });
 	//notify
-	//filterViewLayout.notifyAll(new ToggleFilter('L',favoriteOn,'toggle'));
+	var value;
+	if(atlanticFilterOn && pacificFilterOn){
+		value = null;
+	}else if(atlanticFilterOn && !pacificFilterOn){
+		value = 'A';
+	}else if (!atlanticFilterOn && pacificFilterOn){
+		value = 'P';
+	}else{
+		//both are false
+		//there is no hurrican in ocean Z so this is a way to hide all
+		value = 'Z'; 
+	}
+	filterViewLayout.notifyAll(new ToggleFilter('ocean',value,'equal'));
 }
 
 //===============ATLANTIC FILTER
 
-var atlanticFilterOn = false;
+var atlanticFilterOn = true;
 
 //add favorite filter
 this.svgFilters
@@ -658,7 +670,7 @@ this.svgFilters
 .attr('x', this.viewBoxWidth*0.82 )
 .attr('y', (heightSvgList * 1.19)+ "%")
 .on('click',toggleFilterAtlantic)
-.text(function() { return '\uf096'; });
+.text(function() { return '\uf046'; });
 
 function toggleFilterAtlantic(){
 	//toggle filtet
@@ -667,7 +679,19 @@ function toggleFilterAtlantic(){
 	//change icon
 	d3.select(this).text(function() { return (atlanticFilterOn)?'\uf046':'\uf096'; });
 	//notify
-	//filterViewLayout.notifyAll(new ToggleFilter('L',favoriteOn,'toggle'));
+	var value;
+	if(atlanticFilterOn && pacificFilterOn){
+		value = null;
+	}else if(atlanticFilterOn && !pacificFilterOn){
+		value = 'A';
+	}else if (!atlanticFilterOn && pacificFilterOn){
+		value = 'P';
+	}else{
+		//both are false
+		//there is no hurrican in ocean Z so this is a way to hide all
+		value = 'Z'; 
+	}
+	filterViewLayout.notifyAll(new ToggleFilter('ocean',value,'equal'));
 }
 
 //===============TOP FILTER
