@@ -424,7 +424,7 @@ this.g
 .attr("transform", "translate(" + 550 + ","+ 630+")")
 .append('text')
 .text('MIN PRESSURE (mb)')
-.style('font-size', 15);
+.style('font-size', 18);
 
 //make ticks clickable
 d3.select('#pressureSlider')
@@ -476,7 +476,7 @@ this.g
 .attr("transform", "translate(" + 550 + ","+ 710+")")
 .append('text')
 .text('MAX WIND SPEED (Kn)')
-.style('font-size', 15);
+.style('font-size', 18);
 
 //make ticks clickable
 d3.select('#windSlider')
@@ -1202,11 +1202,11 @@ FilterView.prototype.modelUpdated = function(dataVisualized,dataCurrent){
     	});
 	}
 
-	//by DEFAULT SORT by speed
+	/*//by DEFAULT SORT by speed
 	//sort by
 	this.data.sort(UtilityView.descending);
 	//update
-	this.update(this.data,this.dataVisualized);
+	this.update(this.data,this.dataVisualized);*/
 
 	/*if(firstUpdateFilterView){
 		function startLayout(){
