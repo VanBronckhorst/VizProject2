@@ -446,7 +446,7 @@ function pressureClicked(d){
 	
 	min = parseInt(d3.select(a[0]).text().replace(",", ""));
 	
-	filterViewLayout.notifyAll(new RangeFilter ('minPressure',min,2000,'range'));
+	filterViewLayout.notifyAll(new RangeFilter ('minPress',min,2000,'range'));
 	
 }
 //===============MAX WIND SELECTOR
