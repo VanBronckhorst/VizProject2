@@ -133,6 +133,9 @@
 .leaflet-control-layers{
 	width:100%
 }
+.leaflet-right{
+	right: 25%;
+}
 
 .control-layer-text{
 	font-size: 36;

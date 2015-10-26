@@ -13,10 +13,14 @@ var LegendControl = L.Control.extend({
         // create the control container with a particular class name
         this.onMap=true;
         var container = L.DomUtil.create('div', 'date-control');
+/*
         
         this.w= parseInt(d3.select("body").style("width"))*0.05+"px";
 		this.h= parseInt(this.w)*2 + "px";
 		
+*/
+		this.h= parseInt(d3.select("body").style("height"))*0.18+"px";
+		this.w= parseInt(this.h)/2 + "px";
 		
 		this.div = d3.select(container);
 		this.div.style("width",this.w).style("height",this.h);

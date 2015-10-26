@@ -91,7 +91,7 @@ function MapView(){
 				if (pointI==0){
 					this.hurricaneLayer.addLayer(L.circle([point["lat"],point["lon"]],5,
 												{color:"yellow",fillColor: "yellow",
-												fillOpacity: 0.5}));
+												fillOpacity: 1}));
 				}else{
 					this.hurricaneLayer.addLayer(L.polyline([[point["lat"],point["lon"]],
 															[hurricane['points'][pointI-1]["lat"],hurricane['points'][pointI-1]["lon"]]],
@@ -112,7 +112,8 @@ function MapView(){
 				if (pointI==0){
 					this.hurricaneLayer.addLayer(L.circle([point["lat"],point["lon"]],5,
 								{fillColor: scale(this.comparingAttr == "speed" ?point["maxSpeed"]:point["pressure"]),
-							    fillOpacity: 0.5}));
+								color: scale(this.comparingAttr == "speed" ?point["maxSpeed"]:point["pressure"]),
+							    fillOpacity: 1}));
 				}else{
 					var line=L.polyline([[point["lat"],point["lon"]],[hurricane['points'][pointI-1]["lat"],hurricane['points'][pointI-1]["lon"]]],
 											{color: scale(this.comparingAttr == "speed" ?point["maxSpeed"]:point["pressure"]),opacity:1})
@@ -168,7 +169,7 @@ function MapView(){
 		if (!this.legendControl.isOnMap()){
 				this.legendControl.addTo(this.map);
 			}
-		this.legendControl.changeLegend(this.cloroplethColors,['1','2','3','4','5','6','7'],"Danger");
+		this.legendControl.changeLegend(this.cloroplethColors,['Inexistent','Very Low','Low','Medium','High','Very High','Ultra High'],"Danger");
 	}
 	
 	this.hurricaneSelected = function(h){
