@@ -682,15 +682,17 @@ function toggleSelectAll(){
 }
 
 //================DATE PICKER
-addDatePicker();
-function addDatePicker(){
+d3.select('#map').append('div')
+.attr('id', 'calendarDay')
+.style('visibility', 'visible') 
+.style('position', 'absolute')
+.style('top', "68%");	
+
+addDatePicker('calendarDay');
+function addDatePicker(id){
 	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-	d3.select('#map').append('div')
-	.attr('id', 'calendar')
-	.style('visibility', 'visible') 
-	.style('position', 'absolute')
-	.style('top', "68%");	
+
 
     //get today date
     var today = new Date();
@@ -702,8 +704,9 @@ function addDatePicker(){
     var defaultDateString = [dd+' '+mm+', '+yyyy,dd+' '+mm+', '+yyyy];
 
     // add the widget to the given div
-    $('#calendar')
+    $('#'+id)
     .DatePicker({
+    yearOnly : true,    	
     	flat: true,
     	mode:'single',
     	date: new Date(today),
@@ -712,7 +715,7 @@ function addDatePicker(){
     	calendars: 1,
     	starts: 1,
     	onChange: function(formated) {            
-            console.log($('#calendar').DatePickerGetDate(formated)); //TO GET THE DATE AS ARRAY OF STRINGS
+            console.log($('#'+id).DatePickerGetDate(formated)); //TO GET THE DATE AS ARRAY OF STRINGS
         }
     });
 /*	d3.select('#map').append('div')
