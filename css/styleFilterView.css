@@ -45,28 +45,28 @@
 	stroke-width: 3px;
 }
 #rect-season-atlantic{
-	width: 45%;
+	width: 40%;
 	opacity: 0.7;
 	fill:white;
 	stroke: black;
 	stroke-width: 1px;
 }
 #rect-season-pacific{
-	width: 45%;
+	width: 40%;
 	opacity: 0.7;
 	fill:white;
 	stroke: black;
 	stroke-width: 1px;
 }
 #rect-season-pacific.seasonOn{
-	fill:red;
+	fill:purple;
 }
 #rect-season-pacific.seasonOff{
 	opacity: 0.7;
 	fill:white;
 }
 #rect-season-atlantic.seasonOn{
-	fill:red;
+	fill:purple;
 }
 #rect-season-atlantic.seasonOff{
 	opacity: 0.7;
@@ -82,7 +82,19 @@
 	float:left;
 	background-color: white;
 	left: 25%;
-	bottom: 0;
-	width: 2%;
-	height: 5%;
+	bottom: 3%	;
+	width: 1%;
+	height: 4%;
+}
+
+
+.axisFilter path,
+.axisFilter line {
+	fill: none;
+	stroke: black;
+	shape-rendering: crispEdges;
+}
+
+.axisFilter text {
+	font-size: 18px;
 }

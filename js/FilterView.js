@@ -113,7 +113,16 @@ this.g.append('text')
 .attr('class','title-controls')	
 .text('CONTROLS')
 .attr('y', '0')
-.attr('x', '250');
+.attr('x', '80');
+
+this.g.append('text')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'FontAwesome')
+.attr('font-size', 50)
+.attr('fill', 'black')
+.text(function(d) { return '\uf085'; })
+.attr('y', '-20')
+.attr('x', '15');
 
 
 //add container svg for lists
@@ -253,13 +262,13 @@ this.svgSeason
 .attr('id', 'rect-season-atlantic')	
 .attr('height', (100 - heightSvgList - 30) + "%") 
 .attr('y', (heightSvgList-(-9))+ "%") 
-.attr('x', '3%');
+.attr('x', '5%');
 
 this.svgSeason
 .append('text')
 .text('ATLANTIC SEASON')
 .style('font-size', 20)
-.attr('y', (heightSvgList-(-11))+ "%") 
+.attr('y', (heightSvgList-(-12))+ "%") 
 .attr('x', '12%');
 
 this.svgSeason
@@ -313,7 +322,7 @@ this.svgSeason
 .attr('id', 'rect-season-pacific')	
 .attr('height', (100 - heightSvgList - 28) + "%") 
 .attr('y', (heightSvgList-(-22))+ "%") 
-.attr('x', '3%');
+.attr('x', '5%');
 
 this.svgSeason
 .append('text')
@@ -355,8 +364,100 @@ this.svgSeason
 .attr("cy",(heightSvgList-(-33))+ "%")
 .attr("r", 7);
 
+//===============MIN PRESSURE SELECTOR
+//Create scale functions
+var pressureScale = d3.scale.linear()
+.domain([800,1100])
+.range([0,300]);
 
+//Define X axis
+var pressureAxis = d3.svg.axis()
+.scale(pressureScale)
+//.ticks(10)
+.orient("bottom");
 
+//Create X axis
+//this.svgFilters
+this.g
+.append("g")
+.attr("class", "axisFilter") //Assign "axis" class
+.attr('id', 'pressureSlider')
+.attr("transform", "translate(" + 450 + ","+ 640+")")
+.call(pressureAxis);
+
+//add name to slider
+this.g
+.append("g")
+.attr("transform", "translate(" + 550 + ","+ 630+")")
+.append('text')
+.text('MIN PRESSURE')
+.style('font-size', 15);
+
+//make ticks clickable
+d3.select('#pressureSlider')
+.selectAll('.tick')
+.attr('cursor', 'pointer')
+.on('click',pressureClicked)
+
+function pressureClicked(d){
+	var ticks = document.getElementById('pressureSlider').getElementsByTagName('text');
+	var tickList = Array.prototype.slice.call(ticks);
+
+	tickList
+	.forEach(function(d){		
+		d.setAttribute('fill', 'black');
+	});
+
+	var a = this.getElementsByTagName('text');
+	a[0].setAttribute('fill', 'purple');
+}
+//===============MAX WIND SELECTOR
+//Create scale functions
+var windScale = d3.scale.linear()
+.domain([10,160])
+.range([0,300]);
+
+//Define X axis
+var windAxis = d3.svg.axis()
+.scale(windScale)
+.ticks(10)
+.orient("bottom");
+
+//Create X axis
+//this.svgFilters
+this.g
+.append("g")
+.attr("class", "axisFilter") //Assign "axis" class
+.attr('id', 'windSlider')
+.attr("transform", "translate(" + 450 + ","+ 720+")")
+.call(windAxis);
+
+//add name to slider
+this.g
+.append("g")
+.attr("transform", "translate(" + 550 + ","+ 710+")")
+.append('text')
+.text('MAX WIND SPEED')
+.style('font-size', 15);
+
+//make ticks clickable
+d3.select('#windSlider')
+.selectAll('.tick')
+.attr('cursor', 'pointer')
+.on('click',windClicked)
+
+function windClicked(d){
+	var ticks = document.getElementById('windSlider').getElementsByTagName('text');
+	var tickList = Array.prototype.slice.call(ticks);
+
+	tickList
+	.forEach(function(d){		
+		d.setAttribute('fill', 'black');
+	});
+
+	var a = this.getElementsByTagName('text');
+	a[0].setAttribute('fill', 'purple');
+}
 //===============LANDED FILTER
 
 var landedFilterOn = false;
@@ -368,7 +469,7 @@ this.svgFilters
 .attr('dominant-baseline', 'central')
 .attr('font-size', 20)
 .attr('pointer-events','all' )
-.attr('x', this.viewBoxWidth*0.9 )
+.attr('x', this.viewBoxWidth*0.89 )
 .attr('y', (heightSvgList * 1.1)+ "%")
 .text('LANDED');
 
@@ -384,6 +485,18 @@ this.svgFilters
 .on('click',toggleLanded)
 .text(function() { return '\uf096'; });
 
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'FontAwesome')
+.attr('font-size', 20)
+.attr('cursor', 'pointer')
+.attr('x', this.viewBoxWidth*0.955	 )
+.attr('y', (heightSvgList * 1.1)+ "%")
+.text(function() { return '\uf041'; });
+
+
 function toggleLanded(){
 	//toggle filtet
 	landedFilterOn = !landedFilterOn;
@@ -392,6 +505,153 @@ function toggleLanded(){
 	d3.select(this).text(function() { return (landedFilterOn)?'\uf046':'\uf096'; });
 	//notify
 	filterViewLayout.notifyAll(new ToggleFilter('L',landedFilterOn,'toggle'));
+}
+
+//===============FAVORITE FILTER
+
+var favoriteOn = false;
+
+//add favorite filter
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-size', 20)
+.attr('pointer-events','all' )
+.attr('x', this.viewBoxWidth*0.65 )
+.attr('y', (heightSvgList * 1.1)+ "%")
+.text('FAVORITE');
+
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'FontAwesome')
+.attr('font-size', 20)
+.attr('cursor', 'pointer')
+.attr('x', this.viewBoxWidth*0.57 )
+.attr('y', (heightSvgList * 1.1)+ "%")
+.on('click',toggleFavorite)
+.text(function() { return '\uf096'; });
+
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'FontAwesome')
+.attr('font-size', 20)
+.attr('cursor', 'pointer')
+.attr('x', this.viewBoxWidth*0.73 )
+.attr('y', (heightSvgList * 1.1)+ "%")
+.text(function() { return '\uf005'; });
+
+function toggleFavorite(){
+	//toggle filtet
+	favoriteOn = !favoriteOn;
+	log('favorite filter'+ favoriteOn);
+	//change icon
+	d3.select(this).text(function() { return (favoriteOn)?'\uf046':'\uf096'; });
+	//notify
+	//filterViewLayout.notifyAll(new ToggleFilter('L',favoriteOn,'toggle'));
+}
+
+//===============TOP FILTER
+
+//add favorite filter
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-size', 20)
+.attr('pointer-events','all' )
+.attr('x', this.viewBoxWidth*0.65 )
+.attr('y', (heightSvgList * 1.23)+ "%")
+.text('TOP');
+
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-size', 20)
+.attr('pointer-events','all' )
+.attr('x', this.viewBoxWidth*0.75 )
+.attr('y', (heightSvgList * 1.23)+ "%")
+.text('5');
+var text5 = this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'FontAwesome')
+.attr('font-size', 20)
+.attr('cursor', 'pointer')
+.attr('x', this.viewBoxWidth*0.72 )
+.attr('y', (heightSvgList * 1.23)+ "%")
+.on('click',function(){
+	toggleTop(5);
+})
+.text(function() { return '\uf10c'; });
+
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-size', 20)
+.attr('pointer-events','all' )
+.attr('x', this.viewBoxWidth*0.84)
+.attr('y', (heightSvgList * 1.23)+ "%")
+.text('10');
+
+var text10 =this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'FontAwesome')
+.attr('font-size', 20)
+.attr('cursor', 'pointer')
+.attr('x', this.viewBoxWidth*0.81 )
+.attr('y', (heightSvgList * 1.23)+ "%")
+.on('click',function(){
+	toggleTop(10);
+})
+.text(function() { return '\uf10c'; });
+
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-size', 20)
+.attr('pointer-events','all' )
+.attr('x', this.viewBoxWidth*0.93 )
+.attr('y', (heightSvgList * 1.23)+ "%")
+.text('15');
+
+var text15 =this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'FontAwesome')
+.attr('font-size', 20)
+.attr('cursor', 'pointer')
+.attr('x', this.viewBoxWidth*0.9 )
+.attr('y', (heightSvgList * 1.23)+ "%")
+.on('click',function(){
+	toggleTop(15);
+})
+.text(function() { return '\uf10c'; });
+
+var top={'5':text5, '10':text10, '15':text15};
+
+function toggleTop(value){
+	log(value);
+	
+	var keys = Object.keys(top);
+	for(var i = 0; i < keys.length; i++){
+		log(top[keys[i]]);
+		top[keys[i]].text(function() { return (keys[i]==value)?'\uf192':'\uf10c'; });
+	}
+
+	//notify
+	//filterViewLayout.notifyAll(new ToggleFilter('L',favoriteOn,'toggle'));
 }
 
 
@@ -422,15 +682,17 @@ function toggleSelectAll(){
 }
 
 //================DATE PICKER
-addDatePicker();
-function addDatePicker(){
+d3.select('#map').append('div')
+.attr('id', 'calendarDay')
+.style('visibility', 'visible') 
+.style('position', 'absolute')
+.style('top', "68%");	
+
+addDatePicker('calendarDay');
+function addDatePicker(id){
 	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-	d3.select('#map').append('div')
-	.attr('id', 'calendar')
-	.style('visibility', 'visible') 
-	.style('position', 'absolute')
-	.style('top', "68%");	
+
 
     //get today date
     var today = new Date();
@@ -442,8 +704,9 @@ function addDatePicker(){
     var defaultDateString = [dd+' '+mm+', '+yyyy,dd+' '+mm+', '+yyyy];
 
     // add the widget to the given div
-    $('#calendar')
+    $('#'+id)
     .DatePicker({
+    yearOnly : true,    	
     	flat: true,
     	mode:'single',
     	date: new Date(today),
@@ -452,7 +715,7 @@ function addDatePicker(){
     	calendars: 1,
     	starts: 1,
     	onChange: function(formated) {            
-            console.log($('#calendar').DatePickerGetDate(formated)); //TO GET THE DATE AS ARRAY OF STRINGS
+            console.log($('#'+id).DatePickerGetDate(formated)); //TO GET THE DATE AS ARRAY OF STRINGS
         }
     });
 /*	d3.select('#map').append('div')

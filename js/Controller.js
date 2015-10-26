@@ -7,9 +7,15 @@ var Controller = function(){
 	//crea la filterView
 	var filterView = new FilterView();
 
+	//crea i graphs
+	//var graphsView = new GraphsView();FIXME
+
 	//add observers to the model
 	model.addObserver(filterView);
 	model.addObserver(map);	
+	//model.addObserver(graphsView);FIXME
+
+	//map.addObserver(graphsView); FIXME
 
 	//the controller observes the view for inputs
 	filterView.addObserver(this);
