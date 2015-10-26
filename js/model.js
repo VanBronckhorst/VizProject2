@@ -58,8 +58,10 @@ var Model = function() {
 		var oldFilter = this.filters[ filterObject.name ];
 
 		if ( filterObject.attribute === "favorite" ) {
+			filterObject.name = "maxSpeed";
 			this.currentData = this.filter.filterCurrent( filterObject, this.globalData );
 			this.visualizedData = this.currentData;
+			this.filters[ filterObject.name ] = filterObject;
 			// notify observers
 			this.notifyAll( this.visualizedData, this.currentData );
 			// allow chain calls
