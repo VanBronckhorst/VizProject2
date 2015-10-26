@@ -61,7 +61,6 @@ var Model = function() {
 			return this;
 		}
 
-
 		if ( filterObject.attribute === "favorite" ) {
 			filterObject.name = "maxSpeed";
 			this.currentData = this.filter.filterCurrent( filterObject, this.globalData );
@@ -73,6 +72,11 @@ var Model = function() {
 			// allow chain calls
 			return this;
 		}
+
+		if ( filterObject.attribute === "noFavorite" ) {
+			this.init();
+			return this;
+		} 
 
 		if ( filterObject.attribute === "noFilter" ) {
 			this.currentData = this.globalData;
