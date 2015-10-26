@@ -1106,7 +1106,7 @@ this.oldLists.push(//<-----come capire quale oldList usare
 
     
 }
-
+var toReset = false;
     //function to update list when model is updated
     this.update = function(data,dataVisualized){    	
    		//make the list slide to the beginning
@@ -1121,21 +1121,33 @@ this.oldLists.push(//<-----come capire quale oldList usare
     	function updateSingleList(list){
     		var attribute = list['attribute'];
     		list = list['list'];
+    		log(list);
+
+    		if(toReset){
+    			for(var i = 0; i <filterViewLayout.oldLists.length;i++ ){
+    				if(filterViewLayout.oldLists[i]['attribute']==attribute){
+    					log('trovata lista attributo');
+    					log(filterViewLayout.oldLists[i]['attribute']);
+    					list = filterViewLayout.oldLists[i]['list']; //ripristino
+    				}
+    			}
+    			toReset = false;
+    		}
 
 
     		list = list
     		.data(filterViewLayout.data.slice(0,this.wordBatchSize));
     		log(list);
-    		log(list.enter());
-    		log(list.exit());
-    		log(list.exit()[0].length - list.enter()[0].length);
-    		log(list.length - list.enter().length);
+    	//7	log(list.enter()[0].length);
+    	//	log(list.exit()[0].length);
+    		//log(list.update()[0].length);
+    	//	log(list.exit()[0].length - list.enter()[0].length);
+    	//	log(list.length - list.enter().length);
     		//se la lista è piu corta degli elementi visualizabili
-    		if(list.exit()[0].length - list.enter()[0].length){
-    			//list = filterViewLayout.oldLists;
+    		if(list.exit()[0].length - list.enter()[0].length>0){
+    			toReset = true;    			
     		}
-    		log(i);
-    		log(filterViewLayout.oldLists[i]);
+    		
 
     		//enter
     	/*	list

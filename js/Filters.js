@@ -26,7 +26,7 @@ var ToggleFilter = function(attribute,buttonStatus,filterFunction){
 var SliceFilter = function(attribute, number,fitlerFunction){// 'top' or 'bottom'
 	this.name = attribute;
 	this.number = number;
-	this.function = filterFunction;
+	this.function = fitlerFunction;
 }
 
 
