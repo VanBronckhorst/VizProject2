@@ -638,7 +638,6 @@
  				}
  				if (changed) {
  					options.onChange.apply(this, prepareDate(options));
- 					console.log(options.yearOnly);
  					
  				}
  			}

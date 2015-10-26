@@ -23,7 +23,7 @@ var ToggleFilter = function(attribute,buttonStatus,filterFunction){
 	this.function = filterFunction;
 }
 
-var SliceFilter = function(attribute, number,fitlerFunction){// 'top' or 'bottom'
+var SliceFilter = function(attribute, number,filterFunction){// 'top' or 'bottom'
 this.name = attribute;
 this.number = number;
 this.function = filterFunction;
@@ -33,4 +33,10 @@ this.function = filterFunction;
 var HurricaneNameFilter = function(name,filterFunction){ // 'add' or 'remove' or 'addAll' or 'removeAll'
 	this.name = name;
 	this.function = filterFunction;
+}
+
+var ActiveFilter = function( name, filterFunction, date ) {
+	this.name = name; // "dates"
+	this.function = filterFunction; // "active"
+	this.date = date; // e.g. 20151026
 }

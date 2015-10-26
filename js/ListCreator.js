@@ -6,7 +6,7 @@ var ListCreator = function(){
 	var titleSize = 25;
 	var titleXOffset = 5;
 	var busyWidth = 0;
-	var columnGap = 60;
+	var columnGap = 110;
 
 	this.createList = function(place,name,wantCheckBox){
 		//add title 
@@ -40,13 +40,7 @@ var ListCreator = function(){
 			return xOffset + titleXOffset + busyWidth+ columnGap*numberOfListCreated;
 		})
 		.attr('color','black')
-		.attr('font-size',valuesSize );	
-
-		log('list');
-		log(list);
-		log(tit[0][0].clientWidth);
-		log(list[0][0].clientWidth);
-		log(d3.max([tit[0][0].clientWidth,list[0][0].clientWidth]));
+		.attr('font-size',valuesSize );		
 
 		busyWidth += d3.max([tit[0][0].clientWidth,list[0][0].clientWidth]);
 

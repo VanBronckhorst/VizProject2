@@ -140,10 +140,10 @@ tbody.datepickerMonths td.datepickerSelected{
 }
 div.datepicker a:hover,
 div.datepicker a:hover {
-	color: #88c5eb;
+	color: purple;
 }
 div.datepicker td.datepickerNotInMonth a:hover {
-	color: #999;
+	color: purple;
 }
 div.datepicker tbody th {
 	text-align: left;
@@ -184,7 +184,7 @@ td.datepickerDisabled.datepickerNotInMonth a{
 	color: #333;
 }
 td.datepickerDisabled a:hover {
-	color: #333;
+	color: purple;
 }
 td.datepickerSpecial a {
 	background: #700;
