@@ -1115,6 +1115,11 @@ var toReset = false;
     	//change data
     	this.data = data;
     	this.dataVisualized = dataVisualized;
+    	if(toReset){
+    		filterViewLayout.lists = filterViewLayout.oldLists;
+    		toReset=false;
+    		log('ripristino lista');
+    	}
 
     	filterViewLayout.lists.forEach(function(d){updateSingleList(d);})	
 
@@ -1123,7 +1128,7 @@ var toReset = false;
     		list = list['list'];
     		log(list);
 
-    		if(toReset){
+    		/*if(toReset && attribute=='name'){
     			for(var i = 0; i <filterViewLayout.oldLists.length;i++ ){
     				if(filterViewLayout.oldLists[i]['attribute']==attribute){
     					log('trovata lista attributo');
@@ -1132,7 +1137,7 @@ var toReset = false;
     				}
     			}
     			toReset = false;
-    		}
+    		}*/
 
 
     		list = list
