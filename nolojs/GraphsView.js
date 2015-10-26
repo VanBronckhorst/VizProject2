@@ -18,7 +18,7 @@ var GraphsView = function () {
 
   var graphsViewLayout = this;
 
-  var panelOpened = 3;
+  var panelOpened = 2;
 
   var activeArea = 'Atlantic';
   var activeGranularity = 'day';
@@ -40,12 +40,27 @@ var GraphsView = function () {
   var buttonsDiv = map.append('div').attr('class', 'graphsView buttons container');
 
   //code to close and open the panel
-  var toggle = [true, true, true];
+  var toggle = [true, true];
 
   // ALL GRAPHS
   var allDiv = graphsDiv
   .append("div")
   .attr('class', 'panel ' + 0);
+
+  var allTitle = allDiv.append('svg')
+  .attr('class', 'panelTitle')
+  .style('width', '100%')
+  .style('height', '7%')
+  .attr('viewBox', '0 0 ' + 100 + ' ' + 100)
+  .append('text')
+  .attr('text-anchor', 'middle')
+  .attr('dominant-baseline', 'central')
+  .attr('font-family', 'Arial')
+  .attr('font-size', 60)
+  .attr('x', '50%')
+  .attr('y', '60%')
+  .text('Overall');
+
 
   var allAtlanticHurricanes = AtlanticGenerator(allDataset);
   var allPacificHurricanes = PacificGenerator(allDataset);
@@ -58,9 +73,9 @@ var GraphsView = function () {
   var allMWMdiv = allDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph month all maxwind');
   var allMPMdiv = allDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph month all minpress');
 
-  var allHPYdiv = allDiv.append('div').style('width', '100%').style('height', '33.333%').attr('class','graph year all number');
-  var allMWYdiv = allDiv.append('div').style('width', '100%').style('height', '33.333%').attr('class','graph year all maxwind');
-  var allMPYdiv = allDiv.append('div').style('width', '100%').style('height', '33.333%').attr('class','graph year all minpress');
+  var allHPYdiv = allDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph year all number');
+  var allMWYdiv = allDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph year all maxwind');
+  var allMPYdiv = allDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph year all minpress');
 
   // Day
   var allHPD = new HurrPerDayChart(DayStatsGenerator(allAtlanticHurricanes), allHPDdiv, 1, false);
@@ -76,15 +91,6 @@ var GraphsView = function () {
   var allMPY = new MinPressureChart(YearStatsGenerator(allAtlanticHurricanes), allMPYdiv, 3, false);
 
 
-  // Ricordarsi i new per istanziare gli oggetti!!
-  //var allPYC = new HurrPerYearChart(YearStatsGenerator(allAtlanticHurricanes), allHPYdiv, 1, false);
-  //MaxWindChart(YearStatsGenerator(allAtlanticHurricanes), allMWYdiv, 2, false);
-  //MinPressureChart(YearStatsGenerator(allAtlanticHurricanes), allMPYdiv, 3, false);
-
-  // POI APPENDERE AGLI SVG I VARI GRAFICI,
-  // O SCEGLIERE SE APPENDERLI DIRETTAMENTE AL DIV
-
-
   // VISUALIZED GRAPHS
   var visAtlanticHurricanes = AtlanticGenerator(visualizedDataset);
   var visPacificHurricanes = PacificGenerator(visualizedDataset);
@@ -92,6 +98,20 @@ var GraphsView = function () {
   var visDiv = graphsDiv
   .append("div")
   .attr('class', 'panel ' + 1);
+
+  var visTitle = visDiv.append('svg')
+  .attr('class', 'panelTitle')
+  .style('width', '100%')
+  .style('height', '7%')
+  .attr('viewBox', '0 0 ' + 100 + ' ' + 100)
+  .append('text')
+  .attr('text-anchor', 'middle')
+  .attr('dominant-baseline', 'central')
+  .attr('font-family', 'Arial')
+  .attr('font-size', 60)
+  .attr('x', '50%')
+  .attr('y', '60%')
+  .text('Visualized');
 
   var visHPDdiv = visDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph day vis number');
   var visMWDdiv = visDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph day vis maxwind');
@@ -101,14 +121,14 @@ var GraphsView = function () {
   var visMWMdiv = visDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph month vis maxwind');
   var visMPMdiv = visDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph month vis minpress');
 
-  var visHPYdiv = visDiv.append('div').style('width', '100%').style('height', '33.333%').attr('class','graph year vis number');
-  var visMWYdiv = visDiv.append('div').style('width', '100%').style('height', '33.333%').attr('class','graph year vis maxwind');
-  var visMPYdiv = visDiv.append('div').style('width', '100%').style('height', '33.333%').attr('class','graph year vis minpress');
+  var visHPYdiv = visDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph year vis number');
+  var visMWYdiv = visDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph year vis maxwind');
+  var visMPYdiv = visDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph year vis minpress');
 
-   // Day
-   var visHPD = new HurrPerDayChart(DayStatsGenerator(visAtlanticHurricanes), visHPDdiv, 1, false);
-   var visMWD = new MaxWindDayChart(DayStatsGenerator(visAtlanticHurricanes), visMWDdiv, 2, false);
-   var visMPD = new MinPressureDayChart(DayStatsGenerator(visAtlanticHurricanes), visMPDdiv, 3, false);
+  // Day
+  var visHPD = new HurrPerDayChart(DayStatsGenerator(visAtlanticHurricanes), visHPDdiv, 1, false);
+  var visMWD = new MaxWindDayChart(DayStatsGenerator(visAtlanticHurricanes), visMWDdiv, 2, false);
+  var visMPD = new MinPressureDayChart(DayStatsGenerator(visAtlanticHurricanes), visMPDdiv, 3, false);
   // Month
   var visHPM = new HurrPerMonthChart(MonthStatsGenerator(visAtlanticHurricanes), visHPMdiv, 1, false);
   var visMWM = new MaxWindMonthChart(MonthStatsGenerator(visAtlanticHurricanes), visMWMdiv, 2, false);
@@ -119,6 +139,7 @@ var GraphsView = function () {
   var visMPY = new MinPressureChart(YearStatsGenerator(visAtlanticHurricanes), visMPYdiv, 3, false);
 
 
+  /*
   // SELECTED GRAPHS
   var selAtlanticHurricanes = AtlanticGenerator(selectedDataset);
   var selPacificHurricanes = PacificGenerator(selectedDataset);
@@ -136,9 +157,9 @@ var GraphsView = function () {
   var selMWMdiv = selDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph month sel maxwind');
   var selMPMdiv = selDiv.append('div').style('width', '0%').style('height', '0%').attr('class','graph month sel minpress');
   // Year
-  var selHPYdiv = selDiv.append('div').style('width', '100%').style('height', '33.333%').attr('class','graph year sel number');
-  var selMWYdiv = selDiv.append('div').style('width', '100%').style('height', '33.333%').attr('class','graph year sel maxwind');
-  var selMPYdiv = selDiv.append('div').style('width', '100%').style('height', '33.333%').attr('class','graph year sel minpress');
+  var selHPYdiv = selDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph year sel number');
+  var selMWYdiv = selDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph year sel maxwind');
+  var selMPYdiv = selDiv.append('div').style('width', '100%').style('height', '31%').attr('class','graph year sel minpress');
 
    // Day
    var selHPD = new HurrPerDayChart(DayStatsGenerator(selectedDataset), selHPDdiv, 1, false);
@@ -152,60 +173,175 @@ var GraphsView = function () {
   var selHPY = new HurrPerYearChart(YearStatsGenerator(selectedDataset), selHPYdiv, 1, false);
   var selMWY = new MaxWindChart(YearStatsGenerator(selectedDataset), selMWYdiv, 2, false);
   var selMPY = new MinPressureChart(YearStatsGenerator(selectedDataset), selMPYdiv, 3, false);
-
+  */
 
   //###BUTTON CONTROLS###
 
   //
   var areaControls = buttonsDiv.append('div').attr('class', 'area controls');
 
-  var atlanticButton = areaControls.append('svg').attr('class', 'button atlantic')
+  var atlanticButton = areaControls.append('div')
+  .attr('class', 'button Atlantic')
+  .append('svg')
+  .style('width', '100%')
+  .style('height', '100%')
+  .attr('viewBox', '0 0 ' + 100 + ' ' + 100)
+  .attr('preserveAspectRatio', 'xMidYMid meet')
   .on('click', function () {
+    console.log('inAtl');
     if(activeArea!='Atlantic') {
       activeArea = updateGraphsArea('Atlantic');
     }
-  });
-  var pacificButton = areaControls.append('svg').attr('class', 'button pacific')
+  })
+  .append('text')
+  .attr('text-anchor', 'middle')
+  .attr('dominant-baseline', 'central')
+  .attr('font-family', 'Arial')
+  .attr('font-size', 30)
+  .attr('x', '50%')
+  .attr('y', '50%')
+  .text('ATL');
+
+  var pacificButton = areaControls.append('div')
+  .attr('class', 'button Pacific')
+  .append('svg')
+  .style('width', '100%')
+  .style('height', '100%')
+  .attr('viewBox', '0 0 ' + 100 + ' ' + 100)
+  .attr('preserveAspectRatio', 'xMidYMid meet')
   .on('click', function () {
+    console.log('inPac');
     if(activeArea!='Pacific') {
       activeArea = updateGraphsArea('Pacific');
     }
-  });
+  })
+  .append('text')
+  .attr('text-anchor', 'middle')
+  .attr('dominant-baseline', 'central')
+  .attr('font-family', 'Arial')
+  .attr('font-size', 30)
+  .attr('x', '50%')
+  .attr('y', '50%')
+  .text('PAC');
 
   //
   var activationControls = buttonsDiv.append('div').attr('class', 'activation controls');
 
-  var selectedButton = activationControls.append('svg').attr('class', 'button selected')
+  /*var selectedButton = activationControls.append('svg').attr('class', 'button selected')
   .on('click', function () {
     panelOpened = resizePanels(2, panelOpened);
     resizeGraphsView(panelOpened);
-  });
-  var visualizedButton = activationControls.append('svg').attr('class', 'button visualized')
-  .on('click', function () {
-    panelOpened = resizePanels(1, panelOpened);
-    resizeGraphsView(panelOpened);
-  });
-  var allButton = activationControls.append('svg').attr('class', 'button all')
-  .on('click', function () {
-    panelOpened = resizePanels(0, panelOpened);
-    resizeGraphsView(panelOpened);
-  });
+  });*/
+var visualizedButton = activationControls.append('div')
+.attr('class', 'button visualized 1')
+.append('svg')
+.style('width', '100%')
+.style('height', '100%')
+.attr('viewBox', '0 0 ' + 100 + ' ' + 100)
+.attr('preserveAspectRatio', 'xMidYMid meet')
+.on('click', function () {
+  panelOpened = resizePanels(1, panelOpened);
+  resizeGraphsView(panelOpened);
+})
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'Arial')
+.attr('font-size', 30)
+.attr('x', '50%')
+.attr('y', '50%')
+.text('VISUALIZED');
+
+var allButton = activationControls.append('div')
+.attr('class', 'button all 0')
+.append('svg')
+.style('width', '100%')
+.style('height', '100%')
+.attr('viewBox', '0 0 ' + 100 + ' ' + 100)
+.attr('preserveAspectRatio', 'xMidYMid meet')
+.on('click', function () {
+  panelOpened = resizePanels(0, panelOpened);
+  resizeGraphsView(panelOpened);
+})
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'Arial')
+.attr('font-size', 30)
+.attr('x', '50%')
+.attr('y', '50%')
+.text('OVERALL');
 
 
   //
   var granularityControls = buttonsDiv.append('div').attr('class', 'granularity controls');
 
-  var dayButton = granularityControls.append('svg').attr('class', 'button day').on('click', function () {
+  var dayButton = granularityControls
+  .append('div')
+  .attr('class', 'button day')
+  .append('svg')
+  .style('width', '100%')
+  .style('height', '100%')
+  .attr('viewBox', '0 0 ' + 100 + ' ' + 100)
+  .on('click', function () {
     activeGranularity = changeGranularity('day');
-  });
-  var monthButton = granularityControls.append('svg').attr('class', 'button month').on('click', function () {
+  })
+  .append('text')
+  .attr('text-anchor', 'middle')
+  .attr('dominant-baseline', 'central')
+  .attr('font-family', 'Arial')
+  .attr('font-size', 30)
+  .attr('x', '50%')
+  .attr('y', '50%')
+  .text('DAY');
+
+  var monthButton = granularityControls
+  .append('div')
+  .attr('class', 'button month')
+  .append('svg')
+  .style('width', '100%')
+  .style('height', '100%')
+  .attr('viewBox', '0 0 ' + 100 + ' ' + 100)
+  .on('click', function () {
     activeGranularity = changeGranularity('month');
-  });
-  var yearButton = granularityControls.append('svg').attr('class', 'button year').on('click', function () {
+  })
+  .append('text')
+  .attr('text-anchor', 'middle')
+  .attr('dominant-baseline', 'central')
+  .attr('font-family', 'Arial')
+  .attr('font-size', 30)
+  .attr('x', '50%')
+  .attr('y', '50%')
+  .text('MONTH');
+
+  var yearButton = granularityControls
+  .append('div')
+  .attr('class', 'button year')
+  .append('svg')
+  .style('width', '100%')
+  .style('height', '100%')
+  .attr('viewBox', '0 0 ' + 100 + ' ' + 100)
+  .on('click', function () {
     activeGranularity = changeGranularity('year');
-  });
+  })
+  .append('text')
+  .attr('text-anchor', 'middle')
+  .attr('dominant-baseline', 'central')
+  .attr('font-family', 'Arial')
+  .attr('font-size', 30)
+  .attr('x', '50%')
+  .attr('y', '50%')
+  .text('YEAR');
 
+  // Color start active buttons
+  areaControls.select('.button.' + activeArea)
+  .style('background-color', 'green');
 
+  granularityControls.select('.button.' + activeGranularity)
+  .style('background-color', 'green');
+
+  activationControls.selectAll('.button')
+  .style('background-color', 'green');
 
 
   //###FUNCTIONS###
@@ -269,12 +405,22 @@ var GraphsView = function () {
     }
 
     for(p = 0; p < toggle.length; p++) {
+      var panelName;
+      if(p == 0) {
+        panelName = 'all';
+      } else {
+        panelName = 'visualized';
+      }
       if(toggle[p]) {
         $('.panel.' + p).animate({'width' : widthVal+'%'}
       //,duration:750}
       );
+        activationControls.select('.button.' + panelName)
+        .style('background-color', 'green');
       } else {
         $('.panel.' + p).animate({'width' : 0+'%'});
+        activationControls.select('.button.' + panelName)
+        .style('background-color', 'gray');
       }
 
     }
@@ -286,8 +432,12 @@ var GraphsView = function () {
     for (var i = 0; i < type.length; i++) {
       if(type[i] != granularity) {
         $('.graph.' + type[i]).animate({'width' : '0%', 'height' : '0%'});
+        granularityControls.select('.button.' + type[i])
+        .style('background-color', 'gray');
       } else {
-        $('.graph.' + type[i]).animate({'width' : '100%', 'height' : '33.333%'});
+        $('.graph.' + type[i]).animate({'width' : '100%', 'height' : '31%'});
+        granularityControls.select('.button.' + type[i])
+        .style('background-color', 'green');
       }
     }
     return granularity;
@@ -299,68 +449,76 @@ var GraphsView = function () {
     var temp1;
     var temp2;
     if(area == 'Atlantic') {
-    // Day
-    temp1 = DayStatsGenerator(allAtlanticHurricanes);
-    temp2 = DayStatsGenerator(visAtlanticHurricanes);
-    allHPD.updateGraph(temp1);
-    allMWD.updateGraph(temp1);
-    allMPD.updateGraph(temp1);
-    visHPD.updateGraph(temp2);
-    visMWD.updateGraph(temp2);
-    visMPD.updateGraph(temp2);
-    // Month
-    temp1 = MonthStatsGenerator(allAtlanticHurricanes);
-    temp2 = MonthStatsGenerator(visAtlanticHurricanes);
-    allHPM.updateGraph(temp1);
-    allMWM.updateGraph(temp1);
-    allMPM.updateGraph(temp1);
-    visHPM.updateGraph(temp2);
-    visMWM.updateGraph(temp2);
-    visMPM.updateGraph(temp2);
-    // Year
-    temp1 = YearStatsGenerator(allAtlanticHurricanes);
-    temp2 = YearStatsGenerator(visAtlanticHurricanes);
-    allHPY.updateGraph(temp1);
-    allMWY.updateGraph(temp1);
-    allMPY.updateGraph(temp1);
-    visHPY.updateGraph(temp2);
-    visMWY.updateGraph(temp2);
-    visMPY.updateGraph(temp2);
-  } else {
-    // Day
-    temp1 = DayStatsGenerator(allPacificHurricanes);
-    temp2 = DayStatsGenerator(visPacificHurricanes);
-    allHPD.updateGraph(temp1);
-    allMWD.updateGraph(temp1);
-    allMPD.updateGraph(temp1);
-    visHPD.updateGraph(temp2);
-    visMWD.updateGraph(temp2);
-    visMPD.updateGraph(temp2);
-    // Month
-    temp1 = MonthStatsGenerator(allPacificHurricanes);
-    temp2 = MonthStatsGenerator(visPacificHurricanes);
-    allHPM.updateGraph(temp1);
-    allMWM.updateGraph(temp1);
-    allMPM.updateGraph(temp1);
-    visHPM.updateGraph(temp2);
-    visMWM.updateGraph(temp2);
-    visMPM.updateGraph(temp2);
-    // Year
-    temp1 = YearStatsGenerator(allPacificHurricanes);
-    temp2 = YearStatsGenerator(visPacificHurricanes);
-    allHPY.updateGraph(temp1);
-    allMWY.updateGraph(temp1);
-    allMPY.updateGraph(temp1);
-    visHPY.updateGraph(temp2);
-    visMWY.updateGraph(temp2);
-    visMPY.updateGraph(temp2);
+      areaControls.select('.button.Atlantic')
+      .style('background-color', 'green');
+      areaControls.select('.button.Pacific')
+      .style('background-color', 'gray');
+      // Day
+      temp1 = DayStatsGenerator(allAtlanticHurricanes);
+      temp2 = DayStatsGenerator(visAtlanticHurricanes);
+      allHPD.updateGraph(temp1);
+      allMWD.updateGraph(temp1);
+      allMPD.updateGraph(temp1);
+      visHPD.updateGraph(temp2);
+      visMWD.updateGraph(temp2);
+      visMPD.updateGraph(temp2);
+      // Month
+      temp1 = MonthStatsGenerator(allAtlanticHurricanes);
+      temp2 = MonthStatsGenerator(visAtlanticHurricanes);
+      allHPM.updateGraph(temp1);
+      allMWM.updateGraph(temp1);
+      allMPM.updateGraph(temp1);
+      visHPM.updateGraph(temp2);
+      visMWM.updateGraph(temp2);
+      visMPM.updateGraph(temp2);
+      // Year
+      temp1 = YearStatsGenerator(allAtlanticHurricanes);
+      temp2 = YearStatsGenerator(visAtlanticHurricanes);
+      allHPY.updateGraph(temp1);
+      allMWY.updateGraph(temp1);
+      allMPY.updateGraph(temp1);
+      visHPY.updateGraph(temp2);
+      visMWY.updateGraph(temp2);
+      visMPY.updateGraph(temp2);
+    } else {
+      areaControls.select('.button.Atlantic')
+      .style('background-color', 'gray');
+      areaControls.select('.button.Pacific')
+      .style('background-color', 'green');
+      // Day
+      temp1 = DayStatsGenerator(allPacificHurricanes);
+      temp2 = DayStatsGenerator(visPacificHurricanes);
+      allHPD.updateGraph(temp1);
+      allMWD.updateGraph(temp1);
+      allMPD.updateGraph(temp1);
+      visHPD.updateGraph(temp2);
+      visMWD.updateGraph(temp2);
+      visMPD.updateGraph(temp2);
+      // Month
+      temp1 = MonthStatsGenerator(allPacificHurricanes);
+      temp2 = MonthStatsGenerator(visPacificHurricanes);
+      allHPM.updateGraph(temp1);
+      allMWM.updateGraph(temp1);
+      allMPM.updateGraph(temp1);
+      visHPM.updateGraph(temp2);
+      visMWM.updateGraph(temp2);
+      visMPM.updateGraph(temp2);
+      // Year
+      temp1 = YearStatsGenerator(allPacificHurricanes);
+      temp2 = YearStatsGenerator(visPacificHurricanes);
+      allHPY.updateGraph(temp1);
+      allMWY.updateGraph(temp1);
+      allMPY.updateGraph(temp1);
+      visHPY.updateGraph(temp2);
+      visMWY.updateGraph(temp2);
+      visMPY.updateGraph(temp2);
+    }
+    return area;
   }
-  return area;
-}
 
-function updateVisGraphs() {
-  console.log('innnVis');
-  var tempVis;
+  function updateVisGraphs() {
+    console.log('innnVis');
+    var tempVis;
     // IN BASE A AREA ATTIVA IF-ELSE
     if(activeArea == 'Atlantic') {
     // Day

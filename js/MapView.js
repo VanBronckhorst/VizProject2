@@ -222,6 +222,9 @@ function MapView(){
 		if (this.chooseControl.isOnMap()){
 			this.map.removeControl(this.chooseControl);
 		}
+		if (!this.legendControl.isOnMap()){
+				this.legendControl.addTo(this.map);
+			}
 		this.hurricaneLayer.clearLayers();
 		this.markers={};
 		this.visualizationMode=["PLAY"];
