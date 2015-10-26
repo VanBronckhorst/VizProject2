@@ -422,7 +422,7 @@ this.g
 .append("g")
 .attr("transform", "translate(" + 550 + ","+ 630+")")
 .append('text')
-.text('MIN PRESSURE')
+.text('MIN PRESSURE (mb)')
 .style('font-size', 15);
 
 //make ticks clickable
@@ -472,7 +472,7 @@ this.g
 .append("g")
 .attr("transform", "translate(" + 550 + ","+ 710+")")
 .append('text')
-.text('MAX WIND SPEED')
+.text('MAX WIND SPEED (Kn)')
 .style('font-size', 15);
 
 //make ticks clickable
@@ -676,8 +676,8 @@ this.svgFilters
 .attr('font-size', 20)
 .attr('pointer-events','all' )
 .attr('x', this.viewBoxWidth*0.65 )
-.attr('y', (heightSvgList * 1.23)+ "%")
-.text('TOP');
+.attr('y', (heightSvgList * 1.27)+ "%")
+.text('TOP:');
 
 this.svgFilters
 .append('text')
@@ -686,7 +686,7 @@ this.svgFilters
 .attr('font-size', 20)
 .attr('pointer-events','all' )
 .attr('x', this.viewBoxWidth*0.75 )
-.attr('y', (heightSvgList * 1.23)+ "%")
+.attr('y', (heightSvgList * 1.27)+ "%")
 .text('5');
 var text5 = this.svgFilters
 .append('text')
@@ -696,7 +696,7 @@ var text5 = this.svgFilters
 .attr('font-size', 20)
 .attr('cursor', 'pointer')
 .attr('x', this.viewBoxWidth*0.72 )
-.attr('y', (heightSvgList * 1.23)+ "%")
+.attr('y', (heightSvgList * 1.27)+ "%")
 .on('click',function(){
 	toggleTop(5);
 })
@@ -709,7 +709,7 @@ this.svgFilters
 .attr('font-size', 20)
 .attr('pointer-events','all' )
 .attr('x', this.viewBoxWidth*0.84)
-.attr('y', (heightSvgList * 1.23)+ "%")
+.attr('y', (heightSvgList * 1.27)+ "%")
 .text('10');
 
 var text10 =this.svgFilters
@@ -720,7 +720,7 @@ var text10 =this.svgFilters
 .attr('font-size', 20)
 .attr('cursor', 'pointer')
 .attr('x', this.viewBoxWidth*0.81 )
-.attr('y', (heightSvgList * 1.23)+ "%")
+.attr('y', (heightSvgList * 1.27)+ "%")
 .on('click',function(){
 	toggleTop(10);
 
@@ -734,7 +734,7 @@ this.svgFilters
 .attr('font-size', 20)
 .attr('pointer-events','all' )
 .attr('x', this.viewBoxWidth*0.93 )
-.attr('y', (heightSvgList * 1.23)+ "%")
+.attr('y', (heightSvgList * 1.27)+ "%")
 .text('15');
 
 var text15 =this.svgFilters
@@ -745,7 +745,7 @@ var text15 =this.svgFilters
 .attr('font-size', 20)
 .attr('cursor', 'pointer')
 .attr('x', this.viewBoxWidth*0.9 )
-.attr('y', (heightSvgList * 1.23)+ "%")
+.attr('y', (heightSvgList * 1.27)+ "%")
 .on('click',function(){
 	toggleTop(15);
 
@@ -795,16 +795,19 @@ function toggleSelectAll(){
 }
 
 //================DATE PICKER
+var globH = parseInt(d3.select("body").style("height"));
+var calendarY = (globH>1000)?'69%':'60%';
+
 this.filterViewDiv.append('div')
 .attr('id', 'calendarDay')
 .style('visibility', 'hidden') 
 .style('position', 'absolute')
-.style('top', "69%");
+.style('top', calendarY);
 this.filterViewDiv.append('div')
 .attr('id', 'calendarYear')
 .style('visibility', 'visible') 
 .style('position', 'absolute')
-.style('top', "69%");
+.style('top', calendarY);
 
 addDatePicker('calendarDay',false);
 addDatePicker('calendarYear',true);
@@ -1087,8 +1090,8 @@ this.lists.push(
     		list = list
     		.data(filterViewLayout.data.slice(0,this.wordBatchSize));
 
-    		//enter
-    		/*list
+    		/*//enter
+    		list
     		.enter()
     		.append('text')
     		.text(function(d){
@@ -1099,7 +1102,7 @@ this.lists.push(
     			return 20*i;//yValue(i);
     		})
     		.attr('x',function(){
-    			return 30;//xOffset + titleXOffset + busyWidth+ columnGap*numberOfListCreated;
+    			return 300;//xOffset + titleXOffset + busyWidth+ columnGap*numberOfListCreated;
     		})
     		.attr('color','black')
     		.attr('font-size',15 );	*/
@@ -1148,7 +1151,7 @@ this.lists.push(
 		return index * 40 + 80;
 	}
 };
-
+//var firstUpdateFilterView = true;
 FilterView.prototype.modelUpdated = function(dataVisualized,dataCurrent){	
 	log('model updated received');	
 
@@ -1181,6 +1184,27 @@ FilterView.prototype.modelUpdated = function(dataVisualized,dataCurrent){
 	this.data.sort(UtilityView.descending);
 	//update
 	this.update(this.data,this.dataVisualized);
+
+	/*if(firstUpdateFilterView){
+		function startLayout(){
+			fireEvent(document.getElementById("circle5"),'click');
+			fireEvent(document.getElementById("usPath17"),'click');
+			fireEvent(document.getElementById("manPlusWomanIcon"),'click');
+
+		}
+		function fireEvent(obj,evt){
+
+			var fireOnThis = obj;
+			if( document.createEvent ) {
+				var evObj = document.createEvent('MouseEvents');
+				evObj.initEvent( evt, true, false );
+				fireOnThis.dispatchEvent(evObj);
+			} else if( document.createEventObject ) {
+				fireOnThis.fireEvent('on'+evt);
+			}
+		}
+		firstUpdateFilterView = !firstUpdateFilterView;
+	}*/
 
 
 }
