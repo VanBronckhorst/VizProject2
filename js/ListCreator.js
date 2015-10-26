@@ -6,7 +6,7 @@ var ListCreator = function(){
 	var titleSize = 25;
 	var titleXOffset = 5;
 	var busyWidth = 0;
-	var columnGap = 60;
+	var columnGap = 110;
 
 	this.createList = function(place,name,wantCheckBox){
 		//add title 
