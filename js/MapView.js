@@ -5,8 +5,11 @@ function MapView(){
 	//INIT SECTION - Initiate the DIV for the map
 	d3.select("body").append("div").attr("id","map").attr("class","map-div");
 	this.warpOverlay = d3.select("#map").append("div").attr("class","warp-overlay").style("visibility","hidden").text("Warp")
-		 	
+	this.observers = [];
 	
+	this.addObserver = function(obs){
+		this.observers.push(obs);
+	}
 	//TILES CREATION	
 	
 	
@@ -92,7 +95,7 @@ function MapView(){
 				}else{
 					this.hurricaneLayer.addLayer(L.polyline([[point["lat"],point["lon"]],
 															[hurricane['points'][pointI-1]["lat"],hurricane['points'][pointI-1]["lon"]]],
-															{color: "yellow"}));
+															{color: "yellow"})).on("click",function(e){ that.hurricaneSelected(e.target.hurr)});
 				}
 			}
 		}
@@ -163,7 +166,10 @@ function MapView(){
 	}
 	
 	this.hurricaneSelected = function(h){
-		console.log(h)
+		for (o in this.observers){
+			obs = this.observers[o];
+			obs.hurricaneSelected(h);
+		}
 	}
 	
 	this.displayFrameTime = function(d){
