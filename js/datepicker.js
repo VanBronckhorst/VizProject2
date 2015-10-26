@@ -538,6 +538,8 @@
  									tblEl.get(0).className = 'datepickerViewDays';
  									break;
  									case 'datepickerViewYears':
+ 									console.log(parentEl);
+ 									//
  									options.current.setFullYear(parseInt(el.text(), 10));
  									if(!options.yearOnly){
  										tblEl.get(0).className = 'datepickerViewMonths';

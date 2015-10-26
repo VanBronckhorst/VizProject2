@@ -410,6 +410,10 @@ function pressureClicked(d){
 
 	var a = this.getElementsByTagName('text');
 	a[0].setAttribute('fill', 'purple');
+
+log(d);
+	filterViewLayout.notifyAll(new ThresholdFilter('pressure',d,'min')); 
+
 }
 //===============MAX WIND SELECTOR
 //Create scale functions
@@ -457,6 +461,9 @@ function windClicked(d){
 
 	var a = this.getElementsByTagName('text');
 	a[0].setAttribute('fill', 'purple');
+	//notify
+	filterViewLayout.notifyAll(new ThresholdFilter('maxSpeed',d,'max')); 
+
 }
 //===============LANDED FILTER
 
@@ -588,6 +595,7 @@ var text5 = this.svgFilters
 .attr('y', (heightSvgList * 1.23)+ "%")
 .on('click',function(){
 	toggleTop(5);
+	filterViewLayout.notifyAll(new SliceFilter('maxSpeed',5,'top'));
 })
 .text(function() { return '\uf10c'; });
 
@@ -612,6 +620,8 @@ var text10 =this.svgFilters
 .attr('y', (heightSvgList * 1.23)+ "%")
 .on('click',function(){
 	toggleTop(10);
+	filterViewLayout.notifyAll(new SliceFilter('maxSpeed',10,'top'));
+
 })
 .text(function() { return '\uf10c'; });
 
@@ -636,6 +646,8 @@ var text15 =this.svgFilters
 .attr('y', (heightSvgList * 1.23)+ "%")
 .on('click',function(){
 	toggleTop(15);
+	filterViewLayout.notifyAll(new SliceFilter('maxSpeed',15,'top'));
+
 })
 .text(function() { return '\uf10c'; });
 
@@ -706,7 +718,7 @@ function addDatePicker(id){
     // add the widget to the given div
     $('#'+id)
     .DatePicker({
-    yearOnly : true,    	
+    	yearOnly : true,    	
     	flat: true,
     	mode:'single',
     	date: new Date(today),
@@ -718,78 +730,7 @@ function addDatePicker(id){
             console.log($('#'+id).DatePickerGetDate(formated)); //TO GET THE DATE AS ARRAY OF STRINGS
         }
     });
-/*	d3.select('#map').append('div')
-	.attr('id', 'widget')
-	.append('div')
-	.attr('id','widgetField')
-	.append('span')
-	.text('28 July, 2008 &divide; 31 July, 2008')
 
-	d3.select("#widgetField").append('a')
-	.attr('href','#' )
-	.text('Select date range');
-
-	d3.select('#widget')
-	.append('div')
-	.attr('id', 'widgetCalendar');
-
-
-
-	d3.select('#widget')
-	.append('div')
-	.attr('id', 'widgetCalendar');
-
-
-
-	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    //get today date
-    var today = new Date();
-
-    //get date in string format to put as default in the input box
-    var dd = today.getDate();
-    var mm = monthNames[today.getMonth()]; 
-    var yyyy = today.getFullYear();
-    var defaultDateString = [dd+' '+mm+', '+yyyy,dd+' '+mm+', '+yyyy];
-    $('#widgetField span').get(0).innerHTML = defaultDateString.join(' &divide; ');
-
-    // add the widget to the given div
-    $('#widgetCalendar')
-    .DatePicker({
-    	flat: true,
-    	date: '2008-07-31',
-    	current: '2008-07-31',
-    	calendars: 1,
-    	starts: 1
-    });
- /*   .DatePicker({
-    	flat: true,
-    	format: 'd B, Y',
-        date: [new Date(today), new Date(today)], //the default choice is today
-        calendars: 2,
-        mode: 'range',
-        starts: 1,
-        view: 'years',
-        onChange: function(formated) {
-        	$('#widgetField span').get(0).innerHTML = formated.join(' &divide; ');
-            console.log($('#widgetCalendar').DatePickerGetDate(formated)); //TO GET THE DATE AS ARRAY OF STRINGS
-        }
-    });*/
-
-   /* // open and close the calendar
-    var state = false;
-    $('#widgetField>a').bind('click', function(){
-    	log('nmichia');
-    	$('#widgetCalendar').stop().animate({height: state ? 0 : $('#widgetCalendar div.datepicker').get(0).offsetHeight}, 500);
-    	state = !state;
-    	return false;
-    });
-    $('#widgetCalendar div.datepicker').css('position', 'absolute');
-
-    // clear selection
-    $('#clearSelection').bind('click', function(){
-    	$('#widgetCalendar').DatePickerClear();
-    	return false;
-    });*/
 }
 
 //create ================================COLUMNS OF LIST(name,date,maxSpeed,danger)
@@ -938,12 +879,10 @@ this.lists.push(
 		//if the user ask to slide down when there are no more hurricane
 		//or to slide up when the list is at the beginning
 		//return
-		if(direction === 'down' && filterViewLayout.lastWordIndex == filterViewLayout.data.length - filterViewLayout.wordBatchSize ||
+		if(direction === 'down' && filterViewLayout.lastWordIndex >= filterViewLayout.data.length - filterViewLayout.wordBatchSize ||
 			direction === 'up' && filterViewLayout.lastWordIndex == 0){
 			return;	
 	}
-
-	
 		//update the lastWord Index accordingly to the direction
 		filterViewLayout.lastWordIndex = (direction === 'down') ? 
 		d3.min([filterViewLayout.data.length - filterViewLayout.wordBatchSize ,filterViewLayout.lastWordIndex + filterViewLayout.wordBatchSize])
@@ -1000,7 +939,7 @@ this.lists.push(
     		//the date
     		if(attribute ==='startDate'){
     			//return hurricaneDateToJS(d[attribute],'0000').toLocaleDateString();
-    			return timeConverter(d[attribute]);
+    			return UtilityView.timeConverter(d[attribute]);
     			//return 'sort';
     		}
 
@@ -1010,22 +949,7 @@ this.lists.push(
     	.attr('font-size',20 );
     }
 
-    function timeConverter(date){
-    	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    	var year = Math.floor(date/10000);
-    	var monthIndex = Math.floor((date % 10000)/100);
-    	var month = months[monthIndex-1];
-
-    	var day = date%100;	
-
-    	var time = pad(day,2) + '  ' + month + '  ' + year;
-    	return time;
-
-    	function pad(num, size) {
-    		var s = "00" + num;
-    		return s.substr(s.length-size);
-    	}
-    }
+    
 }
 
     //function to update list when model is updated
@@ -1046,6 +970,28 @@ this.lists.push(
     		list = list
     		.data(filterViewLayout.data.slice(0,this.wordBatchSize));
 
+    		//enter
+    		/*list
+    		.enter()
+    		.append('text')
+    		.text(function(d){
+    			log(d);
+    			return d;
+    		})
+    		.attr('y', function(d,i){
+    			return 20*i;//yValue(i);
+    		})
+    		.attr('x',function(){
+    			return 30;//xOffset + titleXOffset + busyWidth+ columnGap*numberOfListCreated;
+    		})
+    		.attr('color','black')
+    		.attr('font-size',15 );	*/
+
+    		//remove
+    		list
+    		.exit()
+    		.remove();
+
     		//update
     		list  	
     		.text(function(d,i){
@@ -1060,7 +1006,7 @@ this.lists.push(
 
     			//the date
     			if(attribute ==='startDate'){
-    				return hurricaneDateToJS(d[attribute],'0000').toLocaleDateString();
+    				return UtilityView.timeConverter(d[attribute]);
     			}
 
     			//everything else

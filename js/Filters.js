@@ -23,7 +23,7 @@ var ToggleFilter = function(attribute,buttonStatus,filterFunction){
 	this.function = filterFunction;
 }
 
-var SliceFilter = function(attribute, number,fitlerFunction){// 'top' or 'bottom'
+var SliceFilter = function(attribute, number,filterFunction){// 'top' or 'bottom'
 this.name = attribute;
 this.number = number;
 this.function = filterFunction;
