@@ -16,7 +16,7 @@ var ChooseControl = L.Control.extend({
         // create the control container with a particular class name
         var container = L.DomUtil.create('div', 'date-control');
         
-        this.w= parseInt(d3.select("body").style("width"))*0.13+"px";
+        this.w= parseInt(d3.select("body").style("width"))*0.10+"px";
 		this.h= parseInt(this.w)/2 + "px";
 		
 		
@@ -24,7 +24,7 @@ var ChooseControl = L.Control.extend({
 		this.div.style("width",this.w).style("height",this.h);
 		
 		this.svgH = 60;
-		this.svgW = 180;
+		this.svgW = 140;
 		this.svg = this.div.append("svg").attr("id","legendControlSVG").attr("class","control-svg").attr("viewBox","0 0 "+ this.svgW+" "+this.svgH).attr("preserveAspectRatio","xMidYMid meet");
 		
 		//this.updateLegend();

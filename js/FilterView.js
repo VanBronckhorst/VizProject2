@@ -24,6 +24,7 @@ var FilterView = function (){
 
 	var heightSvgList = '57'; //NB it's a percetage!
 	this.lists = []; //has all the list displayed: the name of the hurricanes, the speeds
+	this.oldLists=[];
 
 	//data initially is empty
 	this.data = []; 
@@ -962,6 +963,13 @@ this.lists.push(
 	//{'list':this.listDanger, 'attribute':'maxSpeed'}, //TODO put the right value here
 	{'list':this.checkBoxList, 'attribute' : null});
 
+this.oldLists.push(<-----come capire quale oldList usare
+	{'list':this.list, 'attribute' : 'name'},
+	{'list':this.listSpeed,'attribute':'maxSpeed'},
+	{'list':this.listDate, 'attribute':'startDate'},
+	//{'list':this.listDanger, 'attribute':'maxSpeed'}, //TODO put the right value here
+	{'list':this.checkBoxList, 'attribute' : null});
+
 
 	//add button arrow up
 	this.svgList
@@ -1087,11 +1095,23 @@ this.lists.push(
     		var attribute = list['attribute'];
     		list = list['list'];
 
+
     		list = list
     		.data(filterViewLayout.data.slice(0,this.wordBatchSize));
+    		log(list);
+    		log(list.enter());
+    		log(list.exit());
+    		log(list.exit()[0].length - list.enter()[0].length);
+    		log(list.length - list.enter().length);
+    		//se la lista è piu corta degli elementi visualizabili
+    		if(list.exit()[0].length - list.enter()[0].length){
+    			//list = filterViewLayout.oldLists;
+    		}
+    		log(i);
+    		log(filterViewLayout.oldLists[i]);
 
-    		/*//enter
-    		list
+    		//enter
+    	/*	list
     		.enter()
     		.append('text')
     		.text(function(d){

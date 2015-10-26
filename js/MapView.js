@@ -5,8 +5,11 @@ function MapView(){
 	//INIT SECTION - Initiate the DIV for the map
 	d3.select("body").append("div").attr("id","map").attr("class","map-div");
 	this.warpOverlay = d3.select("#map").append("div").attr("class","warp-overlay").style("visibility","hidden").text("Warp")
-		 	
+	this.observers = [];
 	
+	this.addObserver = function(obs){
+		this.observers.push(obs);
+	}
 	//TILES CREATION	
 	
 	
@@ -92,7 +95,7 @@ function MapView(){
 				}else{
 					this.hurricaneLayer.addLayer(L.polyline([[point["lat"],point["lon"]],
 															[hurricane['points'][pointI-1]["lat"],hurricane['points'][pointI-1]["lon"]]],
-															{color: "yellow"}));
+															{color: "yellow"}).on("click",function(e){ that.hurricaneSelected(e.target.hurr)}));
 				}
 			}
 		}
@@ -146,6 +149,8 @@ function MapView(){
            d > 10   ? '#FED976' :
                       '#FFEDA0';
 	}
+	this.cloroplethColors = ['#FFEDA0','#FED976','#FEB24C','#FD8D3C','#FC4E2A','#E31A1C','#BD0026','#800026']
+	
 	this.cloroplethStyle = function(feature) {
     return {
         fillColor: that.getCloroplethColor(feature.properties.danger),
@@ -160,10 +165,17 @@ function MapView(){
 	this.showCloropleth = function(){
 		this.hurricaneLayer.clearLayers();
 		L.geoJson(statesData,{style: that.cloroplethStyle }).addTo(this.hurricaneLayer);
+		if (!this.legendControl.isOnMap()){
+				this.legendControl.addTo(this.map);
+			}
+		this.legendControl.changeLegend(this.cloroplethColors,['1','2','3','4','5','6','7','8'],"Danger");
 	}
 	
 	this.hurricaneSelected = function(h){
-		console.log(h)
+		for (o in this.observers){
+			obs = this.observers[o];
+			obs.hurricaneSelected(h);
+		}
 	}
 	
 	this.displayFrameTime = function(d){
