@@ -1,4 +1,4 @@
-function MinPressureChart(dataset, container, columnId, percOn) {
+function MaxWindDayChart(dataset, container, columnId, percOn) {
 
   var hurrData = dataset;
   var chartContainer = container;
@@ -15,7 +15,7 @@ function MinPressureChart(dataset, container, columnId, percOn) {
 
   // Extract the dataset without NA
   for (var i = 0; i < hurrData.length; i++) {
-    if(hurrData[i].MIN_PRESSURE != 'NA') {
+    if(hurrData[i].MAX_WIND_SPEED != 'NA') {
       actualCleanDataset.push(hurrData[i]);
     }
   }
@@ -23,25 +23,33 @@ function MinPressureChart(dataset, container, columnId, percOn) {
   // Define ViewBox dimensions
   var viewBoxWidth = 800;
   var viewBoxHeight = 500;
+  var viewBoxMarginX = 10;
   var viewBoxMargin = 50;
 
+  var daysArray = [];
+
+  // Generate days array
+  for(var iterator = 0; iterator <= 1250; iterator++) {
+    if(dayExists(iterator)) {
+      daysArray.push(dayToString(iterator));
+    }
+  }
+
+  //console.log(daysArray);
+
+
   // Define scales
-  var xScale = d3.scale.linear()
-  .domain([d3.min(hurrData , function (d, i) {
-    return parseInt(d.YEAR);
-  })-5,
-  d3.max(hurrData , function (d, i) {
-    return parseInt(d.YEAR);
-  })+5])
-  .range([viewBoxMargin, viewBoxWidth - viewBoxMargin]);
+  var xScale = d3.scale.ordinal()
+  .domain(daysArray)
+  .rangeRoundBands([viewBoxMarginX, viewBoxWidth - viewBoxMarginX], 1);
 
   /*var xAxisScale = d3.scale.ordinal()
   .domain(d3.range(hurrData.length))
-  .rangeRoundBands([viewBoxMargin, viewBoxWidth - viewBoxMargin], 0.2);*/
+  .rangeRoundBands([viewBoxMarginX, viewBoxWidth - viewBoxMarginX], 0.2);*/
 
-  var actualLowerboundMinPressure = d3.min(hurrData , function (d, i) {
-    if(d.MIN_PRESSURE != 'NA') {
-      return parseInt(d.MIN_PRESSURE);
+  var actualLowerboundMaxWindSpeed = d3.min(hurrData , function (d, i) {
+    if(d.MAX_WIND_SPEED != 0) {
+      return parseInt(d.MAX_WIND_SPEED);
     } else {
       return 999999;
     }
@@ -49,15 +57,15 @@ function MinPressureChart(dataset, container, columnId, percOn) {
 
   var yScale = d3.scale.linear().domain(
                                         [d3.min(hurrData , function (d, i) {
-                                          if(d.MIN_PRESSURE != 'NA') {
-                                            return parseInt(d.MIN_PRESSURE);
+                                          if(d.MAX_WIND_SPEED != 'NA') {
+                                            return parseInt(d.MAX_WIND_SPEED);
                                           } else {
                                             return 999999;
                                           }
                                         }),
                                         d3.max(hurrData , function (d, i) {
-                                          if(d.MIN_PRESSURE != 'NA') {
-                                            return parseInt(d.MIN_PRESSURE);
+                                          if(d.MAX_WIND_SPEED != 'NA') {
+                                            return parseInt(d.MAX_WIND_SPEED);
                                           } else {
                                             return 0;
                                           }
@@ -67,14 +75,15 @@ function MinPressureChart(dataset, container, columnId, percOn) {
   // Need a different one cause it is inverted
   var yAxisScale = d3.scale.linear().domain(
                                             [d3.min(hurrData , function (d, i) {
-                                              if(d.MIN_PRESSURE != 'NA') {
-                                                return parseInt(d.MIN_PRESSURE);
+                                              if(d.MAX_WIND_SPEED != 'NA') {
+                                                return parseInt(d.MAX_WIND_SPEED);
                                               } else {
                                                 return 999999;
                                               }
-                                            }), d3.max(hurrData , function (d, i) {
-                                              if(d.MIN_PRESSURE != 'NA') {
-                                                return parseInt(d.MIN_PRESSURE);
+                                            }),
+                                            d3.max(hurrData , function (d, i) {
+                                              if(d.MAX_WIND_SPEED != 'NA') {
+                                                return parseInt(d.MAX_WIND_SPEED);
                                               } else {
                                                 return 0;
                                               }
@@ -82,13 +91,17 @@ function MinPressureChart(dataset, container, columnId, percOn) {
   .range([viewBoxHeight - viewBoxMargin, viewBoxMargin]);
 
   // Formatter for the x axis
-  formatterXAxis = d3.format("d");
+  //formatterXAxis = d3.format("d");
+
+  // Define Axes
+  //var xAxis = d3.svg.axis()
+  //.scale(xScale)
+  //.ticks(10)
+  //.tickFormat(formatterXAxis);
 
   // Define Axes
   var xAxis = d3.svg.axis()
-  .scale(xScale)
-  .ticks(10)
-  .tickFormat(formatterXAxis);
+  .scale(xScale);
 
   // Formatter for the y axis
   formatter = d3.format(".2%");
@@ -108,7 +121,7 @@ function MinPressureChart(dataset, container, columnId, percOn) {
   // Create SVG element
   var svg = container
   .append('svg')
-  .attr('id', 'min_press_chart' + chartId)
+  .attr('id', 'max_wind_chart' + chartId)
   .style('width', '100%')
   .style('height', '100%')
   .attr('viewBox', '0 0 ' + viewBoxWidth + ' ' + viewBoxHeight);
@@ -116,19 +129,19 @@ function MinPressureChart(dataset, container, columnId, percOn) {
 
   // Setting the line layout function to extract coordinates data from dataset
   var line = d3.svg.line()
-  .x(function(d){return xScale(d.YEAR);})
+  .x(function(d){return xScale(d.DAY);})
   .y(function(d){
-    if(d.MIN_PRESSURE != 'NA') {
-      return viewBoxHeight - yScale(parseInt(d.MIN_PRESSURE));
+    if(d.MAX_WIND_SPEED != 'NA') {
+      return viewBoxHeight - yScale(parseInt(d.MAX_WIND_SPEED));
     } else {
-      return viewBoxHeight - yScale(actualMinimumMinPressure); //PROVARE ANCHE A RITORNARE -1
+      return viewBoxHeight - yScale(actualLowerboundMaxWindSpeed); //PROVARE ANCHE A RITORNARE -1
     }
   });
 
   // Creating path lines
   svg.append("path")
   .attr("d", line(actualCleanDataset))
-  .attr("class", "min_pressure_lines");
+  .attr("class", "max_wind_lines");
 
   // Create Circles
   svg.selectAll('circle')
@@ -136,31 +149,32 @@ function MinPressureChart(dataset, container, columnId, percOn) {
   .enter()
   .append('circle')
   .attr('class', function (d, i) {
-    if(d.MIN_PRESSURE != 'NA') {
-      return 'min_pressure_circle';
+    if(d.MAX_WIND_SPEED != 'NA') {
+      return 'max_wind_circle';
     } else {
       //console.log('inthecolor');
-      return 'min_pressure_circle na';
+      return 'max_wind_circle na';
     }
   })
   .attr('cx', function (d, i) {
-    return xScale(d.YEAR);
+    return xScale(d.DAY);
   })
   .attr('cy', function (d, i) {
+    //console.log(d.POPEST2010_CIV);
     if(percentageOn) {
       //return viewBoxHeight - yScale(parseInt(d.POPEST2014)/totalPopulation);
     } else {
-      if(d.MIN_PRESSURE != 'NA') {
-        return viewBoxHeight - yScale(parseInt(d.MIN_PRESSURE));
+      if(d.MAX_WIND_SPEED != 'NA') {
+        return viewBoxHeight - yScale(parseInt(d.MAX_WIND_SPEED));
       } else {
-        return viewBoxHeight - yScale(actualLowerboundMinPressure);//PROVARE ANCHE A RITORNARE -1
+        return viewBoxHeight - yScale(actualLowerboundMaxWindSpeed);//PROVARE ANCHE A RITORNARE -1
       }
     }
   })
   .attr('r', 4)
   .style('fill', function (d, i) {
-    if(d.MIN_PRESSURE != 'NA') {
-      //return 'rgb(0,0,128)';
+    if(d.MAX_WIND_SPEED != 'NA') {
+      //return 'rgb(195,0,0)';
     } else {
       //console.log('inthecolor');
       return 'Black';
@@ -171,8 +185,10 @@ function MinPressureChart(dataset, container, columnId, percOn) {
 
       //Color old active circle to normal
       if(activeCircle!=null) {
-        if(d3.select(activeCircle).attr('class') != 'min_pressure_circle na') {
-          d3.select(activeCircle).style('fill', 'rgb(0,0,128)');
+        var temp = d3.select(activeCircle).attr('class');
+        //console.log(temp);
+        if(temp != 'max_wind_circle na') {
+          d3.select(activeCircle).style('fill', 'rgb(195,0,0)');
         } else {
           d3.select(activeCircle).style('fill', 'Black');
         }
@@ -192,12 +208,12 @@ function MinPressureChart(dataset, container, columnId, percOn) {
       //Update the tooltip position and value
       svg.select("#tooltip")
       .attr("transform", "translate(" + xPosition + "," + yPosition + ")")
-      .select("#year_value")
-      .text(d.YEAR);
+      .select("#day_value")
+      .text(d.DAY);
 
       svg.select("#tooltip")
-      .select('#min_pressure_value')
-      .text(d.MIN_PRESSURE);
+      .select('#max_wind_value')
+      .text(d.MAX_WIND_SPEED);
 
       //Show the tooltip
       svg.select("#tooltip").classed("hidden", false);
@@ -208,8 +224,8 @@ function MinPressureChart(dataset, container, columnId, percOn) {
 
       //Color this circle as normal
       if(this!=null) {
-        if(d3.select(this).attr('class') != 'min_pressure_circle na') {
-          d3.select(this).style('fill', 'rgb(0,0,128)');
+        if(d3.select(this).attr('class') != 'max_wind_circle na') {
+          d3.select(this).style('fill', 'rgb(195,0,0)');
         } else {
           d3.select(this).style('fill', 'Black');
         }
@@ -231,7 +247,7 @@ function MinPressureChart(dataset, container, columnId, percOn) {
   //Create Y axis
   svg.append("g")
   .attr("class", "y axis")
-  .attr("transform", "translate(" + viewBoxMargin + ",0)")
+  .attr("transform", "translate(" + viewBoxMarginX + ",0)")
   .call(yAxis);
 
   /*
@@ -256,36 +272,47 @@ function MinPressureChart(dataset, container, columnId, percOn) {
   tooltip.append('rect');
 
   tooltip.append('text')
-  .attr('dx', +18)
+  .attr('dx', +10)
   .attr('dy', +50)
-  .text('Year: ');
+  .text('Day: ');
 
   tooltip.append('text')
-  .attr('dx', +142)
+  .attr('dx', +88)
   .attr('dy', +50)
-  .attr('id', 'year_value')
+  .attr('id', 'day_value')
   .text('100');
 
   tooltip.append('text')
-  .attr('dx', +18)
+  .attr('dx', +10)
   .attr('dy', +100)
-  .text('Min Press.: ');
+  .text('Max Speed: ');
 
   tooltip.append('text')
   .attr('dx', +152)
   .attr('dy', +100)
-  .attr('id', 'min_pressure_value')
+  .attr('id', 'max_wind_value')
   .text('900');
 
+  // Hide some ticks
+  var xTicksText =  svg.select('.x.axis')
+  .selectAll('.tick text');
+
+  xTicksText.style('opacity', function (d, i) {
+    if(i%50!==0) {
+      return 0;
+    } else {
+      return 1;
+    }
+  });
 
   // Function to update this chart according to a new dataset given as input
   this.updateGraph = function (dataset) {
 
     actualDataset = dataset;
 
-    actualLowerboundMinPressure = d3.min(actualDataset, function (d, i) {
-      if(d.MIN_PRESSURE != 'NA') {
-        return parseInt(d.MIN_PRESSURE);
+    actualLowerboundMaxWindSpeed = d3.min(actualDataset, function (d, i) {
+      if(d.MAX_WIND_SPEED != 'NA') {
+        return parseInt(d.MAX_WIND_SPEED);
       } else {
         return 999999;
       }
@@ -293,31 +320,25 @@ function MinPressureChart(dataset, container, columnId, percOn) {
 
     actualCleanDataset = [];
     for (var i = 0; i < actualDataset.length; i++) {
-      if(actualDataset[i].MIN_PRESSURE != 'NA') {
+      if(actualDataset[i].MAX_WIND_SPEED != 'NA') {
         actualCleanDataset.push(actualDataset[i]);
       }
     }
     //console.log(actualCleanDataset);
 
+
     //Update scale domains
-    xScale.domain(
-                  [d3.min(actualDataset , function (d, i) {
-                    return parseInt(d.YEAR);
-                  })-5,
-                  d3.max(actualDataset , function (d, i) {
-                    return parseInt(d.YEAR);
-                  })+5]);
     yScale.domain(
                   [d3.min(actualDataset , function (d, i) {
-                    if(d.MIN_PRESSURE != 'NA') {
-                      return parseInt(d.MIN_PRESSURE);
+                    if(d.MAX_WIND_SPEED != 'NA') {
+                      return parseInt(d.MAX_WIND_SPEED);
                     } else {
                       return 999999;
                     }
                   }),
                   d3.max(actualDataset , function (d, i) {
-                    if(d.MIN_PRESSURE != 'NA') {
-                      return parseInt(d.MIN_PRESSURE);
+                    if(d.MAX_WIND_SPEED != 'NA') {
+                      return parseInt(d.MAX_WIND_SPEED);
                     } else {
                       return 0;
                     }
@@ -325,14 +346,15 @@ function MinPressureChart(dataset, container, columnId, percOn) {
     // Need a different one cause it is inverted
     yAxisScale.domain(
                       [d3.min(actualDataset , function (d, i) {
-                        if(d.MIN_PRESSURE != 'NA') {
-                          return parseInt(d.MIN_PRESSURE);
+                        if(d.MAX_WIND_SPEED != 'NA') {
+                          return parseInt(d.MAX_WIND_SPEED);
                         } else {
                           return 999999;
                         }
-                      }), d3.max(actualDataset , function (d, i) {
-                        if(d.MIN_PRESSURE != 'NA') {
-                          return parseInt(d.MIN_PRESSURE);
+                      }),
+                      d3.max(actualDataset , function (d, i) {
+                        if(d.MAX_WIND_SPEED != 'NA') {
+                          return parseInt(d.MAX_WIND_SPEED);
                         } else {
                           return 0;
                         }
@@ -347,14 +369,14 @@ function MinPressureChart(dataset, container, columnId, percOn) {
     //Enter…
     circles.enter().append('circle')
     .attr('class', function (d, i) {
-      if(d.MIN_PRESSURE != 'NA') {
-        return 'min_pressure_circle';
+      if(d.MAX_WIND_SPEED != 'NA') {
+        return 'max_wind_circle';
       } else {
-        return 'min_pressure_circle na';
+        return 'max_wind_circle na';
       }
     })
     .attr('cx', function (d, i) {
-      return xScale(d.YEAR);
+      return xScale(d.DAY);
     })
     .attr('cy', viewBoxHeight - viewBoxMargin)
     .attr('r', 4)
@@ -365,8 +387,8 @@ function MinPressureChart(dataset, container, columnId, percOn) {
         if(activeCircle!=null) {
           var temp = d3.select(activeCircle).attr('class');
           //console.log(temp);
-          if(temp != 'min_pressure_circle na') {
-            d3.select(activeCircle).style('fill', 'rgb(0,0,128)');
+          if(temp != 'max_wind_circle na') {
+            d3.select(activeCircle).style('fill', 'rgb(195,0,0)');
           } else {
             d3.select(activeCircle).style('fill', 'Black');
           }
@@ -386,12 +408,12 @@ function MinPressureChart(dataset, container, columnId, percOn) {
         //Update the tooltip position and value
         svg.select("#tooltip")
         .attr("transform", "translate(" + xPosition + "," + yPosition + ")")
-        .select("#year_value")
-        .text(d.YEAR);
+        .select("#day_value")
+        .text(d.DAY);
 
         svg.select("#tooltip")
-        .select('#min_pressure_value')
-        .text(d.MIN_PRESSURE);
+        .select('#max_wind_value')
+        .text(d.MAX_WIND_SPEED);
 
         //Show the tooltip
         svg.select("#tooltip").classed("hidden", false);
@@ -402,8 +424,8 @@ function MinPressureChart(dataset, container, columnId, percOn) {
 
         //Color this circle as normal
         if(this!=null) {
-          if(d3.select(this).attr('class') != 'min_pressure_circle na') {
-            d3.select(this).style('fill', 'rgb(0,0,128)');
+          if(d3.select(this).attr('class') != 'max_wind_circle na') {
+            d3.select(this).style('fill', 'rgb(195,0,0)');
           } else {
             d3.select(this).style('fill', 'Black');
           }
@@ -420,36 +442,35 @@ function MinPressureChart(dataset, container, columnId, percOn) {
     .transition()
     .duration(750)
     .attr('class', function (d, i) {
-      if(d.MIN_PRESSURE != 'NA') {
-        return 'min_pressure_circle';
+      if(d.MAX_WIND_SPEED != 'NA') {
+        return 'max_wind_circle';
       } else {
-        return 'min_pressure_circle na';
+        return 'max_wind_circle na';
       }
     })
     .attr('cx', function (d, i) {
-      return xScale(d.YEAR);
+      return xScale(d.DAY);
     })
     .attr('cy', function (d, i) {
       //console.log(d.POPEST2010_CIV);
       if(percentageOn) {
         //return viewBoxHeight - yScale(parseInt(d.POPEST2014)/totalPopulation);
       } else {
-        if(d.MIN_PRESSURE != 'NA') {
-          return viewBoxHeight - yScale(parseInt(d.MIN_PRESSURE));
+        if(d.MAX_WIND_SPEED != 'NA') {
+          return viewBoxHeight - yScale(parseInt(d.MAX_WIND_SPEED));
         } else {
-          return viewBoxHeight - yScale(actualLowerboundMinPressure);//PROVARE ANCHE A RITORNARE -1
+          return viewBoxHeight - yScale(actualLowerboundMaxWindSpeed);//PROVARE ANCHE A RITORNARE -1
         }
       }
     })
     .style('fill', function (d, i) {
-      if(d.MIN_PRESSURE != 'NA') {
-        //return 'rgb(0,0,128)';
+      if(d.MAX_WIND_SPEED != 'NA') {
+        //return 'rgb(195,0,0)';
       } else {
         //console.log('inthecolor');
         return 'Black';
       }
     });
-
 
     //Exit…
     circles.exit()
@@ -463,20 +484,15 @@ function MinPressureChart(dataset, container, columnId, percOn) {
     //.attr('width', 0)
     .remove();
 
-    //
-    /*svg.select(".min_pressure_lines")   // change the line
-    .transition()
-    .duration(750)
-    .attr("d", line(actualDataset));*/
     //Update lines
-    svg.select(".min_pressure_lines")   // change the line
+    svg.select(".max_wind_lines")   // change the line
     .style('opacity', 0)
     //.transition()
     //.delay(500)
     //.duration(0)
     .attr("d", line(actualCleanDataset));
 
-    svg.select(".min_pressure_lines")   // change the line
+    svg.select(".max_wind_lines")   // change the line
     .transition()
     .delay(600)
     .duration(500)
@@ -506,25 +522,25 @@ function MinPressureChart(dataset, container, columnId, percOn) {
     tooltip.append('rect');
 
     tooltip.append('text')
-    .attr('dx', +18)
+    .attr('dx', +10)
     .attr('dy', +50)
-    .text('Year: ');
+    .text('Day: ');
 
     tooltip.append('text')
-    .attr('dx', +142)
+    .attr('dx', +88)
     .attr('dy', +50)
-    .attr('id', 'year_value')
+    .attr('id', 'day_value')
     .text('100');
 
     tooltip.append('text')
-    .attr('dx', +18)
+    .attr('dx', +10)
     .attr('dy', +100)
-    .text('Min Press.: ');
+    .text('Max Wind: ');
 
     tooltip.append('text')
     .attr('dx', +152)
     .attr('dy', +100)
-    .attr('id', 'min_pressure_value')
+    .attr('id', 'max_wind_value')
     .text('900');
 
 
@@ -533,7 +549,7 @@ function MinPressureChart(dataset, container, columnId, percOn) {
     // Hide some ticks
     xTicksText = svg.select('.x.axis')
     .selectAll('.tick text');
-
+    /*
     xTicksText.style('opacity', function (d, i) {
       console.log('test');
       if(granularity < 4) {
@@ -548,10 +564,10 @@ function MinPressureChart(dataset, container, columnId, percOn) {
       } else {
         return 1;
       }
-    });*/
+    });
 
     //
-    /*xTicksText.style('opacity', function (d, i) {
+    xTicksText.style('opacity', function (d, i) {
       if(i%11!==0 && i!=163) {
         return 0;
       } else {
@@ -560,5 +576,44 @@ function MinPressureChart(dataset, container, columnId, percOn) {
     });*/
 
 };
+
+  //
+  function dayExists (day) {
+    var dayStringTemp = "" + day + "";
+
+    if(dayStringTemp.length < 3) {
+      return false;
+    }
+
+    while(dayStringTemp.length < 4) {
+      dayStringTemp = "0" + dayStringTemp;
+    }
+
+    var monthOnly = parseInt(dayStringTemp.substring(0, 2));
+    var dayOnly = parseInt(dayStringTemp.substring(2, 4));
+
+    if(dayOnly < 1) {
+      return false;
+    } else if(monthOnly < 1 || monthOnly > 12) {
+      return false;
+    } else if(monthOnly == 2 && dayOnly > 28) {
+      return false;
+    } else if ((monthOnly == 4 || monthOnly == 6 || monthOnly == 9 || monthOnly == 11) && dayOnly > 30) {
+      return false;
+    } else if ((monthOnly == 1 || monthOnly == 3 || monthOnly == 5 || monthOnly == 7 || monthOnly == 8 || monthOnly == 10 || monthOnly == 12) && dayOnly > 31) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  function dayToString (day) {
+    var dayString = "" + day + "";
+    while(dayString.length < 4) {
+      dayString = "0" + dayString;
+    }
+    dayString = dayString.substring(0,2) + "/" + dayString.substring(2,4);
+    return dayString;
+  }
 
 }

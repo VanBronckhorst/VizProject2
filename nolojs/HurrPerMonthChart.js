@@ -1,4 +1,4 @@
-function HurrPerYearChart(dataset, container, columnId, percOn) {
+function HurrPerMonthChart(dataset, container, columnId, percOn) {
 
   var chartContainer = container;
   var hurrData = dataset;
@@ -15,13 +15,7 @@ function HurrPerYearChart(dataset, container, columnId, percOn) {
 
   // Define scales
   var xScale = d3.scale.ordinal()
-  .domain(d3.range(
-          d3.min(hurrData , function (d, i) {
-            return parseInt(d.YEAR);
-          }),
-          d3.max(hurrData , function (d, i) {
-            return parseInt(d.YEAR);
-          })+1))
+  .domain(["January","February","March","April","May","June","July","August","September","October","November","December"])
   .rangeRoundBands([viewBoxMargin, viewBoxWidth - viewBoxMargin], 0.1);
 
   /*var xAxisScale = d3.scale.ordinal()
@@ -72,7 +66,7 @@ function HurrPerYearChart(dataset, container, columnId, percOn) {
   .data(hurrData)
   .enter().append('rect')
   .attr('x', function (d, i) {
-    return xScale(d.YEAR);
+    return xScale(d.MONTH);
   })
   .attr('y', function (d, i) {
     if(percentageOn) {
@@ -110,20 +104,11 @@ function HurrPerYearChart(dataset, container, columnId, percOn) {
   var xTicksText =  svg.select('.x.axis')
   .selectAll('.tick text');
 
-  //console.log('hurrData:' + hurrData.length);
   xTicksText.style('opacity', function (d, i) {
-    if(hurrData.length > 100) {
-      if(i%28!=0 && i!=163) {
-        return 0;
-      } else {
-        return 1;
-      }
+    if(i%3!==0) {
+      return 0;
     } else {
-      if(i%11!=0 && i!=163) {
-        return 0;
-      } else {
-        return 1;
-      }
+      return 1;
     }
   });
 
@@ -131,17 +116,9 @@ function HurrPerYearChart(dataset, container, columnId, percOn) {
   this.updateGraph = function (dataset) {
 
     actualDataset = dataset;
-    //console.log(actualDataset);
-    //console.log('actualData:' + actualDataset.length);
 
     //Update scale domains
-    xScale.domain(d3.range(
-                  d3.min(actualDataset , function (d, i) {
-                    return parseInt(d.YEAR);
-                  }),
-                  d3.max(actualDataset , function (d, i) {
-                    return parseInt(d.YEAR);
-                  })+1));
+    //xScale.domain(["January","February","March","April","May","June","July","August","September","October","November","December"])
     yScale.domain([0,
                   d3.max(actualDataset , function (d, i) {
                     return parseInt(d.NUMBER_OF_HURRICANES);
@@ -161,7 +138,7 @@ function HurrPerYearChart(dataset, container, columnId, percOn) {
     //Enter…
     bars.enter().append('rect')
     .attr('x', function (d, i) {
-      return xScale(d.YEAR);
+      return xScale(d.MONTH);
     })
     .attr('y', function (d, i) {
       if(percentageOn) {
@@ -194,7 +171,7 @@ function HurrPerYearChart(dataset, container, columnId, percOn) {
     //.transition()
     //.duration(500)
     .attr('x', function (d, i) {
-      return xScale(d.YEAR);
+      return xScale(d.MONTH);
     })
     .attr('y', function (d, i) {
       if(percentageOn) {
@@ -230,7 +207,9 @@ function HurrPerYearChart(dataset, container, columnId, percOn) {
     svg.select(".x.axis")
     .transition()
     .duration(500)
-    .call(xAxis);
+    .call(xAxis)
+    .selectAll('tick')
+    .style('fill', 'blue');
 
     //Update Y axis
     svg.select(".y.axis")
@@ -260,24 +239,15 @@ function HurrPerYearChart(dataset, container, columnId, percOn) {
     });*/
 
     //
-    xTicksText.transition()
-    .style('opacity', function (d, i) {
-      if(actualDataset.length > 100) {
-        if(i%28!=0 && i!=163) {
-          return 0;
-        } else {
-          return 1;
-        }
+    /*xTicksText.style('opacity', function (d, i) {
+      if(i%11!==0 && i!=163) {
+        return 0;
       } else {
-        if(i%11!=0 && i!=65) {
-          return 0;
-        } else {
-          return 1;
-        }
+        return 1;
       }
-    });
+    });*/
 
-  };
+};
 
 
 }

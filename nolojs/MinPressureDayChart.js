@@ -1,4 +1,4 @@
-function MinPressureChart(dataset, container, columnId, percOn) {
+function MinPressureDayChart(dataset, container, columnId, percOn) {
 
   var hurrData = dataset;
   var chartContainer = container;
@@ -23,21 +23,26 @@ function MinPressureChart(dataset, container, columnId, percOn) {
   // Define ViewBox dimensions
   var viewBoxWidth = 800;
   var viewBoxHeight = 500;
+  var viewBoxMarginX = 10;
   var viewBoxMargin = 50;
 
-  // Define scales
-  var xScale = d3.scale.linear()
-  .domain([d3.min(hurrData , function (d, i) {
-    return parseInt(d.YEAR);
-  })-5,
-  d3.max(hurrData , function (d, i) {
-    return parseInt(d.YEAR);
-  })+5])
-  .range([viewBoxMargin, viewBoxWidth - viewBoxMargin]);
+  var daysArray = [];
+
+  // Generate days array
+  for(var iterator = 0; iterator <= 1250; iterator++) {
+    if(dayExists(iterator)) {
+      daysArray.push(dayToString(iterator));
+    }
+  }
+
+   // Define scales
+   var xScale = d3.scale.ordinal()
+   .domain(daysArray)
+   .rangeRoundBands([viewBoxMarginX, viewBoxWidth - viewBoxMarginX], 1);
 
   /*var xAxisScale = d3.scale.ordinal()
   .domain(d3.range(hurrData.length))
-  .rangeRoundBands([viewBoxMargin, viewBoxWidth - viewBoxMargin], 0.2);*/
+  .rangeRoundBands([viewBoxMarginX, viewBoxWidth - viewBoxMarginX], 0.2);*/
 
   var actualLowerboundMinPressure = d3.min(hurrData , function (d, i) {
     if(d.MIN_PRESSURE != 'NA') {
@@ -82,13 +87,17 @@ function MinPressureChart(dataset, container, columnId, percOn) {
   .range([viewBoxHeight - viewBoxMargin, viewBoxMargin]);
 
   // Formatter for the x axis
-  formatterXAxis = d3.format("d");
+  //formatterXAxis = d3.format("d");
+
+  // Define Axes
+  //var xAxis = d3.svg.axis()
+  //.scale(xScale)
+  //.ticks(10)
+  //.tickFormat(formatterXAxis);
 
   // Define Axes
   var xAxis = d3.svg.axis()
-  .scale(xScale)
-  .ticks(10)
-  .tickFormat(formatterXAxis);
+  .scale(xScale);
 
   // Formatter for the y axis
   formatter = d3.format(".2%");
@@ -116,7 +125,7 @@ function MinPressureChart(dataset, container, columnId, percOn) {
 
   // Setting the line layout function to extract coordinates data from dataset
   var line = d3.svg.line()
-  .x(function(d){return xScale(d.YEAR);})
+  .x(function(d){return xScale(d.DAY);})
   .y(function(d){
     if(d.MIN_PRESSURE != 'NA') {
       return viewBoxHeight - yScale(parseInt(d.MIN_PRESSURE));
@@ -144,7 +153,7 @@ function MinPressureChart(dataset, container, columnId, percOn) {
     }
   })
   .attr('cx', function (d, i) {
-    return xScale(d.YEAR);
+    return xScale(d.DAY);
   })
   .attr('cy', function (d, i) {
     if(percentageOn) {
@@ -192,8 +201,8 @@ function MinPressureChart(dataset, container, columnId, percOn) {
       //Update the tooltip position and value
       svg.select("#tooltip")
       .attr("transform", "translate(" + xPosition + "," + yPosition + ")")
-      .select("#year_value")
-      .text(d.YEAR);
+      .select("#day_value")
+      .text(d.DAY);
 
       svg.select("#tooltip")
       .select('#min_pressure_value')
@@ -231,22 +240,21 @@ function MinPressureChart(dataset, container, columnId, percOn) {
   //Create Y axis
   svg.append("g")
   .attr("class", "y axis")
-  .attr("transform", "translate(" + viewBoxMargin + ",0)")
+  .attr("transform", "translate(" + viewBoxMarginX + ",0)")
   .call(yAxis);
 
-  /*
   // Hide some ticks
   var xTicksText =  svg.select('.x.axis')
   .selectAll('.tick text');
 
   xTicksText.style('opacity', function (d, i) {
-    if(i%11!==0 && i!=163) {
+    if(i%50!==0) {
       return 0;
     } else {
       return 1;
     }
   });
-*/
+
 
   //Create the tooltip svg
   var tooltip = svg.append('g')
@@ -256,18 +264,18 @@ function MinPressureChart(dataset, container, columnId, percOn) {
   tooltip.append('rect');
 
   tooltip.append('text')
-  .attr('dx', +18)
+  .attr('dx', +10)
   .attr('dy', +50)
-  .text('Year: ');
+  .text('Day: ');
 
   tooltip.append('text')
-  .attr('dx', +142)
+  .attr('dx', +88)
   .attr('dy', +50)
-  .attr('id', 'year_value')
+  .attr('id', 'day_value')
   .text('100');
 
   tooltip.append('text')
-  .attr('dx', +18)
+  .attr('dx', +10)
   .attr('dy', +100)
   .text('Min Press.: ');
 
@@ -300,13 +308,6 @@ function MinPressureChart(dataset, container, columnId, percOn) {
     //console.log(actualCleanDataset);
 
     //Update scale domains
-    xScale.domain(
-                  [d3.min(actualDataset , function (d, i) {
-                    return parseInt(d.YEAR);
-                  })-5,
-                  d3.max(actualDataset , function (d, i) {
-                    return parseInt(d.YEAR);
-                  })+5]);
     yScale.domain(
                   [d3.min(actualDataset , function (d, i) {
                     if(d.MIN_PRESSURE != 'NA') {
@@ -354,7 +355,7 @@ function MinPressureChart(dataset, container, columnId, percOn) {
       }
     })
     .attr('cx', function (d, i) {
-      return xScale(d.YEAR);
+      return xScale(d.DAY);
     })
     .attr('cy', viewBoxHeight - viewBoxMargin)
     .attr('r', 4)
@@ -386,8 +387,8 @@ function MinPressureChart(dataset, container, columnId, percOn) {
         //Update the tooltip position and value
         svg.select("#tooltip")
         .attr("transform", "translate(" + xPosition + "," + yPosition + ")")
-        .select("#year_value")
-        .text(d.YEAR);
+        .select("#day_value")
+        .text(d.DAY);
 
         svg.select("#tooltip")
         .select('#min_pressure_value')
@@ -427,7 +428,7 @@ function MinPressureChart(dataset, container, columnId, percOn) {
       }
     })
     .attr('cx', function (d, i) {
-      return xScale(d.YEAR);
+      return xScale(d.DAY);
     })
     .attr('cy', function (d, i) {
       //console.log(d.POPEST2010_CIV);
@@ -506,18 +507,18 @@ function MinPressureChart(dataset, container, columnId, percOn) {
     tooltip.append('rect');
 
     tooltip.append('text')
-    .attr('dx', +18)
+    .attr('dx', +10)
     .attr('dy', +50)
-    .text('Year: ');
+    .text('Day: ');
 
     tooltip.append('text')
-    .attr('dx', +142)
+    .attr('dx', +88)
     .attr('dy', +50)
-    .attr('id', 'year_value')
+    .attr('id', 'day_value')
     .text('100');
 
     tooltip.append('text')
-    .attr('dx', +18)
+    .attr('dx', +10)
     .attr('dy', +100)
     .text('Min Press.: ');
 
@@ -560,5 +561,44 @@ function MinPressureChart(dataset, container, columnId, percOn) {
     });*/
 
 };
+
+  //
+  function dayExists (day) {
+    var dayStringTemp = "" + day + "";
+
+    if(dayStringTemp.length < 3) {
+      return false;
+    }
+
+    while(dayStringTemp.length < 4) {
+      dayStringTemp = "0" + dayStringTemp;
+    }
+
+    var monthOnly = parseInt(dayStringTemp.substring(0, 2));
+    var dayOnly = parseInt(dayStringTemp.substring(2, 4));
+
+    if(dayOnly < 1) {
+      return false;
+    } else if(monthOnly < 1 || monthOnly > 12) {
+      return false;
+    } else if(monthOnly == 2 && dayOnly > 28) {
+      return false;
+    } else if ((monthOnly == 4 || monthOnly == 6 || monthOnly == 9 || monthOnly == 11) && dayOnly > 30) {
+      return false;
+    } else if ((monthOnly == 1 || monthOnly == 3 || monthOnly == 5 || monthOnly == 7 || monthOnly == 8 || monthOnly == 10 || monthOnly == 12) && dayOnly > 31) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  function dayToString (day) {
+    var dayString = "" + day + "";
+    while(dayString.length < 4) {
+      dayString = "0" + dayString;
+    }
+    dayString = dayString.substring(0,2) + "/" + dayString.substring(2,4);
+    return dayString;
+  }
 
 }
