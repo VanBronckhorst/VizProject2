@@ -57,10 +57,16 @@ var Model = function() {
 	this.filterCurrent = function( filterObject ) {
 		var oldFilter = this.filters[ filterObject.name ];
 
+		if ( oldFilter !== undefined && oldFilter.attribute === "favorite") {
+			return this;
+		}
+
+
 		if ( filterObject.attribute === "favorite" ) {
 			filterObject.name = "maxSpeed";
 			this.currentData = this.filter.filterCurrent( filterObject, this.globalData );
 			this.visualizedData = this.currentData;
+			this.filters = {};
 			this.filters[ filterObject.name ] = filterObject;
 			// notify observers
 			this.notifyAll( this.visualizedData, this.currentData );
@@ -71,6 +77,7 @@ var Model = function() {
 		if ( filterObject.attribute === "noFilter" ) {
 			this.currentData = this.globalData;
 			this.visualizedData = this.currentData;
+			this.filters = {};
 			// notify observers
 			this.notifyAll( this.visualizedData, this.currentData );
 			// allow chain calls
