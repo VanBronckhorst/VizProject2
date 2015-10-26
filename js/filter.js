@@ -7,17 +7,17 @@ var Filter = function() {
 
 		switch( filterObject.function ) {
 			case "sort": 
-				return this.sort( filterObject.name, currentData, filterObject.order );
+			return this.sort( filterObject.name, currentData, filterObject.order );
 			case "range":
-				return this.range( filterObject.name, currentData, filterObject.from, filterObject.to );
+			return this.range( filterObject.name, currentData, filterObject.from, filterObject.to );
 			case "top":
-				return this.top( filterObject.name, currentData, filterObject.number );
+			return this.top( filterObject.name, currentData, filterObject.number );
 			case "bottom":
-				return this.bottom( filterObject.name, currentData, filterObject.number );		
+			return this.bottom( filterObject.name, currentData, filterObject.number );		
 			case "equal":
-				return this.equal( filterObject.name, currentData, filterObject.value );
+			return this.equal( filterObject.name, currentData, filterObject.value );
 			case "active":
-				return this.active( currentData, filterObject.date );
+			return this.active( currentData, filterObject.date );
 		}
 	};
 
@@ -25,13 +25,13 @@ var Filter = function() {
 
 		switch ( filterObject.function ) {
 			case "add":
-				return this.add( filterObject.name, visualizedData, currentData );
+			return this.add( filterObject.name, visualizedData, currentData );
 			case "remove":
-				return this.remove( filterObject.name, visualizedData );
+			return this.remove( filterObject.name, visualizedData );
 			case "addAll":
-				return currentData;
+			return currentData;
 			case "removeAll":
-				return [];
+			return [];
 		}
 	};
 
@@ -53,8 +53,8 @@ var Filter = function() {
 	// returns the datum for which attribute name is maximum
 	this.max = function( name, data ) {
 		var result,
-			max = -Infinity,
-			value;
+		max = -Infinity,
+		value;
 		for ( var i = 0, length = data.length; i < length; ++i ) {
 			value = data[ i ][ name ];
 			if ( value > max ) {
@@ -68,8 +68,8 @@ var Filter = function() {
 	// returns the datum for which attribute name is minimum
 	this.min = function( name, data ) {
 		var result,
-			min = Infinity,
-			value;
+		min = Infinity,
+		value;
 		for ( var i = 0, length = data.length; i < length; ++i ) {
 			value = data[ i ][ name ];
 			if ( value < min ) {
@@ -116,8 +116,8 @@ var Filter = function() {
 	this.equal = function( name, data, value ) {
 		if (value == null) {
 			return data.filter( function( d ) {
-			return true;
-		} );
+				return true;
+			} );
 		}
 		return data.filter( function( d ) {
 			return d[ name ] === value;
@@ -128,10 +128,10 @@ var Filter = function() {
 	this.active = function( data, date ) {
 		var newData = [];
 		for ( var i = 0, len = data.length; i < len; ++i ) {
-			var hurr = data[ i ];
-			var points = hurr[ "points" ];
+			var hurr = jQuery.extend(true, {}, data[i]);
+			var points = hurr[ "points" ].slice();
 			points = points.filter( function( p ) {
-				p[ "date" ] === date;
+				return p[ "date" ] == date;
 			} );
 			hurr[ "points" ] = points;
 			if ( points.length > 0 ) {
@@ -146,17 +146,17 @@ var Filter = function() {
 		if ( fObj1.name === fObj2.name ) {
 			switch( fObj1.function ) {
 				case "sort":
-					return  fObj1.values === fObj2.values;
+				return  fObj1.values === fObj2.values;
 				case "range":
-					return fObj1.from >= fObj2.from && fObj1.to <= fObj2.to;
+				return fObj1.from >= fObj2.from && fObj1.to <= fObj2.to;
 				case "top":
-					return fObj1.number <= fObj2.number;
+				return fObj1.number <= fObj2.number;
 				case "bottom":
-					return fObj1.number <= fObj2.number;
+				return fObj1.number <= fObj2.number;
 				case "equal":
-					return fObj1.value === fObj2.value;
+				return fObj1.value === fObj2.value;
 				case "active":
-					return fObj1.date === fObj2.date;
+				return fObj1.date === fObj2.date;
 			}
 		}
 		return false;

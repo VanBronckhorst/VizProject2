@@ -884,7 +884,7 @@ function addDatePicker(id,isYearOnly){
 				var day = dateTokens[0] +""+ dateTokens[1]+"" + dateTokens[2] ;
 				log(day);
     			//notify
-				//filterViewLayout.notifyAll(new HurricaneNameFilter(null,operation)); 
+				filterViewLayout.notifyAll(new ActiveFilter('dates','active',day)); 
 
 			}
 			//turn off season filter

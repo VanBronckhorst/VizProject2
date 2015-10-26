@@ -56,6 +56,19 @@ var Model = function() {
 	// filters the current dataset accordingly to filterObject  
 	this.filterCurrent = function( filterObject ) {
 		var oldFilter = this.filters[ filterObject.name ];
+		if ( filterObject.name === "startDate" && this.filters[ "dates" ] !== undefined ) {
+			this.currentData = this.globalData;
+			this.filters[ filterObject.name ] = filterObject;
+			delete this.filters[ "dates" ];
+			for ( var k in this.filters ) {
+				this.currentData = this.filter.filterCurrent( this.filters[k], this.currentData );
+			}
+			this.visualizedData = this.currentData;
+			// notify observers
+			this.notifyAll( this.visualizedData, this.currentData );
+			// allow chain calls
+			return this;
+		} 
 		if ( oldFilter === undefined || this.filter.isSubset( filterObject, oldFilter ) ) {
 			// if the attribute hasn't been previously filtered on or the older filter was coarser
 			this.filters[ filterObject.name ] = filterObject;
