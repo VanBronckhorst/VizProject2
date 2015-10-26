@@ -6,7 +6,7 @@ div.datepicker {
 	position: absolute;
 	cursor: default;
 	top: 0;
-	left: 0;
+	left: 10%;
 	display: none;
 }
 .datepickerContainer {

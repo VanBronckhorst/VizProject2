@@ -19,20 +19,13 @@ var wSpace=10;
 
 log(w, globW)
 
-/*<<<<<<< HEAD
-d3.selectAll("#widgetField").style("width",w).style("height",h).style("font-size", newFont)//.style("display","none")
-d3.selectAll("#widgetCalendar").style("width",w).style("height",h).style("font-size", newFont).style("display","none")
-d3.selectAll(".datePicker").style("width",w).style("height",w/ratio2)//.style("font-size", newFont)
-d3.selectAll(".datePickerContainer").style("width",w).style("height",w/ratio2)//.style("font-size", newFont)
-d3.selectAll(".datePickerContainer").style("left",globW*relativeW).style('top',globH*relativeH)
-=======*/
+
 d3.selectAll("#widgetField").style("width",w).style("height",h).style("font-size", newFont).style("line-height",h+"px")
 d3.selectAll("#widgetCalendar").style("width",w).style("font-size", newFont).style("top",h)
 d3.selectAll(".datePicker").style("width",w).style("height",w/ratio2).style("font-size", newFont)
 d3.selectAll(".datepickerSpace").style("width",wSpace)
 d3.selectAll(".datePickerContainer").style("width",w-2*border).style("height",w/ratio2-2*border).style("font-size", newFont)
 d3.selectAll("td").style("font-size", newFont)
-//>>>>>>> d10a3bbc6480c538ddbdf828446898c82ccac1a3
 d3.selectAll('td').selectAll('a').selectAll('span').style('font-size', newFont)
 
 d3.selectAll("th").style("font-size", newFont*1.1)

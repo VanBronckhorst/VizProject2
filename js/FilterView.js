@@ -113,7 +113,16 @@ this.g.append('text')
 .attr('class','title-controls')	
 .text('CONTROLS')
 .attr('y', '0')
-.attr('x', '250');
+.attr('x', '80');
+
+this.g.append('text')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'FontAwesome')
+.attr('font-size', 50)
+.attr('fill', 'black')
+.text(function(d) { return '\uf085'; })
+.attr('y', '-20')
+.attr('x', '15');
 
 
 //add container svg for lists
@@ -253,13 +262,13 @@ this.svgSeason
 .attr('id', 'rect-season-atlantic')	
 .attr('height', (100 - heightSvgList - 30) + "%") 
 .attr('y', (heightSvgList-(-9))+ "%") 
-.attr('x', '3%');
+.attr('x', '5%');
 
 this.svgSeason
 .append('text')
 .text('ATLANTIC SEASON')
 .style('font-size', 20)
-.attr('y', (heightSvgList-(-11))+ "%") 
+.attr('y', (heightSvgList-(-12))+ "%") 
 .attr('x', '12%');
 
 this.svgSeason
@@ -313,7 +322,7 @@ this.svgSeason
 .attr('id', 'rect-season-pacific')	
 .attr('height', (100 - heightSvgList - 28) + "%") 
 .attr('y', (heightSvgList-(-22))+ "%") 
-.attr('x', '3%');
+.attr('x', '5%');
 
 this.svgSeason
 .append('text')
@@ -355,8 +364,100 @@ this.svgSeason
 .attr("cy",(heightSvgList-(-33))+ "%")
 .attr("r", 7);
 
+//===============MIN PRESSURE SELECTOR
+//Create scale functions
+var pressureScale = d3.scale.linear()
+.domain([800,1100])
+.range([0,300]);
 
+//Define X axis
+var pressureAxis = d3.svg.axis()
+.scale(pressureScale)
+//.ticks(10)
+.orient("bottom");
 
+//Create X axis
+//this.svgFilters
+this.g
+.append("g")
+.attr("class", "axisFilter") //Assign "axis" class
+.attr('id', 'pressureSlider')
+.attr("transform", "translate(" + 450 + ","+ 600+")")
+.call(pressureAxis);
+
+//add name to slider
+this.g
+.append("g")
+.attr("transform", "translate(" + 550 + ","+ 590+")")
+.append('text')
+.text('MIN PRESSURE')
+.style('font-size', 15);
+
+//make ticks clickable
+d3.select('#pressureSlider')
+.selectAll('.tick')
+.attr('cursor', 'pointer')
+.on('click',pressureClicked)
+
+function pressureClicked(d){
+	var ticks = document.getElementById('pressureSlider').getElementsByTagName('text');
+	var tickList = Array.prototype.slice.call(ticks);
+
+	tickList
+	.forEach(function(d){		
+		d.setAttribute('fill', 'black');
+	});
+
+	var a = this.getElementsByTagName('text');
+	a[0].setAttribute('fill', 'purple');
+}
+//===============MAX WIND SELECTOR
+//Create scale functions
+var windScale = d3.scale.linear()
+.domain([10,160])
+.range([0,300]);
+
+//Define X axis
+var windAxis = d3.svg.axis()
+.scale(windScale)
+.ticks(10)
+.orient("bottom");
+
+//Create X axis
+//this.svgFilters
+this.g
+.append("g")
+.attr("class", "axisFilter") //Assign "axis" class
+.attr('id', 'windSlider')
+.attr("transform", "translate(" + 450 + ","+ 670+")")
+.call(windAxis);
+
+//add name to slider
+this.g
+.append("g")
+.attr("transform", "translate(" + 550 + ","+ 660+")")
+.append('text')
+.text('MAX WIND SPEED')
+.style('font-size', 15);
+
+//make ticks clickable
+d3.select('#windSlider')
+.selectAll('.tick')
+.attr('cursor', 'pointer')
+.on('click',windClicked)
+
+function windClicked(d){
+	var ticks = document.getElementById('windSlider').getElementsByTagName('text');
+	var tickList = Array.prototype.slice.call(ticks);
+
+	tickList
+	.forEach(function(d){		
+		d.setAttribute('fill', 'black');
+	});
+
+	var a = this.getElementsByTagName('text');
+	a[0].setAttribute('fill', 'purple');
+}
 //===============LANDED FILTER
 
 var landedFilterOn = false;
