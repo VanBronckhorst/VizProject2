@@ -1,21 +1,21 @@
+// TODO adjust filterObject.values name
+
 // provides a series of filtering functions
 var Filter = function() {
 
-	this.filterCurrent = function( filterObject, currentData ) {
+	this.filterCurrent = function( filterObject, currentData ) { // names to be adjusted
 
 		switch( filterObject.function ) {
-			case "sort": 
-				return this.sort( filterObject.name, currentData, filterObject.order );
+			case "sort": // serve davvero?
+				return this.sort( filterObject.name, currentData, filterObject.values );
 			case "range":
 				return this.range( filterObject.name, currentData, filterObject.from, filterObject.to );
 			case "top":
 				return this.top( filterObject.name, currentData, filterObject.number );
 			case "bottom":
 				return this.bottom( filterObject.name, currentData, filterObject.number );		
-			case "equal":
-				return this.equal( filterObject.name, currentData, filterObject.value );
-			case "active":
-				return this.active( currentData, filterObject.date );
+			case "equal": // serve?
+				return this.equal( filterObject.name, currentData, filterObject.value);
 		}
 	};
 
@@ -78,6 +78,7 @@ var Filter = function() {
 		return result;
 	};
 
+	// TODO sistemare comparator
 	// sorts the data on the attribute name, ascending if order > 0, descending if < 0 
 	this.sort = function( name, data, order ) {
 		// compares two values accordingly with type
@@ -112,18 +113,13 @@ var Filter = function() {
 
 	// filters the data to those whose attribute name is equal to value
 	this.equal = function( name, data, value ) {
+		if (value == null) {
+			return data.filter( function( d ) {
+			return true;
+		} );
+		}
 		return data.filter( function( d ) {
 			return d[ name ] === value;
-		} );
-	};
-
-	// filters the hurricanes to those that were active on the given day
-	this.active = function( data, date ) {
-		return data.filter( function( d ) {
-			var points = d[ "points" ];
-			return points.filter( function( p ) {
-				p[ "date" ] === date;
-			} ).length > 0;
 		} );
 	};
 
@@ -132,7 +128,7 @@ var Filter = function() {
 		if ( fObj1.name === fObj2.name ) {
 			switch( fObj1.function ) {
 				case "sort":
-					return  fObj1.order === fObj2.order;
+					return  fObj1.values === fObj2.values;
 				case "range":
 					return fObj1.from >= fObj2.from && fObj1.to <= fObj2.to;
 				case "top":
@@ -141,8 +137,6 @@ var Filter = function() {
 					return fObj1.number <= fObj2.number;
 				case "equal":
 					return fObj1.value === fObj2.value;
-				case "active":
-					return fObj1.date === fObj2.date;
 			}
 		}
 		return false;

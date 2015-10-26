@@ -145,11 +145,11 @@ function MapView(){
            d > 1000  ? '#E31A1C' :
            d > 500  ? '#FC4E2A' :
            d > 100   ? '#FD8D3C' :
-           d > 50   ? '#FEB24C' :
+           
            d > 10   ? '#FED976' :
                       '#FFEDA0';
 	}
-	this.cloroplethColors = ['#FFEDA0','#FED976','#FEB24C','#FD8D3C','#FC4E2A','#E31A1C','#BD0026','#800026']
+	this.cloroplethColors = ['#FFEDA0','#FED976','#FD8D3C','#FC4E2A','#E31A1C','#BD0026','#800026']
 	
 	this.cloroplethStyle = function(feature) {
     return {
@@ -168,7 +168,7 @@ function MapView(){
 		if (!this.legendControl.isOnMap()){
 				this.legendControl.addTo(this.map);
 			}
-		this.legendControl.changeLegend(this.cloroplethColors,['1','2','3','4','5','6','7','8'],"Danger");
+		this.legendControl.changeLegend(this.cloroplethColors,['1','2','3','4','5','6','7'],"Danger");
 	}
 	
 	this.hurricaneSelected = function(h){

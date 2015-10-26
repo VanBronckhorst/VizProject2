@@ -21,8 +21,8 @@ var LegendControl = L.Control.extend({
 		this.div = d3.select(container);
 		this.div.style("width",this.w).style("height",this.h);
 		
-		this.svgH = 160;
-		this.svgW = 80;
+		this.svgH = 170;
+		this.svgW = 100;
 		this.svg = this.div.append("svg").attr("id","legendControlSVG").attr("class","legend-control-svg control-svg").attr("viewBox","0 0 "+ this.svgW+" "+this.svgH).attr("preserveAspectRatio","xMidYMid meet");
 		
 		//this.updateLegend();

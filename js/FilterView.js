@@ -47,16 +47,16 @@ var FilterView = function (){
 	.append('text')
 	.attr('dominant-baseline', 'central')
 	.attr('font-family', 'FontAwesome')
-	.attr('font-size', 800)
-	.attr('x', 70 )
-	.attr('y', 410)
+	.attr('font-size', 1000)
+	.attr('x', 90 )
+	.attr('y', 300)
 	.attr('fill', 'black')
 	.attr('id', 'arrowResizeFilter')
 	.attr('cursor', 'pointer')
 	.on('click',resizeFilterView)
 	.text(function(d) { return '\uf053'; });
 
-	d3.selectAll(".leaflet-left").style("left","27%");
+	d3.selectAll(".leaflet-left").style("left","25%");
 	
 	//code to close and open the panel
 	var toggle = true;
@@ -72,48 +72,31 @@ var FilterView = function (){
 						left: '0'
 					}, 'slow');
 					$('.leaflet-left').animate({
-						left: '1%'
+						left: '0'
 					}, 'slow');
 				}else{
 					$('#divArrowFilter').animate({
 						left: '25%'
 					}, 'slow');
 					$('.leaflet-left').animate({
-						left: '27%'
+						left: '25%'
 					}, 'slow');
 				}
 			},
 			complete: function() {
 				if(toggle){
-					//slide line
-					filterViewLayout.underlineLine
-					.transition()
-					.duration(500)
-					.attr('x1', '33%')
-					.attr("x2", '42%');
-					//PRETEND SEASON WAS CLICKED
-					//hide all calendars
-					d3.select('#calendarDay')
-					.style('visibility', 'hidden');
-					d3.select('#calendarYear')
-					.style('visibility', 'hidden');
-
-					//show calendar
-					d3.select('#svg-season')
-					.style('visibility', 'visible');
-
-					//arrow change direction to right
-					d3.select('#arrowResizeFilter')
-					.text(function() { return '\uf054'; });
-				}else{
-					//arrow change direction to left
-					d3.select('#arrowResizeFilter')
-					.text(function() { return '\uf053'; });
-				}
-				toggle = !toggle;
-			}
-		});
-}
+			//arrow change direction to right
+			d3.select('#arrowResizeFilter')
+			.text(function() { return '\uf054'; });
+		}else{
+			//arrow change direction to left
+			d3.select('#arrowResizeFilter')
+			.text(function() { return '\uf053'; });
+		}
+		toggle = !toggle;
+	}
+});
+	}
 
 //create svg for filterView
 var svg = this.filterViewDiv
@@ -178,9 +161,7 @@ this.svgFilters
 	.attr('x1', '33%')
 	.attr("x2", '42%');
 	//hide all calendars
-	d3.select('#calendarDay')
-	.style('visibility', 'hidden');
-	d3.select('#calendarYear')
+	d3.select('#calendar')
 	.style('visibility', 'hidden');
 
 	//show calendar
@@ -206,11 +187,9 @@ this.svgFilters
 	//hide all calendars
 	d3.select('#svg-season')
 	.style('visibility', 'hidden');
-	d3.select('#calendarYear')
-	.style('visibility', 'hidden');
 
 	//show calendar
-	d3.select('#calendarDay')
+	d3.select('#calendar')
 	.style('visibility', 'visible'); //this calendar is for the day
 })
 .attr('cursor', 'pointer')
@@ -232,11 +211,9 @@ this.svgFilters
 	//hide all calendars
 	d3.select('#svg-season')
 	.style('visibility', 'hidden'); 
-	d3.select('#calendarDay')
-	.style('visibility', 'hidden');
 
 	//show calendar
-	d3.select('#calendarYear')
+	d3.select('#calendar')
 	.style('visibility', 'visible');	//this calendar is only for the year
 })
 .attr('cursor', 'pointer')
@@ -280,10 +257,6 @@ this.svgSeason
 		this.setAttribute('class', 'seasonOff');
 	}
 	atlanticOn = !atlanticOn;
-	var start = currentYear+"0501"; //first May of currentYear
-	var end =  currentYear+"1130"; // 30th Nov of currentYear
-	//notify				
-	filterViewLayout.notifyAll(new RangeFilter('startDate',start,end,'range')); 
 })
 .attr('cursor', 'pointer')
 .attr('id', 'rect-season-atlantic')	
@@ -303,7 +276,7 @@ this.svgSeason
 .text('MAY')
 .style('font-size', 15)
 .attr('y', (heightSvgList-(-16))+ "%") 
-.attr('x', '13%');
+.attr('x', '18%');
 this.svgSeason
 .append('text')
 .text('NOVEMBER')
@@ -314,7 +287,7 @@ this.svgSeason
 this.svgSeason
 .append("line")
 .attr('y1', (heightSvgList-(-18))+ "%") 
-.attr('x1', '15%')
+.attr('x1', '20%')
 .attr('y2', (heightSvgList-(-18))+ "%") 
 .attr('x2', '40%')
 .attr("stroke-width", 2)
@@ -322,7 +295,7 @@ this.svgSeason
 
 this.svgSeason
 .append("circle")
-.attr("cx", "15%")
+.attr("cx", "20%")
 .attr("cy",(heightSvgList-(-18))+ "%")
 .attr("r", 7);
 this.svgSeason
@@ -344,11 +317,6 @@ this.svgSeason
 		this.setAttribute('class', 'seasonOff');
 	}
 	pacificOn = !pacificOn;
-	var start = currentYear+"0601"; //first Jun of currentYear
-	var end =  currentYear+"1130"; // 30th Nov of currentYear
-	//notify				
-	filterViewLayout.notifyAll(new RangeFilter('startDate',start,end,'range')); 
-
 })
 .attr('cursor', 'pointer')
 .attr('id', 'rect-season-pacific')	
@@ -368,7 +336,7 @@ this.svgSeason
 .text('JUN')
 .style('font-size', 15)
 .attr('y',(heightSvgList-(-31))+ "%") 
-.attr('x', '18%');
+.attr('x', '13%');
 this.svgSeason
 .append('text')
 .text('NOVEMBER')
@@ -379,7 +347,7 @@ this.svgSeason
 this.svgSeason
 .append("line")
 .attr('y1', (heightSvgList-(-33))+ "%") 
-.attr('x1', '20%')
+.attr('x1', '15%')
 .attr('y2', (heightSvgList-(-33))+ "%") 
 .attr('x2', '40%')
 .attr("stroke-width", 2)
@@ -387,7 +355,7 @@ this.svgSeason
 
 this.svgSeason
 .append("circle")
-.attr("cx", "20%")
+.attr("cx", "15%")
 .attr("cy",(heightSvgList-(-33))+ "%")
 .attr("r", 7);
 this.svgSeason
@@ -396,7 +364,7 @@ this.svgSeason
 .attr("cy",(heightSvgList-(-33))+ "%")
 .attr("r", 7);
 
-//===========================MIN PRESSURE SELECTOR
+//===============MIN PRESSURE SELECTOR
 //Create scale functions
 var pressureScale = d3.scale.linear()
 .domain([800,1100])
@@ -422,7 +390,7 @@ this.g
 .append("g")
 .attr("transform", "translate(" + 550 + ","+ 630+")")
 .append('text')
-.text('MIN PRESSURE (mb)')
+.text('MIN PRESSURE')
 .style('font-size', 15);
 
 //make ticks clickable
@@ -442,9 +410,11 @@ function pressureClicked(d){
 
 	var a = this.getElementsByTagName('text');
 	a[0].setAttribute('fill', 'purple');
-
-	filterViewLayout.notifyAll(new ThresholdFilter('pressure',d,'min')); 
-
+	
+	min = parseInt(d3.select(a[0]).text().replace(",", ""));
+	
+	filterViewLayout.notifyAll(new RangeFilter ('minPressure',min,2000,'range'));
+	
 }
 //===============MAX WIND SELECTOR
 //Create scale functions
@@ -472,7 +442,7 @@ this.g
 .append("g")
 .attr("transform", "translate(" + 550 + ","+ 710+")")
 .append('text')
-.text('MAX WIND SPEED (Kn)')
+.text('MAX WIND SPEED')
 .style('font-size', 15);
 
 //make ticks clickable
@@ -492,9 +462,10 @@ function windClicked(d){
 
 	var a = this.getElementsByTagName('text');
 	a[0].setAttribute('fill', 'purple');
-	//notify
-	filterViewLayout.notifyAll(new ThresholdFilter('maxSpeed',d,'max')); 
-
+	max = parseInt(d3.select(a[0]).text());
+	
+	filterViewLayout.notifyAll(new RangeFilter ('maxSpeed',0,max,'range'));
+	
 }
 //===============LANDED FILTER
 
@@ -542,7 +513,7 @@ function toggleLanded(){
 	//change icon
 	d3.select(this).text(function() { return (landedFilterOn)?'\uf046':'\uf096'; });
 	//notify
-	filterViewLayout.notifyAll(new ToggleFilter('L',landedFilterOn,'toggle'));
+	filterViewLayout.notifyAll(new ToggleFilter('landfall',landedFilterOn? true: null,'equal'));
 }
 
 //===============FAVORITE FILTER
@@ -592,83 +563,10 @@ function toggleFavorite(){
 	//notify
 	//filterViewLayout.notifyAll(new ToggleFilter('L',favoriteOn,'toggle'));
 }
-//===============PACIFIC FILTER
-
-var pacificFilterOn = false;
-
-//add favorite filter
-this.svgFilters
-.append('text')
-.attr('text-anchor', 'middle')
-.attr('dominant-baseline', 'central')
-.attr('font-size', 20)
-.attr('pointer-events','all' )
-.attr('x', this.viewBoxWidth*0.65 )
-.attr('y', (heightSvgList * 1.19)+ "%")
-.text('PACIFIC');
-
-this.svgFilters
-.append('text')
-.attr('text-anchor', 'middle')
-.attr('dominant-baseline', 'central')
-.attr('font-family', 'FontAwesome')
-.attr('font-size', 20)
-.attr('cursor', 'pointer')
-.attr('x', this.viewBoxWidth*0.57 )
-.attr('y', (heightSvgList * 1.19)+ "%")
-.on('click',toggleFilterPacific)
-.text(function() { return '\uf096'; });
-
-function toggleFilterPacific(){
-	//toggle filtet
-	pacificFilterOn = !pacificFilterOn;
-	log('pacific filter '+ pacificFilterOn);
-	//change icon
-	d3.select(this).text(function() { return (pacificFilterOn)?'\uf046':'\uf096'; });
-	//notify
-	//filterViewLayout.notifyAll(new ToggleFilter('L',favoriteOn,'toggle'));
-}
-
-//===============ATLANTIC FILTER
-
-var atlanticFilterOn = false;
-
-//add favorite filter
-this.svgFilters
-.append('text')
-.attr('text-anchor', 'middle')
-.attr('dominant-baseline', 'central')
-.attr('font-size', 20)
-.attr('pointer-events','all' )
-.attr('x', this.viewBoxWidth*0.9 )
-.attr('y', (heightSvgList * 1.19)+ "%")
-.text('ATLANTIC');
-
-this.svgFilters
-.append('text')
-.attr('text-anchor', 'middle')
-.attr('dominant-baseline', 'central')
-.attr('font-family', 'FontAwesome')
-.attr('font-size', 20)
-.attr('cursor', 'pointer')
-.attr('x', this.viewBoxWidth*0.82 )
-.attr('y', (heightSvgList * 1.19)+ "%")
-.on('click',toggleFilterAtlantic)
-.text(function() { return '\uf096'; });
-
-function toggleFilterAtlantic(){
-	//toggle filtet
-	atlanticFilterOn = !atlanticFilterOn;
-	log('atlantic filter '+ atlanticFilterOn);
-	//change icon
-	d3.select(this).text(function() { return (atlanticFilterOn)?'\uf046':'\uf096'; });
-	//notify
-	//filterViewLayout.notifyAll(new ToggleFilter('L',favoriteOn,'toggle'));
-}
 
 //===============TOP FILTER
 
-//add top filter
+//add favorite filter
 this.svgFilters
 .append('text')
 .attr('text-anchor', 'middle')
@@ -676,8 +574,8 @@ this.svgFilters
 .attr('font-size', 20)
 .attr('pointer-events','all' )
 .attr('x', this.viewBoxWidth*0.65 )
-.attr('y', (heightSvgList * 1.27)+ "%")
-.text('TOP:');
+.attr('y', (heightSvgList * 1.23)+ "%")
+.text('TOP');
 
 this.svgFilters
 .append('text')
@@ -686,7 +584,7 @@ this.svgFilters
 .attr('font-size', 20)
 .attr('pointer-events','all' )
 .attr('x', this.viewBoxWidth*0.75 )
-.attr('y', (heightSvgList * 1.27)+ "%")
+.attr('y', (heightSvgList * 1.23)+ "%")
 .text('5');
 var text5 = this.svgFilters
 .append('text')
@@ -696,7 +594,7 @@ var text5 = this.svgFilters
 .attr('font-size', 20)
 .attr('cursor', 'pointer')
 .attr('x', this.viewBoxWidth*0.72 )
-.attr('y', (heightSvgList * 1.27)+ "%")
+.attr('y', (heightSvgList * 1.23)+ "%")
 .on('click',function(){
 	toggleTop(5);
 })
@@ -709,7 +607,7 @@ this.svgFilters
 .attr('font-size', 20)
 .attr('pointer-events','all' )
 .attr('x', this.viewBoxWidth*0.84)
-.attr('y', (heightSvgList * 1.27)+ "%")
+.attr('y', (heightSvgList * 1.23)+ "%")
 .text('10');
 
 var text10 =this.svgFilters
@@ -720,10 +618,9 @@ var text10 =this.svgFilters
 .attr('font-size', 20)
 .attr('cursor', 'pointer')
 .attr('x', this.viewBoxWidth*0.81 )
-.attr('y', (heightSvgList * 1.27)+ "%")
+.attr('y', (heightSvgList * 1.23)+ "%")
 .on('click',function(){
 	toggleTop(10);
-
 })
 .text(function() { return '\uf10c'; });
 
@@ -734,7 +631,7 @@ this.svgFilters
 .attr('font-size', 20)
 .attr('pointer-events','all' )
 .attr('x', this.viewBoxWidth*0.93 )
-.attr('y', (heightSvgList * 1.27)+ "%")
+.attr('y', (heightSvgList * 1.23)+ "%")
 .text('15');
 
 var text15 =this.svgFilters
@@ -745,10 +642,9 @@ var text15 =this.svgFilters
 .attr('font-size', 20)
 .attr('cursor', 'pointer')
 .attr('x', this.viewBoxWidth*0.9 )
-.attr('y', (heightSvgList * 1.27)+ "%")
+.attr('y', (heightSvgList * 1.23)+ "%")
 .on('click',function(){
 	toggleTop(15);
-
 })
 .text(function() { return '\uf10c'; });
 
@@ -764,7 +660,7 @@ function toggleTop(value){
 	}
 
 	//notify
-	filterViewLayout.notifyAll(new SliceFilter('maxSpeed',value,'top'));
+	//filterViewLayout.notifyAll(new ToggleFilter('L',favoriteOn,'toggle'));
 }
 
 
@@ -795,26 +691,16 @@ function toggleSelectAll(){
 }
 
 //================DATE PICKER
-var globH = parseInt(d3.select("body").style("height"));
-var calendarY = (globH>1000)?'69%':'60%';
-
-this.filterViewDiv.append('div')
+d3.select('#map').append('div')
 .attr('id', 'calendarDay')
-.style('visibility', 'hidden') 
-.style('position', 'absolute')
-.style('top', calendarY);
-this.filterViewDiv.append('div')
-.attr('id', 'calendarYear')
 .style('visibility', 'visible') 
 .style('position', 'absolute')
-.style('top', calendarY);
+.style('top', "68%");	
 
-addDatePicker('calendarDay',false);
-addDatePicker('calendarYear',true);
-
-var currentYear=2013;
-function addDatePicker(id,isYearOnly){
+addDatePicker('calendarDay');
+function addDatePicker(id){
 	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
 
 
     //get today date
@@ -829,7 +715,7 @@ function addDatePicker(id,isYearOnly){
     // add the widget to the given div
     $('#'+id)
     .DatePicker({
-    	yearOnly : isYearOnly,    	
+    yearOnly : true,    	
     	flat: true,
     	mode:'single',
     	date: new Date(today),
@@ -837,39 +723,85 @@ function addDatePicker(id,isYearOnly){
     	view: 'years',
     	calendars: 1,
     	starts: 1,
-    	onChange: function(formated) {   
-    		if(isYearOnly){
-    			var dateTokens = $('#'+id).DatePickerGetDate(formated).split('-');
-    			log(dateTokens);
-    			//var date = new Date(dateTokens[0],dateTokens[1]-1,dateTokens[2]);
-    			var start = dateTokens[0] +""+ dateTokens[1]+"" + dateTokens[2] ;
-    			var end =dateTokens[0]+""+ 12 +""+ 31  ;
-    			log(start);
-    			log(end);
-    			currentYear = dateTokens[0];
-				//notify
-				filterViewLayout.notifyAll(new RangeFilter('startDate',start,end,'range')); 
+    	onChange: function(formated) {            
+            console.log($('#'+id).DatePickerGetDate(formated)); //TO GET THE DATE AS ARRAY OF STRINGS
+        }
+    });
+/*	d3.select('#map').append('div')
+	.attr('id', 'widget')
+	.append('div')
+	.attr('id','widgetField')
+	.append('span')
+	.text('28 July, 2008 &divide; 31 July, 2008')
 
-			}else{
-				var dateTokens = $('#'+id).DatePickerGetDate(formated).split('-');
-				log(dateTokens);
-				var day = dateTokens[0] +""+ dateTokens[1]+"" + dateTokens[2] ;
-				log(day);
-    			//notify
-				//filterViewLayout.notifyAll(new HurricaneNameFilter(null,operation)); 
+	d3.select("#widgetField").append('a')
+	.attr('href','#' )
+	.text('Select date range');
 
-			}
-			//turn off season filter
-			atlanticOn = false;
-			d3.select('#rect-season-atlantic').attr('class', 'seasonOff');
-			pacificOn = false;
-			d3.select('#rect-season-pacific').attr('class', 'seasonOff');
-		}
-	});
+	d3.select('#widget')
+	.append('div')
+	.attr('id', 'widgetCalendar');
 
+
+
+	d3.select('#widget')
+	.append('div')
+	.attr('id', 'widgetCalendar');
+
+
+
+	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    //get today date
+    var today = new Date();
+
+    //get date in string format to put as default in the input box
+    var dd = today.getDate();
+    var mm = monthNames[today.getMonth()]; 
+    var yyyy = today.getFullYear();
+    var defaultDateString = [dd+' '+mm+', '+yyyy,dd+' '+mm+', '+yyyy];
+    $('#widgetField span').get(0).innerHTML = defaultDateString.join(' &divide; ');
+
+    // add the widget to the given div
+    $('#widgetCalendar')
+    .DatePicker({
+    	flat: true,
+    	date: '2008-07-31',
+    	current: '2008-07-31',
+    	calendars: 1,
+    	starts: 1
+    });
+ /*   .DatePicker({
+    	flat: true,
+    	format: 'd B, Y',
+        date: [new Date(today), new Date(today)], //the default choice is today
+        calendars: 2,
+        mode: 'range',
+        starts: 1,
+        view: 'years',
+        onChange: function(formated) {
+        	$('#widgetField span').get(0).innerHTML = formated.join(' &divide; ');
+            console.log($('#widgetCalendar').DatePickerGetDate(formated)); //TO GET THE DATE AS ARRAY OF STRINGS
+        }
+    });*/
+
+   /* // open and close the calendar
+    var state = false;
+    $('#widgetField>a').bind('click', function(){
+    	log('nmichia');
+    	$('#widgetCalendar').stop().animate({height: state ? 0 : $('#widgetCalendar div.datepicker').get(0).offsetHeight}, 500);
+    	state = !state;
+    	return false;
+    });
+    $('#widgetCalendar div.datepicker').css('position', 'absolute');
+
+    // clear selection
+    $('#clearSelection').bind('click', function(){
+    	$('#widgetCalendar').DatePickerClear();
+    	return false;
+    });*/
 }
 
-// ================================COLUMNS OF LIST(name,date,maxSpeed,danger)
+//create ================================COLUMNS OF LIST(name,date,maxSpeed,danger)
 
 var listCreator = new ListCreator();
 //checkbox is a world on its own=======
@@ -895,7 +827,7 @@ function toggleChecked(d){
 this.list = listCreator.createList(this.svgList,'NAME');
 this.listSpeed = listCreator.createList(this.svgList,'MAX SPEED');
 this.listDate = listCreator.createList(this.svgList,'START DATE');
-//this.listDanger = listCreator.createList(this.svgList,'DANGER');
+this.listDanger = listCreator.createList(this.svgList,'DANGER');
 
 //SET THE ACTIONS FOR THE ORDER ASCENDING AND DESCENDING ARROWS=========================
 d3.select('#des-NAME')
@@ -952,14 +884,31 @@ d3.select('#des-STARTDATE')
 	//update
 	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
 });
-
+d3.select('#asc-DANGER')
+.on('click',function(){
+	//set variable to sort on 
+	UtilityView.variable = 'startDate';//FIXME put the right variable
+	//sort by ascending name
+	filterViewLayout.data.sort(UtilityView.ascending);
+	//update
+	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
+});
+d3.select('#des-DANGER')
+.on('click',function(){
+	//set variable to sort on 
+	UtilityView.variable = 'startDate';//FIXME put the right variable
+	//sort by ascending name
+	filterViewLayout.data.sort(UtilityView.descending);
+	//update
+	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
+});
 //===========================end ordering functions
 
 this.lists.push(
 	{'list':this.list, 'attribute' : 'name'},
 	{'list':this.listSpeed,'attribute':'maxSpeed'},
 	{'list':this.listDate, 'attribute':'startDate'},
-	//{'list':this.listDanger, 'attribute':'maxSpeed'}, //TODO put the right value here
+	{'list':this.listDanger, 'attribute':'maxSpeed'}, //TODO put the right value here
 	{'list':this.checkBoxList, 'attribute' : null});
 
 
@@ -998,10 +947,12 @@ this.lists.push(
 		//if the user ask to slide down when there are no more hurricane
 		//or to slide up when the list is at the beginning
 		//return
-		if(direction === 'down' && filterViewLayout.lastWordIndex >= filterViewLayout.data.length - filterViewLayout.wordBatchSize ||
+		if(direction === 'down' && filterViewLayout.lastWordIndex == filterViewLayout.data.length - filterViewLayout.wordBatchSize ||
 			direction === 'up' && filterViewLayout.lastWordIndex == 0){
 			return;	
 	}
+
+	
 		//update the lastWord Index accordingly to the direction
 		filterViewLayout.lastWordIndex = (direction === 'down') ? 
 		d3.min([filterViewLayout.data.length - filterViewLayout.wordBatchSize ,filterViewLayout.lastWordIndex + filterViewLayout.wordBatchSize])
@@ -1010,8 +961,7 @@ this.lists.push(
 		//calculare the upperIndex for slice
 		// the upper is either the max length of data or the last index plust the batch size
 		var upperIndexSlice = d3.min([filterViewLayout.data.length,filterViewLayout.lastWordIndex + filterViewLayout.wordBatchSize]);
-		log(upperIndexSlice);
-
+		
 		filterViewLayout.lists.forEach(function(d){updateValuesOf(d);})		
 
 		function updateValuesOf(list){
@@ -1059,7 +1009,7 @@ this.lists.push(
     		//the date
     		if(attribute ==='startDate'){
     			//return hurricaneDateToJS(d[attribute],'0000').toLocaleDateString();
-    			return UtilityView.timeConverter(d[attribute]);
+    			return timeConverter(d[attribute]);
     			//return 'sort';
     		}
 
@@ -1069,7 +1019,22 @@ this.lists.push(
     	.attr('font-size',20 );
     }
 
-    
+    function timeConverter(date){
+    	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    	var year = Math.floor(date/10000);
+    	var monthIndex = Math.floor((date % 10000)/100);
+    	var month = months[monthIndex-1];
+
+    	var day = date%100;	
+
+    	var time = pad(day,2) + '  ' + month + '  ' + year;
+    	return time;
+
+    	function pad(num, size) {
+    		var s = "00" + num;
+    		return s.substr(s.length-size);
+    	}
+    }
 }
 
     //function to update list when model is updated
@@ -1090,28 +1055,6 @@ this.lists.push(
     		list = list
     		.data(filterViewLayout.data.slice(0,this.wordBatchSize));
 
-    		/*//enter
-    		list
-    		.enter()
-    		.append('text')
-    		.text(function(d){
-    			log(d);
-    			return d;
-    		})
-    		.attr('y', function(d,i){
-    			return 20*i;//yValue(i);
-    		})
-    		.attr('x',function(){
-    			return 300;//xOffset + titleXOffset + busyWidth+ columnGap*numberOfListCreated;
-    		})
-    		.attr('color','black')
-    		.attr('font-size',15 );	*/
-
-    		//remove
-    		list
-    		.exit()
-    		.remove();
-
     		//update
     		list  	
     		.text(function(d,i){
@@ -1126,7 +1069,7 @@ this.lists.push(
 
     			//the date
     			if(attribute ==='startDate'){
-    				return UtilityView.timeConverter(d[attribute]);
+    				return hurricaneDateToJS(d[attribute],'0000').toLocaleDateString();
     			}
 
     			//everything else
@@ -1151,7 +1094,7 @@ this.lists.push(
 		return index * 40 + 80;
 	}
 };
-//var firstUpdateFilterView = true;
+
 FilterView.prototype.modelUpdated = function(dataVisualized,dataCurrent){	
 	log('model updated received');	
 
@@ -1178,33 +1121,6 @@ FilterView.prototype.modelUpdated = function(dataVisualized,dataCurrent){
 
     	});
 	}
-
-	//by DEFAULT SORT by speed
-	//sort by
-	this.data.sort(UtilityView.descending);
-	//update
-	this.update(this.data,this.dataVisualized);
-
-	/*if(firstUpdateFilterView){
-		function startLayout(){
-			fireEvent(document.getElementById("circle5"),'click');
-			fireEvent(document.getElementById("usPath17"),'click');
-			fireEvent(document.getElementById("manPlusWomanIcon"),'click');
-
-		}
-		function fireEvent(obj,evt){
-
-			var fireOnThis = obj;
-			if( document.createEvent ) {
-				var evObj = document.createEvent('MouseEvents');
-				evObj.initEvent( evt, true, false );
-				fireOnThis.dispatchEvent(evObj);
-			} else if( document.createEventObject ) {
-				fireOnThis.fireEvent('on'+evt);
-			}
-		}
-		firstUpdateFilterView = !firstUpdateFilterView;
-	}*/
 
 
 }
