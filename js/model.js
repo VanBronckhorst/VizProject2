@@ -1,6 +1,6 @@
 var Model = function() {
 	
-	this.globalData = hurricanes[ "hurricanes" ].slice(1772,1792);
+	this.globalData = hurricanes[ "hurricanes" ];
 
 	this.currentData = [];
 
@@ -13,8 +13,14 @@ var Model = function() {
 	this.filter = new Filter();
 
 	this.init = function() {
+
+		var initFilter = new RangeFilter( "startDate", "20140101", "20141231", "range" );
+
 		this.currentData = this.globalData;
 		this.visualizedData = this.globalData;
+
+		this.filterCurrent( initFilter );
+
 		this.notifyAll( this.currentData, this.visualizedData );
 	};
 
