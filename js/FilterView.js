@@ -603,7 +603,7 @@ function toggleFavorite(){
 		log(start);
 		log(end);
 		//notify
-		filterViewLayout.notifyAll(new RangeFilter('startDate',start,end,'range'));
+		filterViewLayout.notifyAll(new NoFavoriteFilter());
 	}
 }
 //===============ALL FILTER

@@ -47,6 +47,9 @@ var FavoriteFilter = function(name,filterFunction,number) {
 		this.attribute = 'favorite';
 	this.function = filterFunction; //'top'
 }
+var NoFavoriteFilter = function() {
+		this.attribute = 'noFavorite';
+}
 
 var NoFilter = function() {
 		this.attribute = 'noFilter';
