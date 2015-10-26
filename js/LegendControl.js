@@ -14,7 +14,7 @@ var LegendControl = L.Control.extend({
         this.onMap=true;
         var container = L.DomUtil.create('div', 'date-control');
         
-        this.w= parseInt(d3.select("body").style("width"))*0.07+"px";
+        this.w= parseInt(d3.select("body").style("width"))*0.05+"px";
 		this.h= parseInt(this.w)*2 + "px";
 		
 		
