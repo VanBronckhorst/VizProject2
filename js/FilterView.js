@@ -382,13 +382,13 @@ this.g
 .append("g")
 .attr("class", "axisFilter") //Assign "axis" class
 .attr('id', 'pressureSlider')
-.attr("transform", "translate(" + 450 + ","+ 600+")")
+.attr("transform", "translate(" + 450 + ","+ 640+")")
 .call(pressureAxis);
 
 //add name to slider
 this.g
 .append("g")
-.attr("transform", "translate(" + 550 + ","+ 590+")")
+.attr("transform", "translate(" + 550 + ","+ 630+")")
 .append('text')
 .text('MIN PRESSURE')
 .style('font-size', 15);
@@ -429,13 +429,13 @@ this.g
 .append("g")
 .attr("class", "axisFilter") //Assign "axis" class
 .attr('id', 'windSlider')
-.attr("transform", "translate(" + 450 + ","+ 670+")")
+.attr("transform", "translate(" + 450 + ","+ 720+")")
 .call(windAxis);
 
 //add name to slider
 this.g
 .append("g")
-.attr("transform", "translate(" + 550 + ","+ 660+")")
+.attr("transform", "translate(" + 550 + ","+ 710+")")
 .append('text')
 .text('MAX WIND SPEED')
 .style('font-size', 15);
@@ -469,7 +469,7 @@ this.svgFilters
 .attr('dominant-baseline', 'central')
 .attr('font-size', 20)
 .attr('pointer-events','all' )
-.attr('x', this.viewBoxWidth*0.9 )
+.attr('x', this.viewBoxWidth*0.89 )
 .attr('y', (heightSvgList * 1.1)+ "%")
 .text('LANDED');
 
@@ -485,6 +485,18 @@ this.svgFilters
 .on('click',toggleLanded)
 .text(function() { return '\uf096'; });
 
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'FontAwesome')
+.attr('font-size', 20)
+.attr('cursor', 'pointer')
+.attr('x', this.viewBoxWidth*0.955	 )
+.attr('y', (heightSvgList * 1.1)+ "%")
+.text(function() { return '\uf041'; });
+
+
 function toggleLanded(){
 	//toggle filtet
 	landedFilterOn = !landedFilterOn;
@@ -493,6 +505,153 @@ function toggleLanded(){
 	d3.select(this).text(function() { return (landedFilterOn)?'\uf046':'\uf096'; });
 	//notify
 	filterViewLayout.notifyAll(new ToggleFilter('L',landedFilterOn,'toggle'));
+}
+
+//===============FAVORITE FILTER
+
+var favoriteOn = false;
+
+//add favorite filter
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-size', 20)
+.attr('pointer-events','all' )
+.attr('x', this.viewBoxWidth*0.65 )
+.attr('y', (heightSvgList * 1.1)+ "%")
+.text('FAVORITE');
+
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'FontAwesome')
+.attr('font-size', 20)
+.attr('cursor', 'pointer')
+.attr('x', this.viewBoxWidth*0.57 )
+.attr('y', (heightSvgList * 1.1)+ "%")
+.on('click',toggleFavorite)
+.text(function() { return '\uf096'; });
+
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'FontAwesome')
+.attr('font-size', 20)
+.attr('cursor', 'pointer')
+.attr('x', this.viewBoxWidth*0.73 )
+.attr('y', (heightSvgList * 1.1)+ "%")
+.text(function() { return '\uf005'; });
+
+function toggleFavorite(){
+	//toggle filtet
+	favoriteOn = !favoriteOn;
+	log('favorite filter'+ favoriteOn);
+	//change icon
+	d3.select(this).text(function() { return (favoriteOn)?'\uf046':'\uf096'; });
+	//notify
+	//filterViewLayout.notifyAll(new ToggleFilter('L',favoriteOn,'toggle'));
+}
+
+//===============TOP FILTER
+
+//add favorite filter
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-size', 20)
+.attr('pointer-events','all' )
+.attr('x', this.viewBoxWidth*0.65 )
+.attr('y', (heightSvgList * 1.23)+ "%")
+.text('TOP');
+
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-size', 20)
+.attr('pointer-events','all' )
+.attr('x', this.viewBoxWidth*0.75 )
+.attr('y', (heightSvgList * 1.23)+ "%")
+.text('5');
+var text5 = this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'FontAwesome')
+.attr('font-size', 20)
+.attr('cursor', 'pointer')
+.attr('x', this.viewBoxWidth*0.72 )
+.attr('y', (heightSvgList * 1.23)+ "%")
+.on('click',function(){
+	toggleTop(5);
+})
+.text(function() { return '\uf10c'; });
+
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-size', 20)
+.attr('pointer-events','all' )
+.attr('x', this.viewBoxWidth*0.84)
+.attr('y', (heightSvgList * 1.23)+ "%")
+.text('10');
+
+var text10 =this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'FontAwesome')
+.attr('font-size', 20)
+.attr('cursor', 'pointer')
+.attr('x', this.viewBoxWidth*0.81 )
+.attr('y', (heightSvgList * 1.23)+ "%")
+.on('click',function(){
+	toggleTop(10);
+})
+.text(function() { return '\uf10c'; });
+
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-size', 20)
+.attr('pointer-events','all' )
+.attr('x', this.viewBoxWidth*0.93 )
+.attr('y', (heightSvgList * 1.23)+ "%")
+.text('15');
+
+var text15 =this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'FontAwesome')
+.attr('font-size', 20)
+.attr('cursor', 'pointer')
+.attr('x', this.viewBoxWidth*0.9 )
+.attr('y', (heightSvgList * 1.23)+ "%")
+.on('click',function(){
+	toggleTop(15);
+})
+.text(function() { return '\uf10c'; });
+
+var top={'5':text5, '10':text10, '15':text15};
+
+function toggleTop(value){
+	log(value);
+	
+	var keys = Object.keys(top);
+	for(var i = 0; i < keys.length; i++){
+		log(top[keys[i]]);
+		top[keys[i]].text(function() { return (keys[i]==value)?'\uf192':'\uf10c'; });
+	}
+
+	//notify
+	//filterViewLayout.notifyAll(new ToggleFilter('L',favoriteOn,'toggle'));
 }
 
 
