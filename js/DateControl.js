@@ -1,6 +1,6 @@
 var DateControl = L.Control.extend({
     options: {
-        position: 'topright'
+        position: 'topleft'
     },
     initialize: function (time,options /*{ data: {...}  }*/) {
     // constructor
