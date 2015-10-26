@@ -240,8 +240,10 @@ var visualizedButton = activationControls.append('div')
 .attr('viewBox', '0 0 ' + 100 + ' ' + 100)
 .attr('preserveAspectRatio', 'xMidYMid meet')
 .on('click', function () {
-  panelOpened = resizePanels(1, panelOpened);
-  resizeGraphsView(panelOpened);
+  if(activeGranularity!='year') {
+    panelOpened = resizePanels(1, panelOpened);
+    resizeGraphsView(panelOpened);
+  }
 })
 .append('text')
 .attr('text-anchor', 'middle')
@@ -323,6 +325,14 @@ var allButton = activationControls.append('div')
   .attr('viewBox', '0 0 ' + 100 + ' ' + 100)
   .on('click', function () {
     activeGranularity = changeGranularity('year');
+    if(!toggle[0]) {
+      panelOpened = resizePanels(0, panelOpened);
+      resizeGraphsView(panelOpened);
+    }
+    if(toggle[1]) {
+      panelOpened = resizePanels(1, panelOpened);
+      resizeGraphsView(panelOpened);
+    }
   })
   .append('text')
   .attr('text-anchor', 'middle')
