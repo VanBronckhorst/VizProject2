@@ -106,12 +106,28 @@ function MaxWindMonthChart(dataset, container, columnId, percOn) {
     yAxis.tickFormat(formatterAbs);
   }
 
+    // Create Title element
+  var title = container
+  .append('svg')
+  .attr('class', 'graph title')
+  .style('width', '100%')
+  .style('height', '10%')
+  .attr('viewBox', '0 0 ' + 100 + ' ' + 100)
+  .append('text')
+  .attr('text-anchor', 'middle')
+  .attr('dominant-baseline', 'central')
+  .attr('font-family', 'Arial')
+  .attr('font-size', 60)
+  .attr('x', '50%')
+  .attr('y', '60%')
+  .text('Max Wind Speed');
+
   // Create SVG element
   var svg = container
   .append('svg')
   .attr('id', 'max_wind_chart' + chartId)
   .style('width', '100%')
-  .style('height', '100%')
+  .style('height', '90%')
   .attr('viewBox', '0 0 ' + viewBoxWidth + ' ' + viewBoxHeight);
   //.attr('preserveAspectRatio', 'xMinYMin meet');
 
