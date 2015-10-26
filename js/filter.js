@@ -80,7 +80,6 @@ var Filter = function() {
 		return result;
 	};
 
-	// TODO sistemare comparator
 	// sorts the data on the attribute name, ascending if order > 0, descending if < 0 
 	this.sort = function( name, data, order ) {
 		// compares two values accordingly with type
@@ -127,12 +126,19 @@ var Filter = function() {
 
 	// filters the hurricanes to those that were active on the given day
 	this.active = function( data, date ) {
-		return data.filter( function( d ) {
-			var points = d[ "points" ];
-			return points.filter( function( p ) {
+		var newData = [];
+		for ( var i = 0, len = data.length; i < len; ++i ) {
+			var hurr = data[ i ];
+			var points = hurr[ "points" ];
+			points = points.filter( function( p ) {
 				p[ "date" ] === date;
-			} ).length > 0;
-		} );
+			} );
+			hurr[ "points" ] = points;
+			if ( points.length > 0 ) {
+				newData.push( hurr );
+			}
+		}
+		return newData;
 	};
 
 	// tests whether the first filter returns a subset of the second one
