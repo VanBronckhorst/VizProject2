@@ -213,13 +213,14 @@ function DayStatsGenerator(dataset) {
 
   while (hurrIndex < mainDataset.hurricanes.length) {
     //monthProva = mainDataset.hurricanes[hurrIndex].points[0].date.substring(4, 6);
-    dayIndex = parseInt(mainDataset.hurricanes[hurrIndex].points[0].date.substring(4, 8));
+    //dayIndex = parseInt(mainDataset.hurricanes[hurrIndex].points[0].date.substring(4, 8));
     //console.log(monthProva);
     //console.log(monthIndex);
 
-    numberOfHurricanes[dayIndex]++;
+
 
     for(pointIndex = 0; pointIndex < mainDataset.hurricanes[hurrIndex].points.length; pointIndex++) {
+      dayIndex = parseInt(mainDataset.hurricanes[hurrIndex].points[pointIndex].date.substring(4, 8));
       //magari controllare che pressione prima di iffare
       if(mainDataset.hurricanes[hurrIndex].points[pointIndex].maxSpeed > maxWindSpeed[dayIndex]) {
         maxWindSpeed[dayIndex] = mainDataset.hurricanes[hurrIndex].points[pointIndex].maxSpeed;
@@ -228,6 +229,7 @@ function DayStatsGenerator(dataset) {
         //console.log('in in year:' + year);
         minPressure[dayIndex] = mainDataset.hurricanes[hurrIndex].points[pointIndex].pressure;
       }
+      numberOfHurricanes[dayIndex]++;
     }
 
     hurrIndex++;

@@ -19,6 +19,8 @@ var Model = function() {
 		this.currentData = this.globalData;
 		this.visualizedData = this.globalData;
 
+		this.filters = {};
+		
 		this.filterCurrent( initFilter );
 
 		this.notifyAll( this.currentData, this.visualizedData );
