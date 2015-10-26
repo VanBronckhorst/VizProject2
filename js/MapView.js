@@ -6,6 +6,7 @@ function MapView(){
 	d3.select("body").append("div").attr("id","map").attr("class","map-div");
 	this.warpOverlay = d3.select("#map").append("div").attr("class","warp-overlay").style("visibility","hidden").text("Warp")
 	this.observers = [];
+	this.popup = new eventsPopup();
 	
 	this.addObserver = function(obs){
 		this.observers.push(obs);
@@ -117,7 +118,7 @@ function MapView(){
 				}else{
 					var line=L.polyline([[point["lat"],point["lon"]],[hurricane['points'][pointI-1]["lat"],hurricane['points'][pointI-1]["lon"]]],
 											{color: scale(this.comparingAttr == "speed" ?point["maxSpeed"]:point["pressure"]),opacity:1})
-											.on("click",function(e){ that.hurricaneSelected(e.target.hurr)})
+											.on("click",function(e){ that.hurricaneSelected(e.target.hurr,e.containerPoint.x,e.containerPoint.y); })
 					line.hurr=hurricane;
 					this.hurricaneLayer.addLayer(line);
 				}
@@ -172,11 +173,15 @@ function MapView(){
 		this.legendControl.changeLegend(this.cloroplethColors,['Inexistent','Very Low','Low','Medium','High','Very High','Ultra High'],"Danger");
 	}
 	
-	this.hurricaneSelected = function(h){
+	this.hurricaneSelected = function(h,x,y){
+/*
 		for (o in this.observers){
 			obs = this.observers[o];
 			obs.hurricaneSelected(h);
 		}
+*/
+		this.popup.update(h["name"]);
+		this.popup.show(x,y);
 	}
 	
 	this.displayFrameTime = function(d){
