@@ -1,31 +1,17 @@
-//console.log('inTheScript');
-//console.log(hurricanes);
-
 function HurrPerYearChart(dataset, container, columnId, percOn) {
-  //console.log('inTheFunction');
 
   var chartContainer = container;
   var hurrData = dataset;
 
   var percentageOn = percOn;
 
-  // Dataset changed by granularity
-  var newDataset = [];
-
-  /*
-  // Computes the total population
-  var totalPopulation = 0;
-  for (var i = 0; i < hurrData.length; i++) {
-    totalPopulation = totalPopulation + parseInt(stateData[i].POPEST2014);
-  }
-  //console.log(totalPopulation);*/
+  // Dataset actually active on this chart
+  var actualDataset = [];
 
   // Define ViewBox dimensions
   var viewBoxWidth = 800;
   var viewBoxHeight = 500;
   var viewBoxMargin = 50;
-
-
 
   // Define scales
   var xScale = d3.scale.ordinal()
@@ -86,11 +72,9 @@ function HurrPerYearChart(dataset, container, columnId, percOn) {
   .data(hurrData)
   .enter().append('rect')
   .attr('x', function (d, i) {
-    ////console.log(i);
     return xScale(d.YEAR);
   })
   .attr('y', function (d, i) {
-    ////console.log(d.POPEST2010_CIV);
     if(percentageOn) {
       //return viewBoxHeight - yScale(parseInt(d.POPEST2014)/totalPopulation);
     } else {
@@ -99,12 +83,12 @@ function HurrPerYearChart(dataset, container, columnId, percOn) {
   })
   .attr('width', xScale.rangeBand())
   .attr('height', function (d, i) {
-   if(percentageOn) {
-     //return yScale(parseInt(d.POPEST2014)/totalPopulation) - viewBoxMargin;
-   } else {
-    return yScale(parseInt(d.NUMBER_OF_HURRICANES)) - viewBoxMargin;
-  }
-})
+    if(percentageOn) {
+      //return yScale(parseInt(d.POPEST2014)/totalPopulation) - viewBoxMargin;
+    } else {
+      return yScale(parseInt(d.NUMBER_OF_HURRICANES)) - viewBoxMargin;
+    }
+  })
   /*.attr("fill", function(d, i) {return "rgba(" + 0 + "," + (255 - i*2) + "," + (255 - i*2) + "," + 0.7 + ")"; })*/
   .attr('fill', 'rgb(166,206,227)')
   .attr('stroke', 'black')
@@ -116,11 +100,6 @@ function HurrPerYearChart(dataset, container, columnId, percOn) {
   .attr("transform", "translate(0," + (viewBoxHeight - viewBoxMargin) + ")")
   .call(xAxis);
 
-  /*this.myXAxis = this.svg.append("g").attr('class',"x axis" ).call(this.xAxis)
-  .attr('shape-rendering', 'geometricPrecision')
-  .attr('font-size', this.viewBoxHeight/10)
-  .attr("transform", "translate(0,"+this.viewBoxHeight+")");*/
-
   //Create Y axis
   svg.append("g")
   .attr("class", "y axis")
@@ -131,12 +110,174 @@ function HurrPerYearChart(dataset, container, columnId, percOn) {
   var xTicksText =  svg.select('.x.axis')
   .selectAll('.tick text');
 
+  //console.log('hurrData:' + hurrData.length);
   xTicksText.style('opacity', function (d, i) {
-    if(i%11!==0 && i!=163) {
-      return 0;
+    if(hurrData.length > 100) {
+      if(i%28!=0 && i!=163) {
+        return 0;
+      } else {
+        return 1;
+      }
     } else {
-      return 1;
+      if(i%11!=0 && i!=163) {
+        return 0;
+      } else {
+        return 1;
+      }
     }
   });
+
+  // Function to update this chart according to a new dataset given as input
+  this.updateGraph = function (dataset) {
+
+    actualDataset = dataset;
+    //console.log(actualDataset);
+    //console.log('actualData:' + actualDataset.length);
+
+    //Update scale domains
+    xScale.domain(d3.range(
+                  d3.min(actualDataset , function (d, i) {
+                    return parseInt(d.YEAR);
+                  }),
+                  d3.max(actualDataset , function (d, i) {
+                    return parseInt(d.YEAR);
+                  })+1));
+    yScale.domain([0,
+                  d3.max(actualDataset , function (d, i) {
+                    return parseInt(d.NUMBER_OF_HURRICANES);
+                  })]);
+    // Need a different one cause it is inverted
+    yAxisScale.domain([0,
+                      d3.max(actualDataset , function (d, i) {
+                       return parseInt(d.NUMBER_OF_HURRICANES);
+                     })]);
+
+    //Select…
+    var bars = svg.selectAll('rect')
+    .data(actualDataset);
+
+    //console.log(bars);
+
+    //Enter…
+    bars.enter().append('rect')
+    .attr('x', function (d, i) {
+      return xScale(d.YEAR);
+    })
+    .attr('y', function (d, i) {
+      if(percentageOn) {
+        //return viewBoxHeight - yScale(parseInt(d.POPEST2014)/totalPopulation);
+      } else {
+        return viewBoxHeight - yScale(parseInt(d.NUMBER_OF_HURRICANES));
+      }
+    })
+    .attr('width',1)
+    .attr('height', function (d, i) {
+     if(percentageOn) {
+        //return yScale(parseInt(d.POPEST2014)/totalPopulation) - viewBoxMargin;
+      } else {
+        return yScale(parseInt(d.NUMBER_OF_HURRICANES)) - viewBoxMargin;
+      }
+    })
+    //.attr("fill", function(d, i) {return "rgba(" + 0 + "," + (255 - i*2) + "," + (255 - i*2) + "," + 0.7 + ")"; })
+    .attr('fill', 'rgb(166,206,227)')
+    .attr('stroke', 'black')
+    .attr('stroke-width', 1); //then scales with granularity (i*granularity)
+
+
+    //Update…
+    bars//.attr("fill", function(d, i) { return "rgba(" + 0 + "," + (255 - i*2*granularity) + "," + (255 - i*2*granularity) + "," + 0.7 + ")"; })
+    .transition()
+    .duration(750)
+    .attr('fill', 'rgb(166,206,227)')
+    .attr('stroke', 'black')
+    .attr('stroke-width', 1)
+    //.transition()
+    //.duration(500)
+    .attr('x', function (d, i) {
+      return xScale(d.YEAR);
+    })
+    .attr('y', function (d, i) {
+      if(percentageOn) {
+        //return viewBoxHeight - yScale(parseInt(d.POPEST2014)/totalPopulation);
+      } else {
+        return viewBoxHeight - yScale(parseInt(d.NUMBER_OF_HURRICANES));
+      }
+    })
+    .attr('width', xScale.rangeBand())
+    .attr('height', function (d, i) {
+     if(percentageOn) {
+        //return yScale(parseInt(d.POPEST2014)/totalPopulation) - viewBoxMargin;
+      } else {
+        return yScale(parseInt(d.NUMBER_OF_HURRICANES)) - viewBoxMargin;
+      }
+    });
+
+
+    //Exit…
+    bars.exit()
+    //.transition()
+    //.duration(500)
+    //.attr('height', 0)
+    //.attr('y', viewBoxHeight - viewBoxMargin)
+    //.attr('fill', 'rgba(166,206,227,0.5)')
+    //.attr('stroke', 'rgba(255,255,255,0.5)')
+    //.attr('x', 0)
+    //.attr('width', 0)
+    .remove();
+
+
+    //Update X axis
+    svg.select(".x.axis")
+    .transition()
+    .duration(500)
+    .call(xAxis);
+
+    //Update Y axis
+    svg.select(".y.axis")
+    .transition()
+    .duration(500)
+    .call(yAxis);
+
+
+    // Hide some ticks
+    xTicksText = svg.select('.x.axis')
+    .selectAll('.tick text');
+    /*
+    xTicksText.style('opacity', function (d, i) {
+      console.log('test');
+      if(granularity < 4) {
+        hider = 5 - granularity;
+      } else {
+        hider = 1;
+      }
+      console.log('innn');
+      console.log(d);
+      if(i%hider!==0) {
+        return 0;
+      } else {
+        return 1;
+      }
+    });*/
+
+    //
+    xTicksText.transition()
+    .style('opacity', function (d, i) {
+      if(actualDataset.length > 100) {
+        if(i%28!=0 && i!=163) {
+          return 0;
+        } else {
+          return 1;
+        }
+      } else {
+        if(i%11!=0 && i!=65) {
+          return 0;
+        } else {
+          return 1;
+        }
+      }
+    });
+
+  };
+
 
 }

@@ -443,9 +443,11 @@ function pressureClicked(d){
 
 	var a = this.getElementsByTagName('text');
 	a[0].setAttribute('fill', 'purple');
-
-	filterViewLayout.notifyAll(new ThresholdFilter('pressure',d,'min')); 
-
+	
+	min = parseInt(d3.select(a[0]).text().replace(",", ""));
+	
+	filterViewLayout.notifyAll(new RangeFilter ('minPressure',min,2000,'range'));
+	
 }
 //===============MAX WIND SELECTOR
 //Create scale functions
@@ -493,9 +495,10 @@ function windClicked(d){
 
 	var a = this.getElementsByTagName('text');
 	a[0].setAttribute('fill', 'purple');
-	//notify
-	filterViewLayout.notifyAll(new ThresholdFilter('maxSpeed',d,'max')); 
-
+	max = parseInt(d3.select(a[0]).text());
+	
+	filterViewLayout.notifyAll(new RangeFilter ('maxSpeed',0,max,'range'));
+	
 }
 //===============LANDED FILTER
 
@@ -543,7 +546,7 @@ function toggleLanded(){
 	//change icon
 	d3.select(this).text(function() { return (landedFilterOn)?'\uf046':'\uf096'; });
 	//notify
-	filterViewLayout.notifyAll(new ToggleFilter('L',landedFilterOn,'toggle'));
+	filterViewLayout.notifyAll(new ToggleFilter('landfall',landedFilterOn? true: null,'equal'));
 }
 
 //===============FAVORITE FILTER
@@ -963,7 +966,7 @@ this.lists.push(
 	//{'list':this.listDanger, 'attribute':'maxSpeed'}, //TODO put the right value here
 	{'list':this.checkBoxList, 'attribute' : null});
 
-this.oldLists.push(<-----come capire quale oldList usare
+this.oldLists.push(//<-----come capire quale oldList usare
 	{'list':this.list, 'attribute' : 'name'},
 	{'list':this.listSpeed,'attribute':'maxSpeed'},
 	{'list':this.listDate, 'attribute':'startDate'},

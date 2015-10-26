@@ -15,7 +15,7 @@ var Filter = function() {
 			case "bottom":
 				return this.bottom( filterObject.name, currentData, filterObject.number );		
 			case "equal": // serve?
-				return this.equal( filterObject.name, data, filterObject.values );
+				return this.equal( filterObject.name, currentData, filterObject.value);
 		}
 	};
 
@@ -113,6 +113,11 @@ var Filter = function() {
 
 	// filters the data to those whose attribute name is equal to value
 	this.equal = function( name, data, value ) {
+		if (value == null) {
+			return data.filter( function( d ) {
+			return true;
+		} );
+		}
 		return data.filter( function( d ) {
 			return d[ name ] === value;
 		} );
@@ -131,7 +136,7 @@ var Filter = function() {
 				case "bottom":
 					return fObj1.number <= fObj2.number;
 				case "equal":
-					return fObj1.values === fObj2.values;
+					return fObj1.value === fObj2.value;
 			}
 		}
 		return false;
