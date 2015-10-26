@@ -11,10 +11,10 @@ var ThresholdFilter = function(attribute,threshold,filterFunction){
 }
 
 var RangeFilter = function(attribute,from,to,filterFunction){ //filterFunction is 'range'
-	this.name = attribute;
-	this.from = from;
-	this.to = to;
-	this.function = filterFunction;
+this.name = attribute;
+this.from = from;
+this.to = to;
+this.function = filterFunction;
 }
 
 var ToggleFilter = function(attribute,buttonStatus,filterFunction){
@@ -24,19 +24,30 @@ var ToggleFilter = function(attribute,buttonStatus,filterFunction){
 }
 
 var SliceFilter = function(attribute, number,fitlerFunction){// 'top' or 'bottom'
-	this.name = attribute;
-	this.number = number;
-	this.function = fitlerFunction;
+this.name = attribute;
+this.number = number;
+this.function = fitlerFunction;
 }
 
 
 var HurricaneNameFilter = function(name,filterFunction){ // 'add' or 'remove' or 'addAll' or 'removeAll'
-	this.name = name;
-	this.function = filterFunction;
+this.name = name;
+this.function = filterFunction;
 }
 
 var ActiveFilter = function( name, filterFunction, date ) {
 	this.name = name; // "dates"
 	this.function = filterFunction; // "active"
 	this.date = date; // e.g. 20151026
+}
+
+var FavoriteFilter = function(name,filterFunction,number) {
+		this.name = name; // "maxSpeed"
+		this.number = number; //5
+		this.attribute = 'favorite';
+	this.function = filterFunction; //'top'
+}
+
+var NoFilter = function() {
+		this.attribute = 'noFilter';
 }

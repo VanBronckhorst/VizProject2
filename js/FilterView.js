@@ -566,6 +566,7 @@ this.svgFilters
 
 this.svgFilters
 .append('text')
+.attr('id', 'favorite-filter')
 .attr('text-anchor', 'middle')
 .attr('dominant-baseline', 'central')
 .attr('font-family', 'FontAwesome')
@@ -594,7 +595,11 @@ function toggleFavorite(){
 	//change icon
 	d3.select(this).text(function() { return (favoriteOn)?'\uf046':'\uf096'; });
 	//notify
-	//filterViewLayout.notifyAll(new ToggleFilter('L',favoriteOn,'toggle'));
+	if(favoriteOn){
+		filterViewLayout.notifyAll(new  FavoriteFilter('maxSpeed','top',5));
+	}else{
+		filterViewLayout.notifyAll(new NoFilter ());
+	}
 }
 //===============PACIFIC FILTER
 
@@ -649,7 +654,7 @@ function toggleFilterPacific(){
 
 var atlanticFilterOn = true;
 
-//add favorite filter
+//add  filter
 this.svgFilters
 .append('text')
 .attr('text-anchor', 'middle')
@@ -706,6 +711,30 @@ this.svgFilters
 .attr('x', this.viewBoxWidth*0.65 )
 .attr('y', (heightSvgList * 1.27)+ "%")
 .text('TOP:');
+
+this.svgFilters
+.append('text')
+.attr('id', 'x-filter')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'FontAwesome')
+.attr('font-size', 20)
+.attr('cursor', 'pointer')
+.attr('x', this.viewBoxWidth*0.61 )
+.attr('y', (heightSvgList * 1.27)+ "%")
+.on('click',function(){
+	//toggle out the top filter
+	var value = 'z';
+	var keys = Object.keys(top);
+	for(var i = 0; i < keys.length; i++){
+		log(top[keys[i]]);
+		top[keys[i]].text(function() { return (keys[i]==value)?'\uf192':'\uf10c'; });
+	}
+
+	//reset
+	filterViewLayout.notifyAll(new RangeFilter ('maxSpeed',0,2000,'range'));
+})
+.text(function() { return '\uf00d'; });
 
 this.svgFilters
 .append('text')
@@ -784,6 +813,7 @@ var top={'5':text5, '10':text10, '15':text15};
 
 function toggleTop(value){
 	log(value);
+	//d3.select('#favorite-filter').text(function(){return '\uf046'});
 	
 	var keys = Object.keys(top);
 	for(var i = 0; i < keys.length; i++){
@@ -884,9 +914,9 @@ function addDatePicker(id,isYearOnly){
 				var day = dateTokens[0] +""+ dateTokens[1]+"" + dateTokens[2] ;
 				log(day);
     			//notify
-				filterViewLayout.notifyAll(new ActiveFilter('dates','active',day)); 
+    			filterViewLayout.notifyAll(new ActiveFilter('dates','active',day)); 
 
-			}
+    		}
 			//turn off season filter
 			atlanticOn = false;
 			d3.select('#rect-season-atlantic').attr('class', 'seasonOff');
@@ -1154,9 +1184,9 @@ var toReset = false;
 			filterViewLayout.listDate = listCreator.createList(this.svgList,'START DATE');
 
 			//SET THE ACTIONS FOR THE ORDER ASCENDING AND DESCENDING ARROWS=========================
-d3.select('#des-NAME')
-.on('click',function(){
-	log('sorting the name');
+			d3.select('#des-NAME')
+			.on('click',function(){
+				log('sorting the name');
 	//set variable to sort on 
 	UtilityView.variable = 'name';
 	//sort by descending name
@@ -1164,8 +1194,8 @@ d3.select('#des-NAME')
 	//update
 	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
 });
-d3.select('#asc-NAME')
-.on('click',function(){
+			d3.select('#asc-NAME')
+			.on('click',function(){
 	//set variable to sort on 
 	UtilityView.variable = 'name';
 	//sort by ascending name
@@ -1173,8 +1203,8 @@ d3.select('#asc-NAME')
 	//update
 	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
 });
-d3.select('#asc-MAXSPEED')
-.on('click',function(){
+			d3.select('#asc-MAXSPEED')
+			.on('click',function(){
 	//set variable to sort on 
 	UtilityView.variable = 'maxSpeed';
 	//sort by ascending name
@@ -1182,8 +1212,8 @@ d3.select('#asc-MAXSPEED')
 	//update
 	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
 });
-d3.select('#des-MAXSPEED')
-.on('click',function(){
+			d3.select('#des-MAXSPEED')
+			.on('click',function(){
 	//set variable to sort on 
 	UtilityView.variable = 'maxSpeed';
 	//sort by ascending name
@@ -1191,8 +1221,8 @@ d3.select('#des-MAXSPEED')
 	//update
 	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
 });
-d3.select('#asc-STARTDATE')
-.on('click',function(){
+			d3.select('#asc-STARTDATE')
+			.on('click',function(){
 	//set variable to sort on 
 	UtilityView.variable = 'startDate';
 	//sort by ascending name
@@ -1200,8 +1230,8 @@ d3.select('#asc-STARTDATE')
 	//update
 	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
 });
-d3.select('#des-STARTDATE')
-.on('click',function(){
+			d3.select('#des-STARTDATE')
+			.on('click',function(){
 	//set variable to sort on 
 	UtilityView.variable = 'startDate';
 	//sort by ascending name
@@ -1213,13 +1243,13 @@ d3.select('#des-STARTDATE')
 //===========================end ordering functions
 
 
-			filterViewLayout.lists = [];
-			log(filterViewLayout.lists);
-			filterViewLayout.lists.push(
-				{'list':this.list, 'attribute' : 'name'},
-				{'list':this.listSpeed,'attribute':'maxSpeed'},
-				{'list':this.listDate, 'attribute':'startDate'},
-				{'list':this.checkBoxList, 'attribute' : null});
+filterViewLayout.lists = [];
+log(filterViewLayout.lists);
+filterViewLayout.lists.push(
+	{'list':this.list, 'attribute' : 'name'},
+	{'list':this.listSpeed,'attribute':'maxSpeed'},
+	{'list':this.listDate, 'attribute':'startDate'},
+	{'list':this.checkBoxList, 'attribute' : null});
 
 			//==============SELECT ALL
 			filterViewLayout.svgList
@@ -1248,18 +1278,18 @@ d3.select('#des-STARTDATE')
 		}
 
 		//add button arrow up
-	filterViewLayout.svgList
-	.append('text')
-	.attr('text-anchor', 'middle')
-	.attr('dominant-baseline', 'central')
-	.attr('font-family', 'FontAwesome')
-	.attr('font-size', 20)
-	.attr('pointer-events','all' )
-	.attr('x', 770 )
-	.attr('y', filterViewLayout.viewBoxHeight*0.05)
-	.attr('cursor', 'pointer')
-	.on('click',function(){slideList('up');})
-	.text(function(d) { return '\uf139'; });
+		filterViewLayout.svgList
+		.append('text')
+		.attr('text-anchor', 'middle')
+		.attr('dominant-baseline', 'central')
+		.attr('font-family', 'FontAwesome')
+		.attr('font-size', 20)
+		.attr('pointer-events','all' )
+		.attr('x', 770 )
+		.attr('y', filterViewLayout.viewBoxHeight*0.05)
+		.attr('cursor', 'pointer')
+		.on('click',function(){slideList('up');})
+		.text(function(d) { return '\uf139'; });
 
 	//add button arrow down
 	filterViewLayout.svgList
@@ -1275,22 +1305,22 @@ d3.select('#des-STARTDATE')
 	.on('click',function(){slideList('down');} )
 	.text(function(d) { return '\uf13a'; });
 
-		toReset=false;
-		log('ripristino lista');
-		log(filterViewLayout.lists);
-	}
-	log('oldList');
-	log(filterViewLayout.oldLists);
+	toReset=false;
+	log('ripristino lista');
+	log(filterViewLayout.lists);
+}
+log('oldList');
+log(filterViewLayout.oldLists);
 
-	filterViewLayout.lists.forEach(function(d){updateSingleList(d);})	
+filterViewLayout.lists.forEach(function(d){updateSingleList(d);})	
 
-	function updateSingleList(list){
-		var attribute = list['attribute'];
-		list = list['list'];
+function updateSingleList(list){
+	var attribute = list['attribute'];
+	list = list['list'];
 
 
-		list = list
-		.data(filterViewLayout.data.slice(0,this.wordBatchSize));
+	list = list
+	.data(filterViewLayout.data.slice(0,this.wordBatchSize));
     		//log(list);
     	//7	log(list.enter()[0].length);
     	//	log(list.exit()[0].length);
