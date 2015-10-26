@@ -598,9 +598,60 @@ function toggleFavorite(){
 	if(favoriteOn){
 		filterViewLayout.notifyAll(new  FavoriteFilter('maxSpeed','top',5));
 	}else{
-		filterViewLayout.notifyAll(new NoFilter ());
+		var start = currentYear +"0101";
+		var end =currentYear+"1231";
+		log(start);
+		log(end);
+		//notify
+		filterViewLayout.notifyAll(new RangeFilter('startDate',start,end,'range'));
 	}
 }
+//===============ALL FILTER
+
+var allFilterOn = false;
+
+//add favorite filter
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-size', 20)
+.attr('pointer-events','all' )
+.attr('x', this.viewBoxWidth*0.52 )
+.attr('y', (heightSvgList * 1.27)+ "%")
+.text('ALL');
+
+this.svgFilters
+.append('text')
+.attr('text-anchor', 'middle')
+.attr('dominant-baseline', 'central')
+.attr('font-family', 'FontAwesome')
+.attr('font-size', 20)
+.attr('cursor', 'pointer')
+.attr('x', this.viewBoxWidth*0.48 )
+.attr('y', (heightSvgList * 1.27)+ "%")
+.on('click',toggleFilterAll)
+.text(function() { return '\uf096'; });
+
+function toggleFilterAll(){
+	//toggle filtet
+	allFilterOn = !allFilterOn;
+	log('all filter '+ allFilterOn);
+	//change icon
+	d3.select(this).text(function() { return (allFilterOn)?'\uf046':'\uf096'; });
+	//notify
+	if(allFilterOn){
+		filterViewLayout.notifyAll(new NoFilter ());
+	}else{
+		var start = currentYear +"0101";
+		var end =currentYear+"1231";
+		log(start);
+		log(end);
+		//notify
+		filterViewLayout.notifyAll(new RangeFilter('startDate',start,end,'range'));
+	}
+}
+
 //===============PACIFIC FILTER
 
 var pacificFilterOn = true;
@@ -870,7 +921,7 @@ this.filterViewDiv.append('div')
 addDatePicker('calendarDay',false);
 addDatePicker('calendarYear',true);
 
-var currentYear=2013;
+var currentYear=2014;
 function addDatePicker(id,isYearOnly){
 	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
