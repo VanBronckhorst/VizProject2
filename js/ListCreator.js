@@ -1,4 +1,4 @@
-var ListCreator = function(){
+var ListCreator = function(again){
 	var numberOfListCreated = 0;
 	var xOffset = 50;
 	var titleY = 40;
@@ -7,9 +7,13 @@ var ListCreator = function(){
 	var titleXOffset = 5;
 	var busyWidth = 0;
 	var columnGap = 110;
-
+	var again = again;
+	if(again){
+		d3.select('#svg-list').selectAll('text').remove();
+	}
 	this.createList = function(place,name,wantCheckBox){
-		//add title 
+
+		//add title 		
 		var tit = place
 		.append('g')
 		.append('text')
@@ -20,7 +24,7 @@ var ListCreator = function(){
 		.attr('x', function(){return xOffset + titleXOffset + busyWidth+ columnGap*numberOfListCreated;})
 		.attr('color','black')
 		.attr('font-size',titleSize );
-
+		
 
 
 		//add list texts
@@ -75,6 +79,7 @@ var ListCreator = function(){
 			return titleY-5;
 		})			
 		.text(function() { return '\uf0dd'; });	
+
 
 		//increase number of lists created
 		numberOfListCreated++;

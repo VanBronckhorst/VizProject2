@@ -928,6 +928,7 @@ this.listDate = listCreator.createList(this.svgList,'START DATE');
 //SET THE ACTIONS FOR THE ORDER ASCENDING AND DESCENDING ARROWS=========================
 d3.select('#des-NAME')
 .on('click',function(){
+	log('sorting the name');
 	//set variable to sort on 
 	UtilityView.variable = 'name';
 	//sort by descending name
@@ -990,11 +991,10 @@ this.lists.push(
 	//{'list':this.listDanger, 'attribute':'maxSpeed'}, //TODO put the right value here
 	{'list':this.checkBoxList, 'attribute' : null});
 
-this.oldLists.push(//<-----come capire quale oldList usare
+this.oldLists.push(
 	{'list':this.list, 'attribute' : 'name'},
 	{'list':this.listSpeed,'attribute':'maxSpeed'},
 	{'list':this.listDate, 'attribute':'startDate'},
-	//{'list':this.listDanger, 'attribute':'maxSpeed'}, //TODO put the right value here
 	{'list':this.checkBoxList, 'attribute' : null});
 
 
@@ -1116,33 +1116,182 @@ var toReset = false;
     	this.data = data;
     	this.dataVisualized = dataVisualized;
     	if(toReset){
-    		filterViewLayout.lists = filterViewLayout.oldLists;
-    		toReset=false;
-    		log('ripristino lista');
-    	}
-
-    	filterViewLayout.lists.forEach(function(d){updateSingleList(d);})	
-
-    	function updateSingleList(list){
-    		var attribute = list['attribute'];
-    		list = list['list'];
-    		log(list);
-
-    		/*if(toReset && attribute=='name'){
-    			for(var i = 0; i <filterViewLayout.oldLists.length;i++ ){
-    				if(filterViewLayout.oldLists[i]['attribute']==attribute){
-    					log('trovata lista attributo');
-    					log(filterViewLayout.oldLists[i]['attribute']);
-    					list = filterViewLayout.oldLists[i]['list']; //ripristino
-    				}
-    			}
-    			toReset = false;
-    		}*/
+    		//elimino tutto quello che c'era
+    		filterViewLayout.lists.forEach(function(list){
+    			list = list['list'];
+    			list = list.data([]); //empty
+    			//and exit
+    			//remove
+    			list
+    			.exit()
+    			.remove();
+    		})	
 
 
-    		list = list
-    		.data(filterViewLayout.data.slice(0,this.wordBatchSize));
-    		log(list);
+    		var listCreator = new ListCreator(true);
+    		//checkbox is a world on its own=======
+    		filterViewLayout.checkBoxList =  listCreator.checkBoxList(this.svgList);
+    		filterViewLayout.checkBoxList
+    		.on('click',toggleChecked);
+
+    		function toggleChecked(d){
+
+    			var newStatus = (d3.select(this).attr('status') === 'true')?'false':'true';
+    			d3.select(this).attr('status',newStatus);	
+
+    			var operation = (newStatus === 'true') ? 'add' : 'remove';
+
+				//change icon
+				d3.select(this).text(function() { return (newStatus === 'true')?'\uf046':'\uf096'; });
+
+				//notify
+				filterViewLayout.notifyAll(new HurricaneNameFilter(d.name,operation)); 
+
+			}	
+			//name,speed etc.=====
+			filterViewLayout.list = listCreator.createList(this.svgList,'NAME');
+			filterViewLayout.listSpeed = listCreator.createList(this.svgList,'MAX SPEED');
+			filterViewLayout.listDate = listCreator.createList(this.svgList,'START DATE');
+
+			//SET THE ACTIONS FOR THE ORDER ASCENDING AND DESCENDING ARROWS=========================
+d3.select('#des-NAME')
+.on('click',function(){
+	log('sorting the name');
+	//set variable to sort on 
+	UtilityView.variable = 'name';
+	//sort by descending name
+	filterViewLayout.data.sort(UtilityView.descending);
+	//update
+	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
+});
+d3.select('#asc-NAME')
+.on('click',function(){
+	//set variable to sort on 
+	UtilityView.variable = 'name';
+	//sort by ascending name
+	filterViewLayout.data.sort(UtilityView.ascending);
+	//update
+	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
+});
+d3.select('#asc-MAXSPEED')
+.on('click',function(){
+	//set variable to sort on 
+	UtilityView.variable = 'maxSpeed';
+	//sort by ascending name
+	filterViewLayout.data.sort(UtilityView.ascending);
+	//update
+	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
+});
+d3.select('#des-MAXSPEED')
+.on('click',function(){
+	//set variable to sort on 
+	UtilityView.variable = 'maxSpeed';
+	//sort by ascending name
+	filterViewLayout.data.sort(UtilityView.descending);
+	//update
+	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
+});
+d3.select('#asc-STARTDATE')
+.on('click',function(){
+	//set variable to sort on 
+	UtilityView.variable = 'startDate';
+	//sort by ascending name
+	filterViewLayout.data.sort(UtilityView.ascending);
+	//update
+	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
+});
+d3.select('#des-STARTDATE')
+.on('click',function(){
+	//set variable to sort on 
+	UtilityView.variable = 'startDate';
+	//sort by ascending name
+	filterViewLayout.data.sort(UtilityView.descending);
+	//update
+	filterViewLayout.update(filterViewLayout.data,filterViewLayout.dataVisualized);
+});
+
+//===========================end ordering functions
+
+
+			filterViewLayout.lists = [];
+			log(filterViewLayout.lists);
+			filterViewLayout.lists.push(
+				{'list':this.list, 'attribute' : 'name'},
+				{'list':this.listSpeed,'attribute':'maxSpeed'},
+				{'list':this.listDate, 'attribute':'startDate'},
+				{'list':this.checkBoxList, 'attribute' : null});
+
+			//==============SELECT ALL
+			filterViewLayout.svgList
+			.append('text')
+			.attr('text-anchor', 'middle')
+			.attr('dominant-baseline', 'central')
+			.attr('font-family', 'FontAwesome')
+			.attr('font-size', 20)
+			.attr('cursor', 'pointer')
+			.attr('x', filterViewLayout.viewBoxWidth*0.045 )
+			.attr('y', filterViewLayout.viewBoxHeight*0.04)
+			.on('click',toggleSelectAll)
+			.text(function() { return '\uf046'; });
+			var selectAllOn = true;
+			function toggleSelectAll(){
+			//toggle filtet
+			selectAllOn = !selectAllOn;
+			log('selectAll filter'+ selectAllOn);
+
+			var operation = (selectAllOn) ? 'addAll' : 'removeAll';
+			//notify
+			filterViewLayout.notifyAll(new HurricaneNameFilter(null,operation)); 
+
+			//change icon
+			d3.select(this).text(function() { return (selectAllOn)?'\uf046':'\uf096'; });
+		}
+
+		//add button arrow up
+	filterViewLayout.svgList
+	.append('text')
+	.attr('text-anchor', 'middle')
+	.attr('dominant-baseline', 'central')
+	.attr('font-family', 'FontAwesome')
+	.attr('font-size', 20)
+	.attr('pointer-events','all' )
+	.attr('x', 770 )
+	.attr('y', filterViewLayout.viewBoxHeight*0.05)
+	.attr('cursor', 'pointer')
+	.on('click',function(){slideList('up');})
+	.text(function(d) { return '\uf139'; });
+
+	//add button arrow down
+	filterViewLayout.svgList
+	.append('text')
+	.attr('text-anchor', 'middle')
+	.attr('dominant-baseline', 'central')
+	.attr('font-family', 'FontAwesome')
+	.attr('font-size', 20)
+	.attr('pointer-events','all' )
+	.attr('x', 770 )
+	.attr('y', filterViewLayout.viewBoxHeight * heightSvgList * 0.0095)
+	.attr('cursor', 'pointer')
+	.on('click',function(){slideList('down');} )
+	.text(function(d) { return '\uf13a'; });
+
+		toReset=false;
+		log('ripristino lista');
+		log(filterViewLayout.lists);
+	}
+	log('oldList');
+	log(filterViewLayout.oldLists);
+
+	filterViewLayout.lists.forEach(function(d){updateSingleList(d);})	
+
+	function updateSingleList(list){
+		var attribute = list['attribute'];
+		list = list['list'];
+
+
+		list = list
+		.data(filterViewLayout.data.slice(0,this.wordBatchSize));
+    		//log(list);
     	//7	log(list.enter()[0].length);
     	//	log(list.exit()[0].length);
     		//log(list.update()[0].length);
