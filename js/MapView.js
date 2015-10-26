@@ -66,12 +66,12 @@ function MapView(){
 	this.hurricaneLayer.addTo(this.map);
 	this.markers = {}
 	this.trails={}
-	this.speedColors = ["#DEDE5F","#DEA35F","#F04337"]
-	this.speedLabels = ["20 Kn","80 Kn","140 Kn"]
-	this.pressureColors = ["#00CCFF","#0099FF","#0066FF"]
-	this.pressureLabels = ["900 mb","960 mb","1020 mb"]
-	this.speedScale = d3.scale.linear().domain([20,80,140]).range(this.speedColors)
-	this.pressureScale = d3.scale.linear().domain([900,960,1020]).range(this.pressureColors)
+	this.speedColors = ["#FFD82D","#F98D00","#F42000"]
+	this.speedLabels = ["20 Kn","70 Kn","120 Kn"]
+	this.pressureColors = ["#DEEBF7","#5CA8D1","#005A9B"]
+	this.pressureLabels = ["880 mb","950 mb","1020 mb"]
+	this.speedScale = d3.scale.linear().domain([20,70,120]).range(this.speedColors)
+	this.pressureScale = d3.scale.linear().domain([880,950,1020]).range(this.pressureColors)
 	this.comparingAttr = "speed";
 	this.playControl = new PlayControl(this);
 	this.playControl.addTo(this.map);
