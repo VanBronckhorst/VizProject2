@@ -439,10 +439,14 @@ function pressureClicked(d){
 	tickList
 	.forEach(function(d){		
 		d.setAttribute('fill', 'black');
-	});
+		d.setAttribute('stroke', 'black');
+		d.setAttribute('stroke-width', '1');
+			});
 
 	var a = this.getElementsByTagName('text');
 	a[0].setAttribute('fill', 'purple');
+	a[0].setAttribute('stroke', 'purple');
+	a[0].setAttribute('stroke-width', '2')
 	
 	min = parseInt(d3.select(a[0]).text().replace(",", ""));
 	
@@ -492,10 +496,15 @@ function windClicked(d){
 	tickList
 	.forEach(function(d){		
 		d.setAttribute('fill', 'black');
+		d.setAttribute('stroke', 'black');
+		d.setAttribute('stroke-width', '1');
+
 	});
 
 	var a = this.getElementsByTagName('text');
 	a[0].setAttribute('fill', 'purple');
+	a[0].setAttribute('stroke', 'purple');
+	a[0].setAttribute('stroke-width', '2')
 	max = parseInt(d3.select(a[0]).text());
 	
 	filterViewLayout.notifyAll(new RangeFilter ('maxSpeed',0,max,'range'));
