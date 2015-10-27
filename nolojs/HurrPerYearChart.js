@@ -9,7 +9,7 @@ function HurrPerYearChart(dataset, container, columnId, percOn) {
   var actualDataset = [];
 
   // Define ViewBox dimensions
-  var viewBoxWidth = 1200;
+  var viewBoxWidth = 1400;
   var viewBoxHeight = 500;
   var viewBoxMargin = 50;
 
@@ -69,7 +69,7 @@ function HurrPerYearChart(dataset, container, columnId, percOn) {
   .attr('text-anchor', 'middle')
   .attr('dominant-baseline', 'central')
   .attr('font-family', 'Arial')
-  .attr('font-size', 60)
+  .attr('font-size', 80)
   .attr('x', '50%')
   .attr('y', '60%')
   .text('Number of Hurricanes');
