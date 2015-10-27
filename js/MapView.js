@@ -249,7 +249,7 @@ function MapView(){
 		}
 		this.timer = setInterval(this.updateTime, this.animationUpdate);
 		
-		this.legendControl.changeLegend(["#bfad23","red","#5ea034"],["Tr. Storm","Hurricane","Tr. Cyclone"],"Type");
+		this.legendControl.changeLegend(["#bfad23","red","#5ea034","#CEEBF5" ,"#9BCBF2","#326DED"],["Tr. Storm","Hurricane","Tr. Cyclone","34Kn","50Kn","64Kn"],"Type/Speed");
 		
 	}
 	

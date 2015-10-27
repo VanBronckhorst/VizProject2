@@ -121,15 +121,7 @@
 	width:5%;
 }
 
-.leaflet-control-zoom{
-	width:50%;
-}
-.leaflet-control-zoom a{
-	width:100%;
-}
-.leaflet-control-zoom a:hover{
-	width:100%;
-}
+
 .leaflet-control-layers{
 	width:100%
 }
