@@ -94,9 +94,12 @@ function MapView(){
 												{color:"yellow",fillColor: "yellow",
 												fillOpacity: 1}));
 				}else{
-					this.hurricaneLayer.addLayer(L.polyline([[point["lat"],point["lon"]],
+					var line=L.polyline([[point["lat"],point["lon"]],
 															[hurricane['points'][pointI-1]["lat"],hurricane['points'][pointI-1]["lon"]]],
-															{color: "yellow"}).on("click",function(e){ that.hurricaneSelected(e.target.hurr)}));
+															{color: "yellow"})
+															.on("click",function(e){ that.hurricaneSelected(e.target.hurr,e.containerPoint.x,e.containerPoint.y);})
+					line.hurr=hurricane;
+					this.hurricaneLayer.addLayer(line);
 				}
 			}
 		}
@@ -199,6 +202,12 @@ function MapView(){
 					}else{
 						shown +=1;
 						this.markers[hurricaneI] =L.hurricaneMarker([pointToShow["lat"],pointToShow["lon"] ],pointToShow["type"]);
+						this.markers[hurricaneI].on("click",function(e){
+							
+							that.hurricaneSelected(e.target.hurr,e.originalEvent.pageX,e.originalEvent.pageY);
+							
+						})
+						this.markers[hurricaneI].hurr = hurricane;
 						this.hurricaneLayer.addLayer(this.markers[hurricaneI]);	
 						
 					}
