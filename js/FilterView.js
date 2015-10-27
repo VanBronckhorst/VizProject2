@@ -439,10 +439,14 @@ function pressureClicked(d){
 	tickList
 	.forEach(function(d){		
 		d.setAttribute('fill', 'black');
-	});
+		d.setAttribute('stroke', 'black');
+		d.setAttribute('stroke-width', '1');
+			});
 
 	var a = this.getElementsByTagName('text');
 	a[0].setAttribute('fill', 'purple');
+	a[0].setAttribute('stroke', 'purple');
+	a[0].setAttribute('stroke-width', '2')
 	
 	min = parseInt(d3.select(a[0]).text().replace(",", ""));
 	
@@ -492,10 +496,15 @@ function windClicked(d){
 	tickList
 	.forEach(function(d){		
 		d.setAttribute('fill', 'black');
+		d.setAttribute('stroke', 'black');
+		d.setAttribute('stroke-width', '1');
+
 	});
 
 	var a = this.getElementsByTagName('text');
 	a[0].setAttribute('fill', 'purple');
+	a[0].setAttribute('stroke', 'purple');
+	a[0].setAttribute('stroke-width', '2')
 	max = parseInt(d3.select(a[0]).text());
 	
 	filterViewLayout.notifyAll(new RangeFilter ('maxSpeed',0,max,'range'));
@@ -598,11 +607,9 @@ function toggleFavorite(){
 	//notify
 	if(favoriteOn){	
 		filterViewLayout.notifyAll(new  FavoriteFilter('maxSpeed','top',5));
+		d3.select('#all-filter').text(function() { return '\uf096'; });
+		allFilterOn = false;
 	}else{
-		var start = currentYear +"0101";
-		var end =currentYear+"1231";
-		log(start);
-		log(end);
 		//notify
 		filterViewLayout.notifyAll(new NoFavoriteFilter());
 	}
@@ -625,6 +632,7 @@ this.svgFilters
 this.svgFilters
 .append('text')
 .attr('text-anchor', 'middle')
+.attr('id', 'all-filter')
 .attr('dominant-baseline', 'central')
 .attr('font-family', 'FontAwesome')
 .attr('font-size', 20)
@@ -643,13 +651,11 @@ function toggleFilterAll(){
 	//notify
 	if(allFilterOn){
 		filterViewLayout.notifyAll(new NoFilter ());
+		d3.select('#favorite-filter').text(function() { return '\uf096'; });
+		favoriteOn = false;
 	}else{
-		var start = currentYear +"0101";
-		var end =currentYear+"1231";
-		log(start);
-		log(end);
 		//notify
-		filterViewLayout.notifyAll(new RangeFilter('startDate',start,end,'range'));
+		filterViewLayout.notifyAll(new NoFavoriteFilter());
 	}
 }
 
