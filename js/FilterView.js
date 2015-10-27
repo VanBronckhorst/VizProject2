@@ -400,13 +400,13 @@ this.svgSeason
 //===========================MIN PRESSURE SELECTOR
 //Create scale functions
 var pressureScale = d3.scale.linear()
-.domain([800,1100])
+.domain([600,1100])
 .range([0,300]);
 
 //Define X axis
 var pressureAxis = d3.svg.axis()
 .scale(pressureScale)
-//.ticks(10)
+.ticks(5)
 .orient("bottom");
 
 //Create X axis
@@ -452,7 +452,7 @@ function pressureClicked(d){
 //===============MAX WIND SELECTOR
 //Create scale functions
 var windScale = d3.scale.linear()
-.domain([10,160])
+.domain([0,180])
 .range([0,300]);
 
 //Define X axis
@@ -484,9 +484,10 @@ d3.select('#windSlider')
 .attr('cursor', 'pointer')
 .on('click',windClicked)
 
+
 function windClicked(d){
 	var ticks = document.getElementById('windSlider').getElementsByTagName('text');
-	var tickList = Array.prototype.slice.call(ticks);
+	tickList = Array.prototype.slice.call(ticks);
 
 	tickList
 	.forEach(function(d){		
@@ -595,7 +596,7 @@ function toggleFavorite(){
 	//change icon
 	d3.select(this).text(function() { return (favoriteOn)?'\uf046':'\uf096'; });
 	//notify
-	if(favoriteOn){
+	if(favoriteOn){	
 		filterViewLayout.notifyAll(new  FavoriteFilter('maxSpeed','top',5));
 	}else{
 		var start = currentYear +"0101";
