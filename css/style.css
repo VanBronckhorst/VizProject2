@@ -140,3 +140,13 @@
 .control-layer-text{
 	font-size: 36;
 }
+.eventPopup{
+	background-color: white;
+	border-radius: 25px;
+	font-family: arial;
+	padding: 25px;
+	
+}
+.eventPopup h2{
+	font-size: 32px;
+}
