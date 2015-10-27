@@ -598,11 +598,9 @@ function toggleFavorite(){
 	//notify
 	if(favoriteOn){	
 		filterViewLayout.notifyAll(new  FavoriteFilter('maxSpeed','top',5));
+		d3.select('#all-filter').text(function() { return '\uf096'; });
+		allFilterOn = false;
 	}else{
-		var start = currentYear +"0101";
-		var end =currentYear+"1231";
-		log(start);
-		log(end);
 		//notify
 		filterViewLayout.notifyAll(new NoFavoriteFilter());
 	}
@@ -625,6 +623,7 @@ this.svgFilters
 this.svgFilters
 .append('text')
 .attr('text-anchor', 'middle')
+.attr('id', 'all-filter')
 .attr('dominant-baseline', 'central')
 .attr('font-family', 'FontAwesome')
 .attr('font-size', 20)
@@ -643,13 +642,11 @@ function toggleFilterAll(){
 	//notify
 	if(allFilterOn){
 		filterViewLayout.notifyAll(new NoFilter ());
+		d3.select('#favorite-filter').text(function() { return '\uf096'; });
+		favoriteOn = false;
 	}else{
-		var start = currentYear +"0101";
-		var end =currentYear+"1231";
-		log(start);
-		log(end);
 		//notify
-		filterViewLayout.notifyAll(new RangeFilter('startDate',start,end,'range'));
+		filterViewLayout.notifyAll(new NoFavoriteFilter());
 	}
 }
 

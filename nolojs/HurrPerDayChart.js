@@ -9,7 +9,7 @@ function HurrPerDayChart(dataset, container, columnId, percOn) {
   var actualDataset = [];
 
   // Define ViewBox dimensions
-  var viewBoxWidth = 800;
+  var viewBoxWidth = 1200;
   var viewBoxHeight = 500;
   var viewBoxMarginX = 10;
   var viewBoxMargin = 50;
